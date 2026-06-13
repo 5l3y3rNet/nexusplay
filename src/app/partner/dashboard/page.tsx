@@ -22,7 +22,7 @@ export default function DashboardPage() {
   const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
-    if (!authLoading && !user) { router.push("/partner/login"); return; }
+    if (!authLoading && !user) { router.push("/login"); return; }
     if (user) loadData();
   }, [user, authLoading]);
 

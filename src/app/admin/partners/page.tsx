@@ -23,7 +23,7 @@ export default function PartnersPage() {
 
   useEffect(() => {
     if (!authLoading) {
-      if (!user) { router.push("/partner/login"); return; }
+      if (!user) { router.push("/login"); return; }
       if (user.role !== "admin") { router.push("/partner/dashboard"); return; }
       load();
     }

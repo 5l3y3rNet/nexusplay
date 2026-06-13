@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await fetch("/api/auth/logout", { method: "POST" });
     setUser(null);
     setToken(null);
-    router.push("/partner/login");
+    router.push("/login");
   }, [router]);
 
   return <Ctx.Provider value={{ user, token, loading, login, register, logout }}>{children}</Ctx.Provider>;

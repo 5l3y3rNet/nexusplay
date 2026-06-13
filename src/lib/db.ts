@@ -54,6 +54,24 @@ export async function initDb() {
       published INTEGER NOT NULL DEFAULT 1, thumbnail TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+    CREATE TABLE IF NOT EXISTS game_assignments (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      game_id TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      UNIQUE(user_id, game_id)
+    );
+    CREATE TABLE IF NOT EXISTS partner_inquiries (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      company TEXT,
+      role TEXT,
+      games_interested TEXT,
+      message TEXT,
+      status TEXT NOT NULL DEFAULT 'new',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
 
   // Seed admin

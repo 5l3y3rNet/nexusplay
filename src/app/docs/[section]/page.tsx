@@ -11,7 +11,7 @@ const sections: Record<string, { title: string; blocks: Array<{ type: string; co
       { type: "h2", content: "Prerequisites" },
       { type: "p", content: "A valid casino operator license, an approved NexusPlay partner account, and an HTTPS-capable server for webhook delivery." },
       { type: "h2", content: "Step 1: Create a Partner Account" },
-      { type: "p", content: "Register at nexusplay.io/partner/register and submit your operator license documentation. Approval typically takes 1-2 business days." },
+      { type: "p", content: "Register at nexusplay.io/partner and submit your operator license documentation. Approval typically takes 1-2 business days." },
       { type: "h2", content: "Step 2: Generate API Credentials" },
       { type: "p", content: "In your partner dashboard, navigate to API Keys and create a new key. Store it securely — it will not be shown again." },
       { type: "code", content: `# Your API key looks like this:

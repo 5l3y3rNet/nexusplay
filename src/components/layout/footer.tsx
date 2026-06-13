@@ -22,7 +22,7 @@ export function Footer() {
           </div>
 
           {[
-            { heading: "Platform", links: [["Games", "/games"], ["Pricing", "/pricing"], ["Partners", "/partner/register"]] },
+            { heading: "Platform", links: [["Games", "/games"], ["Pricing", "/about"], ["Partners", "/partner"]] },
             { heading: "Developers", links: [["Documentation", "/docs"], ["API Reference", "/docs/api"], ["SDKs", "/docs/sdk"], ["Webhooks", "/docs/webhooks"]] },
             { heading: "Company", links: [["About", "/about"], ["Contact", "/contact"], ["Status", "#"], ["Security", "#"]] },
           ].map(col => (

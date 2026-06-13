@@ -21,7 +21,7 @@ export default function ApiKeysPage() {
   const [mob, setMob] = useState(false);
 
   useEffect(() => {
-    if (!authLoading && !user) { router.push("/partner/login"); return; }
+    if (!authLoading && !user) { router.push("/login"); return; }
     if (user) loadKeys();
   }, [user, authLoading]);
 

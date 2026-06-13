@@ -22,7 +22,7 @@ export function PartnerSidebar({ onClose }: { onClose?: () => void }) {
           <div style={{ width: "1.5rem", height: "1.5rem", background: "#fafafa", borderRadius: "0.25rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Zap size={11} style={{ color: "#09090b", fill: "#09090b" }} />
           </div>
-          <span style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>NexusPlay</span>
+          <span style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>KANI</span>
         </Link>
         {onClose && (
           <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><X size={16} /></button>
@@ -59,7 +59,7 @@ export function PartnerSidebar({ onClose }: { onClose?: () => void }) {
             <div style={{ fontSize: "0.625rem", color: "#52525b", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>partner@ace.com</div>
           </div>
         </div>
-        <Link href="/partner/login" style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 0.75rem", fontSize: "0.75rem", color: "#52525b", textDecoration: "none", borderRadius: "0.375rem" }}>
+        <Link href="/login" style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 0.75rem", fontSize: "0.75rem", color: "#52525b", textDecoration: "none", borderRadius: "0.375rem" }}>
           <LogOut size={12} /> Sign out
         </Link>
       </div>

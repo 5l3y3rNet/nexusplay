@@ -22,7 +22,7 @@ export default function WebhooksPage() {
   const [newSecret, setNewSecret] = useState("");
 
   useEffect(() => {
-    if (!authLoading && !user) { router.push("/partner/login"); return; }
+    if (!authLoading && !user) { router.push("/login"); return; }
     if (user) loadHooks();
   }, [user, authLoading]);
 

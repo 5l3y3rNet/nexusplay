@@ -47,7 +47,7 @@ export default function HomePage() {
               Ten premium crash and arcade games, a production-grade API, and a partner portal built for serious casino operators.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
-              <Link href="/partner/register" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#fafafa", color: "#09090b", fontWeight: 700, fontSize: "0.9375rem", padding: "0.75rem 1.5rem", borderRadius: "0.5rem", textDecoration: "none" }}>
+              <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#fafafa", color: "#09090b", fontWeight: 700, fontSize: "0.9375rem", padding: "0.75rem 1.5rem", borderRadius: "0.5rem", textDecoration: "none" }}>
                 Start integrating <ArrowRight size={16} />
               </Link>
               <Link href="/games" style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", color: "#71717a", fontSize: "0.9375rem", textDecoration: "none", padding: "0.75rem 0.25rem" }}>
@@ -126,7 +126,7 @@ export default function HomePage() {
               </div>
               <div style={{ marginTop: "2rem", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
                 <Link href="/docs" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#fafafa", color: "#09090b", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem 1.25rem", borderRadius: "0.375rem", textDecoration: "none" }}>Read the docs</Link>
-                <Link href="/partner/register" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "#71717a", fontSize: "0.875rem", textDecoration: "none", padding: "0.625rem 0" }}>Get API keys <ArrowRight size={14} /></Link>
+                <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "#71717a", fontSize: "0.875rem", textDecoration: "none", padding: "0.625rem 0" }}>Get API keys <ArrowRight size={14} /></Link>
               </div>
             </div>
             <div style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "0.75rem", overflow: "hidden" }}>
@@ -168,7 +168,7 @@ iframe.src = launchUrl;`}
           <h2 style={{ fontSize: "clamp(1.75rem, 5vw, 2.25rem)", fontWeight: 700, color: "#fafafa", marginBottom: "1rem" }}>Ready to integrate?</h2>
           <p style={{ color: "#52525b", marginBottom: "2rem", lineHeight: 1.7 }}>Join casino operators running NexusPlay games. Full API access, sandbox environment, dedicated integration support.</p>
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
-            <Link href="/partner/register" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#fafafa", color: "#09090b", fontWeight: 700, padding: "0.875rem 1.75rem", borderRadius: "0.5rem", textDecoration: "none" }}>
+            <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#fafafa", color: "#09090b", fontWeight: 700, padding: "0.875rem 1.75rem", borderRadius: "0.5rem", textDecoration: "none" }}>
               Create partner account <ArrowRight size={16} />
             </Link>
             <Link href="/docs" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "#71717a", fontSize: "0.875rem", textDecoration: "none" }}>
