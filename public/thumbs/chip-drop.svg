@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#021a10"/>
+  <circle cx="200" cy="55" r="8" fill="#10b981"/>
+  <circle cx="175" cy="100" r="5" fill="#6b7280"/>
+  <circle cx="225" cy="100" r="5" fill="#6b7280"/>
+  <circle cx="150" cy="140" r="5" fill="#6b7280"/>
+  <circle cx="200" cy="140" r="5" fill="#6b7280"/>
+  <circle cx="250" cy="140" r="5" fill="#6b7280"/>
+  <circle cx="130" cy="175" r="4" fill="#6b7280"/>
+  <circle cx="170" cy="175" r="4" fill="#6b7280"/>
+  <circle cx="210" cy="175" r="4" fill="#6b7280"/>
+  <circle cx="250" cy="175" r="4" fill="#6b7280"/>
+  <rect x="90" y="195" width="28" height="25" rx="3" fill="#1a1a1a" stroke="#6b7280" stroke-width="1"/>
+  <rect x="126" y="195" width="28" height="25" rx="3" fill="#10b981" opacity="0.8"/>
+  <rect x="162" y="195" width="28" height="25" rx="3" fill="#1a1a1a" stroke="#6b7280" stroke-width="1"/>
+  <rect x="198" y="195" width="28" height="25" rx="3" fill="#1a1a1a" stroke="#6b7280" stroke-width="1"/>
+  <rect x="234" y="195" width="28" height="25" rx="3" fill="#10b981" opacity="0.4"/>
+  <rect x="270" y="195" width="28" height="25" rx="3" fill="#1a1a1a" stroke="#6b7280" stroke-width="1"/>
+  <text x="200" y="265" text-anchor="middle" fill="#ffffff" font-size="18" font-family="sans-serif" font-weight="bold" letter-spacing="2">CHIP DROP</text>
+  <text x="200" y="285" text-anchor="middle" fill="#10b981" font-size="11" font-family="monospace">PLINKO GAME</text>
+</svg>

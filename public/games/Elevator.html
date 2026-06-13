@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>ELEVATOR</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+html,body{width:100%;height:100%;overflow:hidden;background:#06060f;font-family:'Nunito',sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+body{display:flex;flex-direction:column;align-items:center;position:fixed;top:0;right:0;bottom:0;left:0}
+
+/* ─── SKY ─── */
+#sky{position:fixed;top:0;right:0;bottom:0;left:0;z-index:0;background:linear-gradient(180deg,#000510 0%,#0d1b3e 40%,#1a0533 70%,#2d0a1e 100%);transition:background 2s}
+#stars-layer{position:fixed;top:0;right:0;bottom:0;left:0;z-index:1;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite alternate}
+@keyframes twinkle{0%{opacity:.1;transform:scale(.6)}100%{opacity:.9;transform:scale(1.2)}}
+
+/* ─── WRAP ─── */
+#wrap{position:relative;z-index:10;display:flex;flex-direction:column;width:100%;height:100%;max-width:960px;align-items:center;user-select:none}
+
+/* ─── HEADER ─── */
+#header{flex-shrink:0;padding:6px 0 2px;text-align:center}
+.title-main{font-family:'Fredoka One';font-size:clamp(16px,4vw,22px);letter-spacing:3px;color:#ffe44d;text-shadow:0 0 20px rgba(255,228,77,.4)}
+.title-sub{font-size:clamp(7px,2vw,9px);font-weight:900;letter-spacing:3px;color:rgba(255,255,255,.2);text-transform:uppercase}
+
+/* ─── PHASE BAR ─── */
+#phase-bar{flex-shrink:0;display:flex;justify-content:center;align-items:center;gap:6px;padding:2px 12px}
+.ps{display:flex;align-items:center;gap:4px;font-family:'Fredoka One';font-size:clamp(9px,2.5vw,12px);opacity:.3;transition:all .3s;white-space:nowrap}
+.ps.active{opacity:1;color:#ffe44d}.ps.done{opacity:.6;color:#2ecc71}
+.ps-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.ps-arr{opacity:.25;font-size:10px}
+
+/* ─── ARENA ─── */
+#arena{flex:1;position:relative;width:100%;display:flex;justify-content:center;align-items:flex-end;padding-bottom:4px;min-height:0;overflow:hidden}
+
+/* ─── SHAFT ─── */
+.shaft-wrap{display:flex;flex-direction:column;align-items:center;position:relative;flex:1;height:100%;max-width:clamp(100px,33vw,300px)}
+.shaft-bg{position:absolute;top:0;right:0;bottom:0;left:0;overflow:hidden;pointer-events:none;opacity:.65}
+.bg-fl{position:absolute;left:8%;right:8%;height:1px;background:rgba(255,255,255,.04)}
+.bg-win{position:absolute;border-radius:1px}
+.shaft-tube{position:absolute;left:50%;transform:translateX(-50%);width:clamp(80px,22vw,110px);top:0;bottom:0;pointer-events:none;z-index:3}
+.sw-l,.sw-r{position:absolute;top:0;bottom:0;width:4px;background:linear-gradient(180deg,transparent,rgba(160,160,255,.07),transparent)}
+.sw-l{left:0}.sw-r{right:0}
+.sr-l,.sr-r{position:absolute;top:0;bottom:0;width:5px;border-radius:3px;background:repeating-linear-gradient(180deg,#1a1a38 0,#1a1a38 10px,#12122a 10px,#12122a 12px)}
+.sr-l{left:7px}.sr-r{right:7px}
+.chain-anc{position:absolute;left:50%;transform:translateX(-50%);top:0;z-index:12;pointer-events:none}
+
+/* ─── ELEVATOR CAR ─── */
+.elev-g{position:absolute;left:50%;z-index:15;transform-origin:50% 0;transform:translateX(-50%)}
+.elev-car{position:relative;width:clamp(68px,18vw,92px);filter:drop-shadow(0 6px 14px rgba(0,0,0,.7))}
+.e-top{height:clamp(10px,3vw,14px);background:linear-gradient(180deg,#4a4a7a,#2e2e52);border-radius:clamp(6px,2vw,10px) clamp(6px,2vw,10px) 0 0;border:2px solid #6a6ab8;border-bottom:none;display:flex;align-items:center;justify-content:center;gap:4px}
+.e-bolt{width:clamp(4px,1.2vw,6px);height:clamp(4px,1.2vw,6px);border-radius:50%;background:radial-gradient(circle at 35% 35%,#bbb,#555);border:1px solid #888}
+.e-hook{position:absolute;top:clamp(-10px,-3vw,-12px);left:50%;transform:translateX(-50%);width:clamp(12px,4vw,16px);height:clamp(10px,3vw,12px);border-radius:5px 5px 0 0;border:2.5px solid #888;border-bottom:none;background:#333}
+.e-body{height:clamp(58px,16vw,78px);background:linear-gradient(180deg,#1e1e38,#12122a);border:2px solid #3a3a90;border-top:none;border-bottom:none;position:relative;overflow:hidden}
+.e-iglow{position:absolute;top:0;right:0;bottom:0;left:0;background:radial-gradient(ellipse at 50% 20%,rgba(93,173,226,.08),transparent);pointer-events:none}
+.e-lbar{position:absolute;top:0;left:2px;right:2px;height:4px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,transparent,#ffe44d 25%,#fff 50%,#ffe44d 75%,transparent);box-shadow:0 0 10px #ffe44d,0 3px 16px rgba(255,228,77,.4)}
+.e-side-l,.e-side-r{position:absolute;top:6px;bottom:6px;width:6px;background:linear-gradient(180deg,#242448,#141430);border-radius:2px}
+.e-side-l{left:4px}.e-side-r{right:4px}
+.e-ph{position:absolute;width:clamp(10px,3vw,14px);height:clamp(10px,3vw,14px);border-radius:50%;border:1.5px solid #5a5a9a;background:radial-gradient(circle,rgba(93,173,226,.2),rgba(0,0,30,.7));top:clamp(14px,4vw,20px)}
+.e-ph-l{left:clamp(10px,3vw,15px)}.e-ph-r{right:clamp(10px,3vw,15px)}
+.e-doors{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;margin:2px clamp(12px,4vw,16px)}
+.e-d{flex:1;background:linear-gradient(180deg,#2a2a58,#1a1a40);border:1.5px solid #3a3a78;overflow:hidden;position:relative;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+.e-dl{border-radius:3px 0 0 3px;transform-origin:left center}
+.e-dr{border-radius:0 3px 3px 0;transform-origin:right center;border-left:1px solid #252555}
+.e-dline{position:absolute;top:0;bottom:0;width:1.5px;background:rgba(255,255,255,.06);left:40%}
+.dol{transform:scaleX(0)!important}.dor{transform:scaleX(0)!important}
+.e-disp{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;z-index:5}
+.e-m{font-family:'Fredoka One';font-size:clamp(13px,4vw,18px);color:#ffe44d;text-shadow:0 0 8px rgba(255,228,77,.6);line-height:1;transition:color .2s}
+.e-fl{font-size:clamp(6px,1.8vw,8px);font-weight:900;letter-spacing:1px;color:#444;text-transform:uppercase}
+.e-base{height:clamp(9px,2.5vw,12px);background:linear-gradient(0deg,#3a3a6a,#252550);border-radius:0 0 clamp(5px,2vw,8px) clamp(5px,2vw,8px);border:2px solid #3a3a90;border-top:none;display:flex;align-items:center;justify-content:center;gap:4px}
+@keyframes lflicker{0%{opacity:1}45%{opacity:.04}55%{opacity:.04}100%{opacity:1}}
+.flicker{animation:lflicker .1s steps(1) infinite}
+@keyframes fallcar{to{top:115%;transform:translateX(-50%) rotate(var(--fr,16deg))}}
+.car-fall{animation:fallcar .65s cubic-bezier(.55,0,1,1) forwards}
+.shaft-dimmed{opacity:.45;transition:opacity .4s}.shaft-dead{opacity:.3;filter:grayscale(.8);transition:all .4s}
+.s-badge{position:absolute;top:6px;left:50%;transform:translateX(-50%);z-index:40;font-family:'Fredoka One';font-size:clamp(9px,2.5vw,11px);padding:2px 10px;border-radius:20px;border:1px solid;white-space:nowrap;opacity:0;transition:opacity .4s;pointer-events:none}
+.s-btn-wrap{position:absolute;bottom:1px;left:50%;transform:translateX(-50%);z-index:40}
+.sbtn{border:none;border-radius:clamp(8px,2.5vw,12px);font-family:'Fredoka One';font-size:clamp(11px,3vw,14px);padding:clamp(5px,2vw,8px) clamp(12px,4vw,18px);cursor:pointer;transition:all .15s;box-shadow:0 4px 0 rgba(0,0,0,.4);white-space:nowrap}
+.sbtn-enter{background:linear-gradient(180deg,#ffe44d,#ffb800);color:#000}
+.sbtn-enter:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.4)}
+
+/* ─── BOTTOM PANEL ─── */
+#panel{flex-shrink:0;width:100%;background:rgba(4,4,18,.97);border-top:1px solid rgba(255,255,255,.06);padding:clamp(6px,2vw,10px) clamp(10px,3vw,14px) clamp(8px,2.5vw,12px);display:flex;gap:clamp(6px,2vw,10px);align-items:stretch}
+.bmb{width:clamp(90px,22vw,120px);flex-shrink:0;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,228,77,.06);border:2px solid rgba(255,228,77,.2);position:relative;overflow:hidden;min-height:52px}
+.bmb-g{position:absolute;top:0;right:0;bottom:0;left:0;border-radius:12px}
+.bmb-l{font-size:clamp(7px,2vw,9px);font-weight:900;letter-spacing:2px;color:rgba(255,255,255,.28);z-index:1}
+#tot-m{font-family:'Fredoka One';font-size:clamp(20px,5vw,28px);color:#ffe44d;line-height:1;z-index:1;transition:color .2s}
+#ctrls{flex:1;display:flex;flex-direction:column;gap:clamp(3px,1.5vw,5px);min-width:0}
+.crow{display:flex;gap:clamp(3px,1.5vw,5px);align-items:center;flex-wrap:nowrap}
+.bf{flex:1;min-width:0;background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.09);border-radius:9px;padding:4px 8px;color:#fff;font-family:'Nunito';font-weight:800;font-size:clamp(12px,3.5vw,15px);outline:none;height:clamp(28px,8vw,34px);transition:border-color .2s}
+.bf:focus{border-color:#ffe44d}.bf:disabled{opacity:.25}
+.qb{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.08);border-radius:7px;padding:0 clamp(5px,1.5vw,7px);color:rgba(255,255,255,.35);font-family:'Nunito';font-weight:800;font-size:clamp(9px,2.5vw,11px);cursor:pointer;height:clamp(28px,8vw,34px);transition:all .15s;white-space:nowrap}
+.qb:active{border-color:#ffe44d;color:#ffe44d}
+.sm{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:2px 6px;flex-shrink:0}
+.sm-l{font-size:clamp(7px,2vw,9px);font-weight:900;letter-spacing:1px;color:rgba(255,255,255,.28)}
+.sm-v{font-family:'Fredoka One';font-size:clamp(11px,3vw,13px);color:#ffe44d;line-height:1.1}
+.info-l{font-size:clamp(8px,2.2vw,10px);font-weight:900;color:rgba(255,255,255,.28);white-space:nowrap;flex-shrink:0}
+.info-v{font-family:'Fredoka One';font-size:clamp(11px,3vw,14px);color:#ffe44d;margin-left:3px;flex-shrink:0}
+#hist-row{display:flex;gap:2px;flex-wrap:nowrap;align-items:center;overflow:hidden;min-width:0}
+.hp{font-family:'Fredoka One';font-size:clamp(9px,2.5vw,11px);padding:1px 6px;border-radius:20px;flex-shrink:0}
+.hw{background:rgba(46,204,113,.18);color:#2ecc71;border:1px solid rgba(46,204,113,.3)}
+.hl{background:rgba(255,71,87,.18);color:#ff4757;border:1px solid rgba(255,71,87,.3)}
+#act-btn{width:clamp(88px,22vw,115px);flex-shrink:0;border:none;border-radius:12px;font-family:'Fredoka One';font-size:clamp(13px,3.5vw,16px);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .12s;min-height:52px}
+.ab-go{background:linear-gradient(180deg,#ffe44d,#ffb800);color:#000;box-shadow:0 5px 0 #b88000}
+.ab-go:active{transform:translateY(3px);box-shadow:0 2px 0 #b88000}
+.ab-cash{background:linear-gradient(180deg,#2ecc71,#27ae60);color:#fff;box-shadow:0 5px 0 #1a7a42;animation:gp 1s ease infinite}
+@keyframes gp{0%,100%{box-shadow:0 5px 0 #1a7a42,0 0 0 0 rgba(46,204,113,.5)}50%{box-shadow:0 5px 0 #1a7a42,0 0 0 9px rgba(46,204,113,0)}}
+.ab-wait{background:rgba(255,255,255,.06);color:rgba(255,255,255,.2);cursor:not-allowed;box-shadow:none}
+.ab-ico{font-size:clamp(16px,4vw,20px);line-height:1}.ab-lbl{font-size:clamp(10px,2.8vw,12px);font-family:'Fredoka One'}
+
+/* ─── RESULT ─── */
+#result-ov{position:fixed;top:0;right:0;bottom:0;left:0;z-index:500;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .3s;padding:16px}
+#result-ov.show{opacity:1;pointer-events:all}
+.rbox{border-radius:24px;padding:clamp(20px,6vw,32px) clamp(28px,8vw,52px);text-align:center;position:relative;overflow:hidden;max-width:380px;width:100%}
+.rwin{background:linear-gradient(135deg,#0a2d18,#145c2a);border:3px solid #2ecc71;box-shadow:0 0 60px rgba(46,204,113,.3)}
+.rloss{background:linear-gradient(135deg,#2d0a0a,#5c1414);border:3px solid #ff4757;box-shadow:0 0 60px rgba(255,71,87,.3)}
+.remo{font-size:clamp(36px,10vw,48px);line-height:1;margin-bottom:5px}
+.rtag{font-family:'Fredoka One';font-size:clamp(10px,2.8vw,12px);letter-spacing:5px;text-transform:uppercase;opacity:.55;margin-bottom:3px}
+.ramt{font-family:'Fredoka One';font-size:clamp(44px,12vw,62px);line-height:1}
+.rsub{font-size:clamp(10px,2.5vw,12px);font-weight:800;opacity:.4;margin-top:7px}
+.cbit{position:absolute;border-radius:2px;animation:cfetti var(--cd) ease var(--delay) forwards}
+@keyframes cfetti{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(100px) rotate(800deg) scale(.2)}}
+.play-again-btn{display:block;margin:16px auto 0;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.3);border-radius:12px;color:#fff;font-family:'Fredoka One';font-size:clamp(14px,4vw,17px);letter-spacing:1px;padding:10px 28px;cursor:pointer;transition:all .15s}
+.play-again-btn:hover,.play-again-btn:active{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.6);transform:scale(1.04)}
+
+/* ─── PARTICLES ─── */
+.spark{position:fixed;border-radius:50%;z-index:400;animation:sa .5s ease forwards;pointer-events:none}
+@keyframes sa{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0)}}
+.puff{position:fixed;border-radius:50%;z-index:399;animation:pa var(--pd) ease forwards;pointer-events:none}
+@keyframes pa{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:translate(var(--px),var(--py)) scale(3)}}
+
+/* ─── FAKEOUT BANNER ─── */
+#fk-banner{position:fixed;top:12%;left:50%;transform:translateX(-50%) scale(0);z-index:450;pointer-events:none;white-space:nowrap;max-width:90vw}
+@keyframes bpop{0%{transform:translateX(-50%) scale(0) rotate(-8deg)}55%{transform:translateX(-50%) scale(1.1) rotate(3deg)}100%{transform:translateX(-50%) scale(1) rotate(0)}}
+@keyframes bfade{to{transform:translateX(-50%) scale(0);opacity:0}}
+.bshow{animation:bpop .35s cubic-bezier(.4,0,.2,1) forwards!important}
+.bhide{animation:bfade .28s ease forwards!important}
+.fk-in{background:rgba(0,0,0,.9);border-radius:18px;padding:8px 22px;border:2px solid #ff4757;display:flex;align-items:center;gap:8px}
+.fk-ico{font-size:clamp(20px,5vw,26px)}.fk-txt{font-family:'Fredoka One';font-size:clamp(14px,4vw,18px);color:#ff4757;letter-spacing:1px}
+
+/* ─── OVERLAYS ─── */
+#rflash{position:fixed;top:0;right:0;bottom:0;left:0;z-index:380;pointer-events:none;background:rgba(255,40,20,0);transition:background .08s}
+.rfon{background:rgba(255,40,20,.18)!important}
+@keyframes gquake{0%,100%{transform:translate(0,0)}15%{transform:translate(-5px,-2px)}35%{transform:translate(5px,3px)}55%{transform:translate(-4px,2px)}75%{transform:translate(5px,-3px)}90%{transform:translate(-3px,2px)}}
+.gquake{animation:gquake .4s ease both}
+
+/* ─── MOBILE LANDSCAPE ADJUST ─── */
+@media (max-height: 500px) and (orientation: landscape) {
+  #header{padding:2px 0 0}
+  .title-main{font-size:14px}#phase-bar{display:none}
+  #panel{padding:4px 10px 5px}
+  .bmb{min-height:42px}.crow{gap:3px}.bf{height:26px}.qb{height:26px}
+  #act-btn{min-height:42px}
+}
+@media (max-width: 430px) {
+  /* hide P/L stat box to save space */
+  #sv-pl,.sm:last-of-type{display:none}
+  /* hide MAX and show fewer quick bets */
+  .qb:nth-child(n+4){display:none}
+  .bf{font-size:13px}
+  .qb{font-size:9px;padding:0 clamp(4px,1.2vw,6px)}
+  #panel{padding:5px 8px 8px;gap:6px}
+  .bmb{width:clamp(72px,18vw,90px);min-height:48px}
+  #tot-m{font-size:clamp(16px,4vw,22px)}
+}
+@media (max-width: 380px) {
+  .qb:nth-child(n+3){display:none}
+  .sm{display:none}
+}
+</style>
+</head>
+<body>
+<div id="sky"></div>
+<div id="stars-layer"></div>
+<div id="rflash"></div>
+<div id="fk-banner"><div class="fk-in"><span class="fk-ico" id="fk-ico">⚠️</span><span class="fk-txt" id="fk-txt">WARNING!</span></div></div>
+
+<div id="wrap">
+  <div id="header">
+    <div class="title-main">🛗 ELEVATOR</div>
+    <div class="title-sub">triple shaft · hidden multipliers · up to 1000x</div>
+  </div>
+  <div id="phase-bar">
+    <div class="ps" id="ps1"><div class="ps-dot"></div>Pick Shaft</div>
+    <div class="ps-arr">▶</div>
+    <div class="ps" id="ps2"><div class="ps-dot"></div>Phase 1</div>
+    <div class="ps-arr">▶</div>
+    <div class="ps" id="ps3"><div class="ps-dot"></div>Phase 2</div>
+    <div class="ps-arr">▶</div>
+    <div class="ps" id="ps4"><div class="ps-dot"></div>Payout</div>
+  </div>
+  <div id="arena"></div>
+  <div id="panel">
+    <div class="bmb"><div class="bmb-g" id="bmb-g"></div><div class="bmb-l">TOTAL MULT</div><div id="tot-m">—</div></div>
+    <div id="ctrls">
+      <div class="crow">
+        <input class="bf" id="bin" type="number" value="100" min="1" inputmode="numeric">
+        <button class="qb" onclick="sb(25)">$25</button>
+        <button class="qb" onclick="sb(100)">$100</button>
+        <button class="qb" onclick="sb(250)">$250</button>
+        <button class="qb" onclick="sb(bal)">MAX</button>
+        <div class="sm"><div class="sm-l">BAL</div><div class="sm-v" id="sv-bal">$1000</div></div>
+        <div class="sm"><div class="sm-l">P/L</div><div class="sm-v" id="sv-pl">$0</div></div>
+      </div>
+      <div class="crow">
+        <span class="info-l">P1:</span><span class="info-v" id="p1-lbl">—</span>
+        <span class="info-l" style="margin-left:8px">P2:</span><span class="info-v" id="p2-lbl">—</span>
+        <span class="info-l" style="margin-left:8px">FINAL:</span><span class="info-v" id="fin-lbl">—</span>
+        <div style="flex:1;min-width:2px"></div>
+        <div id="hist-row"><span style="font-size:10px;font-weight:800;color:rgba(255,255,255,.15)">—</span></div>
+      </div>
+    </div>
+    <button id="act-btn" class="ab-go" onclick="handleMainBtn()">
+      <div class="ab-ico">🎰</div><div class="ab-lbl">PLAY</div>
+    </button>
+  </div>
+</div>
+<div id="result-ov"></div>
+
+<script>
+// =====================================================
+//  AUDIO ENGINE — Cinematic, realistic elevator sounds
+// =====================================================
+let _AC = null;
+function AC() {
+  if (!_AC) _AC = new (window.AudioContext || window.webkitAudioContext)();
+  if (_AC.state === 'suspended') _AC.resume();
+  return _AC;
+}
+let _M = null;
+function M() {
+  const ac = AC();
+  if (!_M) { _M = ac.createGain(); _M.gain.value = 0.7; _M.connect(ac.destination); }
+  return _M;
+}
+function adsr(ac, vol, a, h, r) {
+  const g = ac.createGain();
+  g.gain.setValueAtTime(0, ac.currentTime);
+  g.gain.linearRampToValueAtTime(vol, ac.currentTime + a);
+  g.gain.setValueAtTime(vol, ac.currentTime + a + h);
+  g.gain.linearRampToValueAtTime(0, ac.currentTime + a + h + r);
+  return g;
+}
+function noise(ac, dur) {
+  const buf = ac.createBuffer(1, Math.floor(ac.sampleRate * dur), ac.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const src = ac.createBufferSource(); src.buffer = buf; return src;
+}
+
+// --- ELEVATOR MOTOR HUM — low frequency drone, pitch rises with speed
+let motorNode = null, motorGain = null, motorOsc = null;
+function startMotor() {
+  stopMotor();
+  const ac = AC();
+  // Sub-bass motor
+  motorOsc = ac.createOscillator();
+  motorOsc.type = 'sine'; motorOsc.frequency.value = 48;
+  // Slight harmonic layer
+  const osc2 = ac.createOscillator(); osc2.type = 'sawtooth'; osc2.frequency.value = 96;
+  const g2 = ac.createGain(); g2.gain.value = 0.12;
+  osc2.connect(g2);
+  motorGain = ac.createGain(); motorGain.gain.value = 0;
+  const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 180;
+  motorOsc.connect(lp); g2.connect(lp); lp.connect(motorGain); motorGain.connect(M());
+  motorOsc.start(); osc2.start();
+  motorNode = { osc: motorOsc, osc2, g2 };
+}
+function setMotor(speed) { // speed 0-1
+  if (!motorGain || !motorOsc) return;
+  const ac = AC();
+  motorGain.gain.linearRampToValueAtTime(speed * 0.28, ac.currentTime + 0.4);
+  motorOsc.frequency.linearRampToValueAtTime(48 + speed * 32, ac.currentTime + 0.5);
+  motorNode.osc2.frequency.linearRampToValueAtTime(96 + speed * 64, ac.currentTime + 0.5);
+}
+function stopMotor() {
+  if (motorNode) { try { motorNode.osc.stop(); motorNode.osc2.stop(); } catch(e) {} motorNode = null; }
+  if (motorGain) { try { motorGain.disconnect(); } catch(e) {} motorGain = null; }
+}
+
+// --- CABLE TENSION — rhythmic metallic cable-through-pulley sound
+// Real elevators: wire rope slides over sheave = high-freq metallic swish + periodic thump
+let cableTimer = null;
+function startCable(floorFn) {
+  stopCable();
+  function tick() {
+    const fl = floorFn();
+    if (G.phase !== 'p1-ride' && G.phase !== 'p2-ride') return;
+    const ac = AC();
+    // Cable swish — bandpass filtered noise burst, short
+    const ns = noise(ac, 0.055);
+    const g = adsr(ac, 0.055 + fl * 0.0008, 0.002, 0.018, 0.032);
+    const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1800 + fl * 12; bp.Q.value = 3.5;
+    const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 800;
+    ns.connect(hp); hp.connect(bp); bp.connect(g); g.connect(M()); ns.start();
+    // Occasional deeper pulley thump (every ~4 ticks)
+    if (Math.random() < 0.28) {
+      const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = 90 + Math.random() * 30;
+      o.frequency.exponentialRampToValueAtTime(42, ac.currentTime + 0.08);
+      const gt = adsr(ac, 0.12 + fl * 0.0015, 0.001, 0.012, 0.07);
+      const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 300;
+      o.connect(lp); lp.connect(gt); gt.connect(M()); o.start(); o.stop(ac.currentTime + 0.1);
+    }
+    const interval = Math.max(55, 220 - fl * 2.2) * (0.85 + Math.random() * 0.3);
+    cableTimer = setTimeout(tick, interval);
+  }
+  tick();
+}
+function stopCable() { if (cableTimer) { clearTimeout(cableTimer); cableTimer = null; } }
+
+// --- CABLE CREAK — low metallic stress under load, periodic
+let creakTimer = null;
+function startCreak(floorFn) {
+  stopCreak();
+  function tick() {
+    const fl = floorFn();
+    if (G.phase !== 'p1-ride' && G.phase !== 'p2-ride') return;
+    const ac = AC();
+    const o = ac.createOscillator(); o.type = 'sawtooth';
+    const baseF = 62 + fl * 0.6;
+    o.frequency.setValueAtTime(baseF, ac.currentTime);
+    o.frequency.linearRampToValueAtTime(baseF * 1.5, ac.currentTime + 0.14);
+    o.frequency.linearRampToValueAtTime(baseF * 0.7, ac.currentTime + 0.38);
+    const g = adsr(ac, Math.min(0.045 + fl * 0.001, 0.16), 0.014, 0.2, 0.16);
+    const dist = ac.createWaveShaper();
+    const cv = new Float32Array(256);
+    for (let i = 0; i < 256; i++) { const x = i * 2 / 256 - 1; cv[i] = x < 0 ? -Math.pow(-x, 0.35) : Math.pow(x, 0.35); }
+    dist.curve = cv;
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 320;
+    o.connect(dist); dist.connect(lp); lp.connect(g); g.connect(M()); o.start(); o.stop(ac.currentTime + 0.52);
+    const interval = Math.max(380, 2800 - fl * 22) * (0.55 + Math.random() * 0.9);
+    creakTimer = setTimeout(tick, interval);
+  }
+  setTimeout(tick, 500);
+}
+function stopCreak() { if (creakTimer) { clearTimeout(creakTimer); creakTimer = null; } }
+
+// --- HEARTBEAT — tension escalation
+let hbTimer = null;
+function startHB(flFn) {
+  stopHB();
+  function beat() {
+    const fl = flFn();
+    const ac = AC();
+    // LUB
+    const o = ac.createOscillator(); o.frequency.value = 52; o.type = 'sine';
+    const g = adsr(ac, Math.min(0.08 + fl * 0.002, 0.32), 0.004, 0.01, 0.1);
+    const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 160;
+    o.connect(lp); lp.connect(g); g.connect(M()); o.start(); o.stop(ac.currentTime + 0.14);
+    // DUB (quieter, 105ms later)
+    setTimeout(() => {
+      const ac2 = AC();
+      const o2 = ac2.createOscillator(); o2.frequency.value = 40; o2.type = 'sine';
+      const g2 = adsr(ac2, Math.min(0.04 + fl * 0.001, 0.15), 0.003, 0.006, 0.09);
+      o2.connect(g2); g2.connect(M()); o2.start(); o2.stop(ac2.currentTime + 0.11);
+    }, 105);
+    hbTimer = setTimeout(beat, Math.max(290, 980 - fl * 11));
+  }
+  beat();
+}
+function stopHB() { if (hbTimer) { clearTimeout(hbTimer); hbTimer = null; } }
+
+// --- SUB-RUMBLE — felt vibration in high floors
+let rumbleNode = null, rumbleGain = null;
+function startRumble() {
+  if (rumbleNode) return; const ac = AC();
+  const buf = ac.createBuffer(1, ac.sampleRate * 3, ac.sampleRate);
+  const d = buf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+  const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 60;
+  rumbleGain = ac.createGain(); rumbleGain.gain.value = 0;
+  src.connect(lp); lp.connect(rumbleGain); rumbleGain.connect(M()); src.start(); rumbleNode = src;
+}
+function setRumble(fl) {
+  if (!rumbleGain) return;
+  const v = fl > 12 ? Math.min((fl - 12) * 0.008, 0.38) : 0;
+  rumbleGain.gain.linearRampToValueAtTime(v, AC().currentTime + 0.5);
+}
+function stopRumble() {
+  if (rumbleNode) { try { rumbleNode.stop(); } catch(e) {} rumbleNode = null; }
+  if (rumbleGain) { try { rumbleGain.disconnect(); } catch(e) {} rumbleGain = null; }
+}
+
+// --- FLOOR DING — bell when arriving at floor
+function playDing(pitch) {
+  const ac = AC(); const f = pitch || 880;
+  [1, 1.26, 1.5].forEach((r, i) => {
+    const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = f * r;
+    const g = adsr(ac, 0.14 - i * 0.03, 0.003, 0.02, 0.45 - i * 0.08);
+    o.connect(g); g.connect(M()); o.start(); o.stop(ac.currentTime + 0.6);
+  });
+}
+
+// --- DOOR SOUNDS — sliding whoosh
+function playDoorOpen() {
+  const ac = AC();
+  const ns = noise(ac, 0.35); const g = adsr(ac, 0.055, 0.01, 0.15, 0.18);
+  const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 600; bp.Q.value = 0.8;
+  ns.connect(bp); bp.connect(g); g.connect(M()); ns.start();
+}
+function playDoorClose() {
+  const ac = AC();
+  const ns = noise(ac, 0.28); const g = adsr(ac, 0.06, 0.008, 0.12, 0.14);
+  const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 550; bp.Q.value = 0.9;
+  ns.connect(bp); bp.connect(g); g.connect(M()); ns.start();
+  // Final thunk
+  setTimeout(() => {
+    const ac2 = AC();
+    const o = ac2.createOscillator(); o.type = 'sine'; o.frequency.value = 120;
+    o.frequency.exponentialRampToValueAtTime(55, ac2.currentTime + 0.06);
+    const gt = adsr(ac2, 0.18, 0.001, 0.01, 0.055);
+    o.connect(gt); gt.connect(M()); o.start(); o.stop(ac2.currentTime + 0.07);
+  }, 240);
+}
+
+// --- WIN CHIME — rising melodic arpeggio
+function playCash() {
+  const ac = AC();
+  [523, 659, 784, 1047, 1319].forEach((f, i) => {
+    setTimeout(() => {
+      const o = ac.createOscillator(); o.frequency.value = f; o.type = 'triangle';
+      const g = adsr(ac, 0.16, 0.004, 0.04, 0.42);
+      const rev = ac.createConvolver ? null : null; // skip reverb for compat
+      o.connect(g); g.connect(M()); o.start(); o.stop(ac.currentTime + 0.52);
+    }, i * 72);
+  });
+}
+
+// --- REVEAL SOUND — dramatic stab
+function playReveal(good) {
+  const ac = AC();
+  if (good) {
+    // Ascending victorious arpeggio
+    [392, 523, 659, 880].forEach((f, i) => {
+      setTimeout(() => {
+        const o = ac.createOscillator(); o.type = 'sine'; o.frequency.value = f;
+        const g = adsr(ac, 0.18, 0.004, 0.05, 0.4);
+        o.connect(g); g.connect(M()); o.start(); o.stop(ac.currentTime + 0.5);
+      }, i * 65);
+    });
+  } else {
+    // Descending minor
+    [330, 262, 220, 175].forEach((f, i) => {
+      setTimeout(() => {
+        const o = ac.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f;
+        const g = adsr(ac, 0.08, 0.004, 0.04, 0.3);
+        const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 600;
+        o.connect(lp); lp.connect(g); g.connect(M()); o.start(); o.stop(ac.currentTime + 0.38);
+      }, i * 60);
+    });
+  }
+}
+
+// --- ELEVATOR CRASH — satisfying cinematic crash sound
+// Deep BOOM with harmonic richness, not noise garbage
+function playCrashFull() {
+  const ac = AC();
+  const now = ac.currentTime;
+
+  // Layer 1: Sub-bass thud — the body hit, pitched musical boom
+  const boom = ac.createOscillator();
+  boom.type = 'sine';
+  boom.frequency.setValueAtTime(80, now);
+  boom.frequency.exponentialRampToValueAtTime(28, now + 0.08);
+  boom.frequency.exponentialRampToValueAtTime(18, now + 0.6);
+  const boomG = ac.createGain();
+  boomG.gain.setValueAtTime(0, now);
+  boomG.gain.linearRampToValueAtTime(0.85, now + 0.01);
+  boomG.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+  boom.connect(boomG); boomG.connect(M()); boom.start(now); boom.stop(now + 1.5);
+
+  // Layer 2: Mid punch — punchy second harmonic, gives it presence
+  const mid = ac.createOscillator();
+  mid.type = 'triangle';
+  mid.frequency.setValueAtTime(160, now);
+  mid.frequency.exponentialRampToValueAtTime(55, now + 0.06);
+  const midG = ac.createGain();
+  midG.gain.setValueAtTime(0, now);
+  midG.gain.linearRampToValueAtTime(0.4, now + 0.008);
+  midG.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+  mid.connect(midG); midG.connect(M()); mid.start(now); mid.stop(now + 0.6);
+
+  // Layer 3: Metallic clang — the elevator car body ringing on impact
+  const clang = ac.createOscillator();
+  clang.type = 'sawtooth';
+  clang.frequency.setValueAtTime(420, now + 0.02);
+  clang.frequency.exponentialRampToValueAtTime(180, now + 0.4);
+  const clangDist = ac.createWaveShaper();
+  const cv = new Float32Array(256);
+  for (let i = 0; i < 256; i++) { const x = i*2/256-1; cv[i] = x < 0 ? -Math.pow(-x, 0.5) : Math.pow(x, 0.5); }
+  clangDist.curve = cv;
+  const clangLP = ac.createBiquadFilter(); clangLP.type = 'lowpass'; clangLP.frequency.value = 1800;
+  const clangG = ac.createGain();
+  clangG.gain.setValueAtTime(0, now);
+  clangG.gain.linearRampToValueAtTime(0.22, now + 0.02);
+  clangG.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+  clang.connect(clangDist); clangDist.connect(clangLP); clangLP.connect(clangG); clangG.connect(M());
+  clang.start(now + 0.02); clang.stop(now + 0.55);
+
+  // Layer 4: Impact transient — very short broadband crack at t=0
+  const transientBuf = ac.createBuffer(1, Math.floor(ac.sampleRate * 0.04), ac.sampleRate);
+  const td = transientBuf.getChannelData(0);
+  for (let i = 0; i < td.length; i++) td[i] = (Math.random() * 2 - 1) * Math.pow(1 - i/td.length, 3);
+  const transient = ac.createBufferSource(); transient.buffer = transientBuf;
+  const transG = ac.createGain(); transG.gain.value = 0.6;
+  transient.connect(transG); transG.connect(M()); transient.start(now);
+
+  // Layer 5: Rumble tail — low-frequency settling, like dust falling
+  setTimeout(() => {
+    const ac2 = AC(); const t2 = ac2.currentTime;
+    const rumbleBuf = ac2.createBuffer(1, Math.floor(ac2.sampleRate * 0.9), ac2.sampleRate);
+    const rd = rumbleBuf.getChannelData(0);
+    for (let i = 0; i < rd.length; i++) rd[i] = (Math.random() * 2 - 1) * Math.pow(1 - i/rd.length, 1.5);
+    const rumble = ac2.createBufferSource(); rumble.buffer = rumbleBuf;
+    const rumbleLP = ac2.createBiquadFilter(); rumbleLP.type = 'lowpass'; rumbleLP.frequency.value = 180;
+    const rumbleG = ac2.createGain(); rumbleG.gain.value = 0.3;
+    rumble.connect(rumbleLP); rumbleLP.connect(rumbleG); rumbleG.connect(M()); rumble.start(t2);
+  }, 120);
+}
+
+// --- ALARM SIREN
+function playAlarm() {
+  const ac = AC();
+  const o = ac.createOscillator(); o.type = 'sawtooth';
+  o.frequency.setValueAtTime(440, ac.currentTime);
+  o.frequency.linearRampToValueAtTime(880, ac.currentTime + 0.35);
+  o.frequency.linearRampToValueAtTime(440, ac.currentTime + 0.7);
+  const g = adsr(ac, 0.1, 0.02, 0.45, 0.18);
+  const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 600; bp.Q.value = 3;
+  o.connect(bp); bp.connect(g); g.connect(M()); o.start(); o.stop(ac.currentTime + 0.95);
+}
+
+// --- EARTHQUAKE
+function playQuake() {
+  const ac = AC();
+  const ns = noise(ac, 1.4);
+  const g = adsr(ac, 0.44, 0.01, 0.6, 0.78);
+  const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 110;
+  ns.connect(lp); lp.connect(g); g.connect(M()); ns.start();
+  // Groaning structure
+  const o = ac.createOscillator(); o.type = 'sawtooth';
+  o.frequency.setValueAtTime(55, ac.currentTime); o.frequency.linearRampToValueAtTime(38, ac.currentTime + 1.2);
+  const g2 = adsr(ac, 0.2, 0.02, 0.9, 0.3);
+  const dist = ac.createWaveShaper(); const cv = new Float32Array(256);
+  for (let i = 0; i < 256; i++) { const x = i*2/256-1; cv[i] = x < 0 ? -Math.pow(-x,.4) : Math.pow(x,.4); } dist.curve = cv;
+  o.connect(dist); dist.connect(g2); g2.connect(M()); o.start(); o.stop(ac.currentTime + 1.4);
+}
+
+// --- EXPLOSION
+function playExplosion() {
+  const ac = AC();
+  const ns = noise(ac, 0.5);
+  const g = adsr(ac, 0.62, 0.001, 0.08, 0.42);
+  const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 550;
+  ns.connect(lp); lp.connect(g); g.connect(M()); ns.start();
+  const o = ac.createOscillator(); o.frequency.value = 78;
+  o.frequency.exponentialRampToValueAtTime(22, ac.currentTime + 0.4);
+  const og = adsr(ac, 0.38, 0.001, 0.09, 0.38);
+  o.connect(og); og.connect(M()); o.start(); o.stop(ac.currentTime + 0.5);
+}
+
+// --- LIGHTNING CRACK
+function playLightning() {
+  const ac = AC();
+  const ns = noise(ac, 0.09);
+  const g = adsr(ac, 0.82, 0.001, 0.005, 0.08);
+  const hp = ac.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 2200;
+  ns.connect(hp); hp.connect(g); g.connect(M()); ns.start();
+  setTimeout(() => {
+    const ac2 = AC(); const ns2 = noise(ac2, 0.9);
+    const g2 = adsr(ac2, 0.38, 0.01, 0.35, 0.55);
+    const lp = ac2.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 200;
+    ns2.connect(lp); lp.connect(g2); g2.connect(M()); ns2.start();
+  }, 100);
+}
+
+// --- GEAR SLIP (mechanical thunk)
+function playGearSlip() {
+  const ac = AC();
+  const o = ac.createOscillator(); o.type = 'square'; o.frequency.value = 140;
+  o.frequency.exponentialRampToValueAtTime(50, ac.currentTime + 0.1);
+  const g = adsr(ac, 0.25, 0.001, 0.015, 0.09);
+  const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 500;
+  o.connect(lp); lp.connect(g); g.connect(M()); o.start(); o.stop(ac.currentTime + 0.12);
+}
+
+function stopAllAudio() { stopHB(); stopRumble(); stopCable(); stopCreak(); stopMotor(); }
+
+// =====================================================
+//  CHAIN SVG RENDERER
+// =====================================================
+const cPhase = [0, 0, 0];
+let cRaf = null;
+function drawChain(idx, lenPx, danger) {
+  const svg = document.getElementById('cs' + idx); if (!svg) return;
+  lenPx = Math.max(lenPx, 0); svg.setAttribute('height', lenPx); svg.setAttribute('width', '24');
+  if (lenPx < 6) { svg.innerHTML = ''; return; }
+  const lc = danger > 0.7 ? '#ff3333' : danger > 0.35 ? '#ff8c00' : '#9aabb8';
+  const gc = danger > 0.7 ? 'rgba(255,40,40,.4)' : danger > 0.35 ? 'rgba(255,140,0,.35)' : 'rgba(140,160,200,.2)';
+  const ic = danger > 0.7 ? '#ff7777' : danger > 0.35 ? '#ffcc55' : '#ddeeff';
+  const lh = 11, gap = 2, cx = 12, n = Math.floor(lenPx / (lh + gap));
+  const id = 'c' + idx;
+  let s = `<defs><filter id="cf${id}"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="lv${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${ic}"/><stop offset="45%" stop-color="${lc}"/><stop offset="100%" stop-color="${ic}"/></linearGradient><linearGradient id="lh${id}" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="${ic}"/><stop offset="45%" stop-color="${lc}"/><stop offset="100%" stop-color="${ic}"/></linearGradient></defs>`;
+  for (let i = 0; i < n; i++) {
+    const y = i * (lh + gap), w = Math.sin(cPhase[idx] - i * 0.6), op = (0.5 + w * 0.36).toFixed(2), sw = (1.9 + w * 0.5).toFixed(1);
+    if (i % 2 === 0) s += `<g filter="url(#cf${id})" opacity="${op}"><rect x="${cx-5}" y="${y}" width="10" height="${lh}" rx="3" fill="none" stroke="url(#lv${id})" stroke-width="${sw}"/><rect x="${cx-1.8}" y="${y+2.5}" width="3.6" height="${lh-5}" rx="1.2" fill="${gc}"/></g>`;
+    else s += `<g filter="url(#cf${id})" opacity="${op}"><rect x="${cx-6}" y="${y+1.5}" width="12" height="${lh-3}" rx="3" fill="none" stroke="url(#lh${id})" stroke-width="${sw}"/><rect x="${cx-1.8}" y="${y+3.5}" width="3.6" height="${lh-8}" rx="1.2" fill="${gc}"/></g>`;
+  }
+  s += `<circle cx="${cx}" cy="2" r="3" fill="none" stroke="${lc}" stroke-width="1.6" filter="url(#cf${id})" opacity="0.85"/><circle cx="${cx}" cy="2" r="1.4" fill="${gc}"/>`;
+  svg.innerHTML = s;
+}
+function startChainAnim() {
+  stopChainAnim(); let last = performance.now();
+  function loop(now) {
+    const dt = (now - last) / 1000; last = now;
+    for (let i = 0; i < 3; i++) {
+      const eg = document.getElementById('eg' + i); if (!eg) continue;
+      const top = parseFloat(eg.style.top) || 0;
+      const riding = G.phase === 'p2-ride' && G.active === i;
+      const p1r = G.phase === 'p1-ride' && G.active === i;
+      const spd = (riding || p1r) ? 3 + G.fl * 0.07 : 0.4;
+      cPhase[i] += spd * dt;
+      const danger = (riding || p1r) ? Math.min(G.fl / 50, 1) : 0;
+      drawChain(i, top, danger);
+    }
+    cRaf = requestAnimationFrame(loop);
+  }
+  cRaf = requestAnimationFrame(loop);
+}
+function stopChainAnim() { if (cRaf) { cancelAnimationFrame(cRaf); cRaf = null; } }
+
+// =====================================================
+//  DOM BUILDER
+// =====================================================
+const LABELS = ['A', 'B', 'C'];
+function buildShafts() {
+  const arena = document.getElementById('arena'); arena.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const sw = document.createElement('div'); sw.className = 'shaft-wrap'; sw.id = 'sw' + i;
+    sw.innerHTML = `
+      <div class="shaft-bg" id="sbg${i}"></div>
+      <div class="shaft-tube"><div class="sw-l"></div><div class="sw-r"></div><div class="sr-l"></div><div class="sr-r"></div></div>
+      <div class="chain-anc" id="ca${i}"><svg id="cs${i}" width="24" height="0" xmlns="http://www.w3.org/2000/svg"></svg></div>
+      <div class="elev-g" id="eg${i}">
+        <div class="elev-car" id="ec${i}">
+          <div class="e-hook"></div>
+          <div class="e-top"><div class="e-bolt"></div><div class="e-bolt"></div><div class="e-bolt"></div></div>
+          <div class="e-body">
+            <div class="e-iglow"></div><div class="e-lbar" id="lb${i}"></div>
+            <div class="e-side-l"></div><div class="e-side-r"></div>
+            <div class="e-ph e-ph-l"></div><div class="e-ph e-ph-r"></div>
+            <div class="e-doors"><div class="e-d e-dl" id="dl${i}"><div class="e-dline"></div></div><div class="e-d e-dr" id="dr${i}"><div class="e-dline"></div></div></div>
+            <div class="e-disp"><div class="e-m" id="em${i}">?</div><div class="e-fl" id="ef${i}">SHAFT ${LABELS[i]}</div></div>
+          </div>
+          <div class="e-base"><div class="e-bolt"></div><div class="e-bolt"></div></div>
+        </div>
+      </div>
+      <div class="s-badge" id="badge${i}">SHAFT ${LABELS[i]}</div>
+      <div class="s-btn-wrap" id="btnw${i}"></div>`;
+    arena.appendChild(sw);
+  }
+  buildBg(); initPos();
+}
+
+function buildBg() {
+  for (let i = 0; i < 3; i++) {
+    const el = document.getElementById('sbg' + i); el.innerHTML = '';
+    const h = arenaH();
+    for (let y = 0; y < h; y += 50) {
+      const fl = document.createElement('div'); fl.className = 'bg-fl'; fl.style.top = y + 'px'; el.appendChild(fl);
+      for (let w = 0; w < 3; w++) {
+        if (Math.random() > 0.45) {
+          const win = document.createElement('div'); win.className = 'bg-win';
+          const lit = Math.random() > 0.4;
+          win.style.cssText = `top:${y+7+Math.random()*15}px;left:${4+w*20+Math.random()*4}px;width:13px;height:9px;opacity:${0.4+Math.random()*0.4};background:${lit?'rgba(255,230,140,.12)':'rgba(30,30,80,.28)'};border:1px solid rgba(255,255,255,.04)`;
+          el.appendChild(win);
+        }
+      }
+    }
+  }
+}
+
+const CAR_H = 96;
+function arenaH() { return (document.getElementById('arena').offsetHeight || 300) - 6; }
+function bottomTop() { return arenaH() - CAR_H - 2; }
+function floorTop(fl, maxFl) {
+  const pct = Math.min(fl / maxFl, 1), sh = arenaH();
+  return (sh - CAR_H - 2) - pct * (sh - CAR_H - 18);
+}
+function initPos() {
+  for (let i = 0; i < 3; i++) {
+    const eg = document.getElementById('eg' + i); if (!eg) continue;
+    eg.style.cssText = `position:absolute;left:50%;top:${bottomTop()}px;z-index:15;transform:translateX(-50%);transform-origin:50% 0;`;
+  }
+}
+
+function animCar(idx, from, to, dur, cb) {
+  const eg = document.getElementById('eg' + idx); const start = performance.now();
+  function frame(now) {
+    const t = Math.min((now - start) / dur, 1), e = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2,2)/2;
+    eg.style.top = (from + (to - from) * e) + 'px';
+    if (t < 1) requestAnimationFrame(frame); else { eg.style.top = to + 'px'; if (cb) cb(); }
+  }
+  requestAnimationFrame(frame);
+}
+
+// =====================================================
+//  GAME STATE
+// =====================================================
+const G = { phase: 'idle', bet: 100, bal: 1000, totalPL: 0, active: -1,
+  hiddenMults: [0,0,0], p1Mult: 1, fl: 0,
+  p2Mults: [1,1,1], p2CrashFloors: [0,0,0], p2Alive: [true,true,true],
+  p2Fl: [0,0,0],          // independent per-shaft floor counters
+  p2Speed: [1,1,1],       // speed multiplier per shaft (0.5 = slow, 1 = normal, 1.8 = fast)
+  p2Timers: [null,null,null] // independent tick timers per shaft
+};
+
+function mfmt(m) { return m >= 100 ? Math.round(m) + 'x' : m >= 10 ? m.toFixed(1) + 'x' : m.toFixed(2) + 'x'; }
+function genMult() {
+  const r = Math.random();
+  if (r < 0.35) return +(1 + Math.random() * 0.5).toFixed(2);
+  if (r < 0.60) return +(1.5 + Math.random() * 1.5).toFixed(2);
+  if (r < 0.78) return +(3 + Math.random() * 7).toFixed(2);
+  if (r < 0.90) return +(10 + Math.random() * 40).toFixed(1);
+  if (r < 0.97) return +(50 + Math.random() * 150).toFixed(0);
+  if (r < 0.995) return +(200 + Math.random() * 300).toFixed(0);
+  return +(500 + Math.random() * 500).toFixed(0);
+}
+function genCrash() {
+  const r = Math.random();
+  if (r < 0.12) return Math.floor(Math.random() * 3) + 1;
+  if (r < 0.38) return Math.floor(Math.random() * 6) + 3;
+  if (r < 0.68) return Math.floor(Math.random() * 12) + 9;
+  if (r < 0.88) return Math.floor(Math.random() * 20) + 21;
+  if (r < 0.96) return Math.floor(Math.random() * 30) + 41;
+  return Math.floor(Math.random() * 100) + 71;
+}
+function fl2m(f) { return parseFloat(Math.max(1, Math.exp(f * 0.011)).toFixed(f > 100 ? 0 : f > 30 ? 1 : 2)); }
+
+function updateStats() {
+  document.getElementById('sv-bal').textContent = '$' + G.bal.toLocaleString();
+  const pl = document.getElementById('sv-pl');
+  pl.textContent = (G.totalPL >= 0 ? '+' : '') + '$' + Math.abs(G.totalPL).toLocaleString();
+  pl.style.color = G.totalPL >= 0 ? '#2ecc71' : '#ff4757';
+}
+function sb(v) { document.getElementById('bin').value = Math.min(Math.max(1, Math.floor(v)), G.bal); }
+
+function setTotMult(m) {
+  const el = document.getElementById('tot-m'); el.textContent = m == null ? '—' : mfmt(m);
+  let c = '#ffe44d';
+  if (m >= 100) c = '#ff44ff'; else if (m >= 50) c = '#ff2200'; else if (m >= 10) c = '#ff4757'; else if (m >= 3) c = '#ff9f43';
+  el.style.color = c; el.style.fontSize = m >= 100 ? '18px' : m >= 10 ? '22px' : '26px';
+  const g = document.getElementById('bmb-g');
+  let gc = 'rgba(255,228,77,.1)';
+  if (m >= 50) gc = 'rgba(255,68,255,.2)'; else if (m >= 10) gc = 'rgba(255,71,87,.17)'; else if (m >= 3) gc = 'rgba(255,159,67,.13)';
+  g.style.background = `radial-gradient(circle,${gc},transparent)`;
+}
+function setPhaseUI(p) {
+  const ps = ['ps1','ps2','ps3','ps4'].map(id => document.getElementById(id));
+  ps.forEach(e => e.classList.remove('active','done'));
+  if (p === 'p1-choose' || p === 'idle') ps[0].classList.add('active');
+  else if (p === 'p1-ride') { ps[0].classList.add('done'); ps[1].classList.add('active'); }
+  else if (p === 'p1-reveal' || p === 'p2-choose') { ps[0].classList.add('done'); ps[1].classList.add('done'); ps[2].classList.add('active'); }
+  else if (p === 'p2-ride') { ps[0].classList.add('done'); ps[1].classList.add('done'); ps[2].classList.add('active'); }
+  else if (p === 'done') { ps.forEach(e => e.classList.add('done')); ps[3].classList.remove('done'); ps[3].classList.add('active'); }
+}
+function showBadge(i, txt, col) {
+  const b = document.getElementById('badge' + i); b.textContent = txt;
+  b.style.color = col || '#ffe44d'; b.style.borderColor = (col || '#ffe44d') + '44'; b.style.background = (col || '#ffe44d') + '0e'; b.style.opacity = '1';
+}
+function hideBadge(i) { document.getElementById('badge' + i).style.opacity = '0'; }
+function setBtn(i, label, fnStr) {
+  const w = document.getElementById('btnw' + i);
+  if (!label) { w.innerHTML = ''; return; }
+  w.innerHTML = `<button class="sbtn sbtn-enter" onclick="${fnStr}(${i})">${label}</button>`;
+}
+function openDoors(i) {
+  document.getElementById('dl' + i).classList.add('dol'); document.getElementById('dr' + i).classList.add('dor');
+  playDoorOpen();
+}
+function closeDoors(i) {
+  document.getElementById('dl' + i).classList.remove('dol'); document.getElementById('dr' + i).classList.remove('dor');
+}
+
+// Particles
+function sparks(n, x, y, cols) {
+  const cs = cols || ['#ffe44d','#ff9f43','#ff6b6b','#fff'];
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div'); s.className = 'spark'; const sz = 2 + Math.random() * 4;
+    s.style.cssText = `width:${sz}px;height:${sz}px;background:${cs[i%cs.length]};left:${x+(Math.random()-.5)*28}px;top:${y+(Math.random()-.5)*18}px;--sx:${(Math.random()-.5)*58}px;--sy:${-10-Math.random()*48}px;position:fixed`;
+    document.body.appendChild(s); setTimeout(() => s.remove(), 520);
+  }
+}
+function puffs(n, x, y, col) {
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div'); p.className = 'puff'; const sz = 12 + Math.random() * 16;
+    p.style.cssText = `width:${sz}px;height:${sz}px;background:${col||'rgba(130,130,130,.5)'};left:${x+(Math.random()-.5)*24}px;top:${y-sz/2}px;--px:${(Math.random()-.5)*28}px;--py:${-26-Math.random()*38}px;--pd:${1+Math.random()*.6}s;position:fixed`;
+    document.body.appendChild(p); setTimeout(() => p.remove(), 1700);
+  }
+}
+function carXY(i) { const r = document.getElementById('eg'+i).getBoundingClientRect(); return [r.left+r.width/2, r.top+r.height/2]; }
+
+let fkTimer = null;
+function showFakeout(ico, txt, col) {
+  if (fkTimer) clearTimeout(fkTimer);
+  document.getElementById('fk-ico').textContent = ico; document.getElementById('fk-txt').textContent = txt;
+  document.getElementById('fk-txt').style.color = col || '#ff4757';
+  document.querySelector('.fk-in').style.borderColor = col || '#ff4757';
+  const fb = document.getElementById('fk-banner'); fb.className = ''; void fb.offsetWidth; fb.className = 'bshow';
+  fkTimer = setTimeout(() => { fb.classList.remove('bshow'); fb.classList.add('bhide'); setTimeout(() => { fb.className = ''; fb.style.transform = 'translateX(-50%) scale(0)'; }, 300); }, 2000);
+}
+
+// Idle sway
+const swA = [0,0,0], swV = [0,0,0], swR = [null,null,null];
+function startSway() {
+  for (let i = 0; i < 3; i++) {
+    if (swR[i]) cancelAnimationFrame(swR[i]);
+    swA[i] = 0; swV[i] = (Math.random() - .5) * 0.8;
+    let last = performance.now();
+    (function loop(now) {
+      const dt = Math.min((now-last)/1000, .05); last = now;
+      swV[i] += -2.2 * swA[i] * dt; swV[i] *= .95; swA[i] += swV[i] * dt;
+      swA[i] = Math.max(-5, Math.min(5, swA[i]));
+      const eg = document.getElementById('eg' + i);
+      if (eg && G.phase === 'p1-choose') eg.style.transform = `translateX(-50%) rotate(${swA[i]}deg)`;
+      swR[i] = requestAnimationFrame(loop);
+    })(performance.now());
+  }
+}
+function stopSway() { for (let i = 0; i < 3; i++) { if (swR[i]) { cancelAnimationFrame(swR[i]); swR[i] = null; } } }
+
+// =====================================================
+//  GAME LOGIC
+// =====================================================
+function startNewRound() {
+  G.bet = parseFloat(document.getElementById('bin').value) || 100;
+  if (G.bet <= 0 || G.bet > G.bal) return;
+  AC(); G.bal -= G.bet; updateStats();
+  G.active = -1; G.p1Mult = 1; G.fl = 0;
+  G.hiddenMults = [genMult(), genMult(), genMult()];
+  G.p2CrashFloors = [genCrash(), genCrash(), genCrash()];
+  G.p2Alive = [true, true, true]; G.p2Mults = [1, 1, 1];
+  G.p2Fl = [0, 0, 0]; G.p2Speed = [1, 1, 1];
+  for (let j = 0; j < 3; j++) { if (G.p2Timers[j]) { clearTimeout(G.p2Timers[j]); G.p2Timers[j] = null; } }
+  G.phase = 'p1-choose'; setPhaseUI('p1-choose');
+  setTotMult(null);
+  ['p1-lbl','p2-lbl','fin-lbl'].forEach(id => document.getElementById(id).textContent = '—');
+  for (let i = 0; i < 3; i++) {
+    const eg = document.getElementById('eg' + i); eg.classList.remove('car-fall'); eg.style.transform = 'translateX(-50%)'; eg.style.top = bottomTop() + 'px';
+    document.getElementById('sw' + i).classList.remove('shaft-dimmed','shaft-dead');
+    document.getElementById('ec' + i).style.transform = '';
+    closeDoors(i); document.getElementById('lb' + i).classList.remove('flicker');
+    document.getElementById('em' + i).textContent = '?'; document.getElementById('em' + i).style.color = '#ffe44d';
+    document.getElementById('ef' + i).textContent = 'SHAFT ' + LABELS[i];
+    hideBadge(i); setBtn(i, 'ENTER ' + LABELS[i], 'selectP1');
+  }
+  const ab = document.getElementById('act-btn'); ab.className = 'ab-wait'; ab.innerHTML = '<div class="ab-ico">🛗</div><div class="ab-lbl">SELECT</div>';
+  showFakeout('🛗', 'PICK YOUR ELEVATOR', '#ffe44d');
+  startSway(); startChainAnim();
+}
+
+function selectP1(i) {
+  if (G.phase !== 'p1-choose') return;
+  G.phase = 'p1-ride'; G.active = i;
+  for (let j = 0; j < 3; j++) { setBtn(j, null, null); if (j !== i) { document.getElementById('sw'+j).classList.add('shaft-dimmed'); stopSway(); } }
+  showBadge(i, 'YOU', '#2ecc71'); setPhaseUI('p1-ride');
+  startRumble(); startMotor(); startHB(() => G.fl); startCable(() => G.fl); startCreak(() => G.fl);
+  setMotor(0.1);
+  const targetFl = 8 + Math.floor(Math.random() * 4);
+  const fromTop = bottomTop(), toTop = floorTop(targetFl, 18);
+  const dur = 1800 + targetFl * 110;
+  G.fl = 0; document.getElementById('em' + i).textContent = '↑'; document.getElementById('ef' + i).textContent = 'RISING';
+  const flTick = dur / targetFl;
+  for (let t = 1; t <= targetFl; t++) {
+    setTimeout(() => { if (G.phase !== 'p1-ride') return; G.fl = t; setMotor(0.2 + t * 0.04); setRumble(t); document.getElementById('ef' + i).textContent = 'FL ' + t; }, t * flTick);
+  }
+  animCar(i, fromTop, toTop, dur, () => {
+    setMotor(0); setRumble(0);
+    openDoors(i); G.p1Mult = G.hiddenMults[i];
+    const col = G.p1Mult >= 10 ? '#ff4757' : G.p1Mult >= 3 ? '#ff9f43' : '#ffe44d';
+    document.getElementById('em' + i).textContent = mfmt(G.p1Mult); document.getElementById('em' + i).style.color = col;
+    showBadge(i, mfmt(G.p1Mult) + ' LOCKED!', col);
+    document.getElementById('p1-lbl').textContent = mfmt(G.p1Mult); setTotMult(G.p1Mult);
+    playDing(G.p1Mult >= 10 ? 1047 : G.p1Mult >= 3 ? 880 : 659);
+    playReveal(G.p1Mult >= 3);
+    const [cx, cy] = carXY(i); sparks(10, cx, cy, [col, '#fff']);
+    stopAllAudio(); G.fl = 0; G.phase = 'p1-reveal'; setPhaseUI('p1-reveal');
+    setTimeout(() => revealOthers(i), 1400);
+  });
+}
+
+function revealOthers(chosen) {
+  for (let j = 0; j < 3; j++) {
+    const m = G.hiddenMults[j], col = m >= 10 ? '#ff4757' : m >= 3 ? '#ff9f43' : '#ffe44d';
+    if (j !== chosen) {
+      document.getElementById('em' + j).textContent = mfmt(m); document.getElementById('em' + j).style.color = col;
+      openDoors(j); setTimeout(() => showBadge(j, mfmt(m), col), 350);
+    }
+  }
+  setTimeout(() => beginPhase2(), 2100);
+}
+
+function beginPhase2() {
+  G.phase = 'p2-choose'; setPhaseUI('p2-choose');
+  const p1col = G.p1Mult >= 10 ? '#ff4757' : G.p1Mult >= 3 ? '#ff9f43' : '#ffe44d';
+  for (let i = 0; i < 3; i++) {
+    animCar(i, parseFloat(document.getElementById('eg'+i).style.top) || bottomTop(), bottomTop(), 550, null);
+    document.getElementById('sw' + i).classList.remove('shaft-dimmed','shaft-dead');
+    setTimeout(() => { closeDoors(i); playDoorClose(); }, 200 + i * 80);
+    document.getElementById('em' + i).textContent = mfmt(G.p1Mult);
+    document.getElementById('em' + i).style.color = p1col;
+    document.getElementById('ef' + i).textContent = 'STARTS HERE';
+    hideBadge(i);
+  }
+  setTotMult(G.p1Mult);
+  setTimeout(() => {
+    showFakeout('🔄', 'ALL START AT ' + mfmt(G.p1Mult), '#ffe44d');
+    for (let i = 0; i < 3; i++) setBtn(i, 'RIDE ' + LABELS[i], 'selectP2');
+    const ab = document.getElementById('act-btn'); ab.className = 'ab-wait'; ab.innerHTML = '<div class="ab-ico">🔄</div><div class="ab-lbl">PICK P2</div>';
+  }, 650);
+}
+
+// ─── per-shaft independent tick delay (each shaft has own speed personality)
+function shaftDelay(i) {
+  const fl = G.p2Fl[i];
+  const base = Math.max(108, 445 - fl * 5.8);
+  return base / G.p2Speed[i];
+}
+
+function selectP2(i) {
+  if (G.phase !== 'p2-choose') return;
+  G.phase = 'p2-ride'; G.active = i; G.fl = 0; G.p2Fl = [0,0,0];
+  for (let j = 0; j < 3; j++) { setBtn(j, null, null); }
+  showBadge(i, 'YOUR RIDE', '#2ecc71');
+  for (let j = 0; j < 3; j++) { if (j !== i) showBadge(j, 'SHAFT ' + LABELS[j], '#5dade2'); }
+  const ab = document.getElementById('act-btn'); ab.className = 'ab-cash'; ab.innerHTML = '<div class="ab-ico">🚪</div><div class="ab-lbl">CASH OUT</div>';
+  ab.onclick = () => p2CashOut();
+
+  // Assign speed personalities — chosen shaft normal, rivals randomised
+  const personalities = [0.62, 0.78, 0.90, 1.15, 1.35, 1.65, 1.9, 2.2];
+  const pool = personalities.slice();
+  G.p2Speed[i] = 1.0;
+  [0,1,2].filter(j => j !== i).forEach(j => { const idx = Math.floor(Math.random() * pool.length); G.p2Speed[j] = pool.splice(idx, 1)[0]; });
+
+  // ── Immediately show P1 multiplier on chosen shaft
+  const p1col = G.p1Mult >= 10 ? '#ff4757' : G.p1Mult >= 3 ? '#ff9f43' : '#ffe44d';
+  const em = document.getElementById('em' + i);
+  em.textContent = mfmt(G.p1Mult); em.style.color = p1col;
+  document.getElementById('ef' + i).textContent = 'BASE ×';
+  setTotMult(G.p1Mult);
+  document.getElementById('p2-lbl').textContent = '1.00×';
+  document.getElementById('fin-lbl').textContent = mfmt(G.p1Mult);
+  for (let j = 0; j < 3; j++) {
+    if (j !== i) {
+      document.getElementById('em' + j).textContent = '—';
+      document.getElementById('em' + j).style.color = '#444';
+      document.getElementById('ef' + j).textContent = 'FL 0';
+    }
+  }
+
+  startRumble(); startMotor(); startHB(() => G.p2Fl[G.active]); startCable(() => G.p2Fl[G.active]); startCreak(() => G.p2Fl[G.active]);
+  scheduleFakeouts();
+  for (let j = 0; j < 3; j++) startShaftTick(j);
+}
+
+function startShaftTick(i) {
+  if (G.p2Timers[i]) { clearTimeout(G.p2Timers[i]); G.p2Timers[i] = null; }
+  function step() {
+    if (G.phase !== 'p2-ride' || !G.p2Alive[i]) return;
+    G.p2Fl[i]++;
+    const fl = G.p2Fl[i];
+    const m = fl2m(fl);
+    G.p2Mults[i] = m;
+    const toTop = floorTop(fl, 72);
+    const eg = document.getElementById('eg' + i);
+    const transMs = Math.round(shaftDelay(i) * 0.88);
+    eg.style.transition = 'top ' + transMs + 'ms cubic-bezier(.4,0,.2,1)';
+    eg.style.top = toTop + 'px';
+    const em = document.getElementById('em' + i);
+    if (i === G.active) {
+      const tot = G.p1Mult * m;
+      em.textContent = mfmt(tot);
+      em.style.color = tot >= 10 ? '#ff4757' : tot >= 3 ? '#ff9f43' : '#ffe44d';
+      document.getElementById('ef' + i).textContent = 'FL ' + fl;
+      setTotMult(tot);
+      document.getElementById('p2-lbl').textContent = mfmt(m);
+      document.getElementById('fin-lbl').textContent = mfmt(tot);
+      G.fl = fl;
+      setMotor(Math.min(0.15 + fl * 0.012, 0.85));
+      setRumble(fl);
+    } else {
+      em.textContent = '—';
+      em.style.color = '#444';
+      document.getElementById('ef' + i).textContent = 'FL ' + fl;
+    }
+    if (fl >= G.p2CrashFloors[i]) {
+      crashShaft(i);
+      if (i === G.active) {
+        for (let j = 0; j < 3; j++) { if (G.p2Timers[j]) { clearTimeout(G.p2Timers[j]); G.p2Timers[j] = null; } }
+        stopAllAudio(); stopFakeouts();
+        setTimeout(() => endRound(false), 700);
+      }
+      return;
+    }
+    G.p2Timers[i] = setTimeout(step, shaftDelay(i));
+  }
+  const startDelay = i === G.active ? 0 : 80 + Math.random() * 180;
+  G.p2Timers[i] = setTimeout(step, startDelay);
+}
+
+function crashShaft(i) {
+  if (!G.p2Alive[i]) return; G.p2Alive[i] = false;
+  const [cx, cy] = carXY(i); sparks(12, cx, cy); puffs(4, cx, cy, 'rgba(200,100,0,.5)');
+  document.getElementById('lb' + i).classList.add('flicker');
+  document.getElementById('rflash').classList.add('rfon'); setTimeout(() => document.getElementById('rflash').classList.remove('rfon'), 280);
+  playCrashFull();
+  setTimeout(() => {
+    const eg = document.getElementById('eg' + i);
+    eg.style.setProperty('--fr', (Math.random() > .5 ? 1 : -1) * 18 + 'deg'); eg.classList.add('car-fall');
+    document.getElementById('cs' + i).innerHTML = ''; showBadge(i, 'CRASHED', '#ff4757');
+    setTimeout(() => document.getElementById('sw' + i).classList.add('shaft-dead'), 350);
+  }, 200);
+}
+
+function p2CashOut() {
+  if (G.phase !== 'p2-ride') return;
+  for (let j = 0; j < 3; j++) { if (G.p2Timers[j]) { clearTimeout(G.p2Timers[j]); G.p2Timers[j] = null; } }
+  stopAllAudio(); stopFakeouts();
+  const final = G.p1Mult * G.p2Mults[G.active];
+  for (let i = 0; i < 3; i++) { if (i !== G.active && G.p2Alive[i]) { G.p2Alive[i]=false; setTimeout(()=>crashShaft(i),200); } }
+  openDoors(G.active); playCash(); const [cx, cy] = carXY(G.active); sparks(10, cx, cy, ['#2ecc71','#ffe44d','#fff']);
+  setTimeout(() => endRound(true, final), 650);
+}
+
+function endRound(won, finalMult) {
+  G.phase = 'done'; setPhaseUI('done'); stopMotor();
+  if (!finalMult) finalMult = G.p1Mult * G.p2Mults[G.active];
+  let payout = 0, profit = 0;
+  if (won) { payout = +(G.bet * finalMult).toFixed(2); profit = +(payout - G.bet).toFixed(2); G.bal += payout; G.totalPL += profit; }
+  else { G.totalPL -= G.bet; }
+  updateStats(); addHist(finalMult, won); setTotMult(finalMult);
+  document.getElementById('fin-lbl').textContent = mfmt(finalMult);
+  showResult(won, payout, profit, finalMult);
+  const ab = document.getElementById('act-btn'); ab.className = 'ab-go';
+  ab.innerHTML = '<div class="ab-ico">🔄</div><div class="ab-lbl">NEW</div>';
+  ab.onclick = newGame;
+}
+
+function showResult(won, payout, profit, m) {
+  const rc = document.getElementById('result-ov'), box = document.createElement('div');
+  if (won) {
+    let conf = '<div style="position:absolute;top:0;right:0;bottom:0;left:0;overflow:hidden;pointer-events:none">';
+    const cc = ['#ffe44d','#2ecc71','#5dade2','#a55eea','#ff9f43'];
+    for (let i = 0; i < 20; i++) { const c = cc[i%cc.length], sz = 5+Math.random()*8, x = Math.random()*100; conf += `<div class="cbit" style="position:absolute;left:${x}%;top:${10+Math.random()*18}%;width:${sz}px;height:${sz}px;background:${c};border-radius:${Math.random()>.5?'50%':'3px'};--cd:${.6+Math.random()*.7}s;--delay:${Math.random()*.4}s"></div>`; }
+    conf += '</div>';
+    box.className = 'rbox rwin';
+    box.innerHTML = `${conf}<div class="remo">🎉</div><div class="rtag" style="color:#2ecc71">ESCAPED!</div><div class="ramt" style="color:#2ecc71">+$${profit.toFixed(2)}</div><div class="rsub">${mfmt(G.p1Mult)} × ${mfmt(G.p2Mults[G.active])} = ${mfmt(m)}</div><button class="play-again-btn" onclick="newGame()">PLAY AGAIN 🔄</button>`;
+  } else {
+    box.className = 'rbox rloss';
+    box.innerHTML = `<div class="remo">💥</div><div class="rtag" style="color:#ff4757">CRASHED!</div><div class="ramt" style="color:#ff4757">-$${G.bet.toFixed(2)}</div><div class="rsub">at ${mfmt(m)}</div><button class="play-again-btn" onclick="newGame()">TRY AGAIN 🔄</button>`;
+  }
+  rc.innerHTML = ''; rc.appendChild(box); rc.classList.add('show');
+}
+
+function addHist(m, win) {
+  const r = document.getElementById('hist-row'), g = r.querySelector('span'); if (g) g.remove();
+  const c = document.createElement('div'); c.className = 'hp ' + (win ? 'hw' : 'hl'); c.textContent = mfmt(m);
+  r.insertBefore(c, r.firstChild); const ch = r.querySelectorAll('.hp'); if (ch.length > 5) ch[ch.length-1].remove();
+}
+
+// =====================================================
+//  FAKEOUT EVENTS
+// =====================================================
+let fkSchedT = null, lastFk = -1;
+const FKS = [
+  { i:'🌍', t:'EARTHQUAKE!', c:'#ff9f43', fn() {
+    playQuake(); quakeWrap(); shakeAll(8, 1400);
+    rfOn(); for (let i = 0; i < 3; i++) { if (G.p2Alive[i]) { const [cx,cy]=carXY(i); sparks(4,cx,cy); } }
+  }},
+  { i:'⚡', t:'LIGHTNING!', c:'#e8d84a', fn() {
+    playLightning(); lightFlash(); shakeAll(6, 350);
+    for (let i = 0; i < 3; i++) if (G.p2Alive[i]) document.getElementById('lb'+i).classList.add('flicker');
+    setTimeout(() => { for (let i=0;i<3;i++) document.getElementById('lb'+i).classList.remove('flicker'); }, 380);
+  }},
+  { i:'⛓️', t:'CHAIN STRAIN!', c:'#ff4757', fn() {
+    playAlarm(); shakeAll(10, 900); rfOn();
+    const sh = Math.floor(Math.random() * 3);
+    document.getElementById('cs' + sh).innerHTML = '';
+    for (let i = 0; i < 3; i++) if (G.p2Alive[i]) { document.getElementById('lb'+i).classList.add('flicker'); const [cx,cy]=carXY(i); sparks(5,cx,cy); }
+    setTimeout(() => { for (let i=0;i<3;i++) document.getElementById('lb'+i).classList.remove('flicker'); }, 950);
+  }},
+  { i:'💥', t:'EXPLOSION!', c:'#ff6b35', fn() {
+    playExplosion(); rfOn(); quakeWrap(); shakeAll(9, 600);
+    const ex = document.createElement('div'); ex.style.cssText = `position:fixed;font-size:55px;left:${20+Math.random()*60}%;top:${20+Math.random()*50}%;z-index:350;pointer-events:none;animation:pa .7s ease forwards;--px:0;--py:-25px;--pd:.7s`; ex.textContent = '💥'; document.body.appendChild(ex); setTimeout(() => ex.remove(), 800);
+    for (let i = 0; i < 3; i++) if (G.p2Alive[i]) { const [cx,cy]=carXY(i); sparks(7,cx,cy,['#ff4400','#ff8800','#ffcc00','#fff']); puffs(2,cx,cy,'rgba(200,100,0,.5)'); }
+  }},
+  { i:'🔥', t:'FIRE!', c:'#ff6b35', fn() {
+    playAlarm(); const f = document.createElement('div'); f.style.cssText = 'position:fixed;top:0;right:0;bottom:0;left:0;z-index:290;pointer-events:none;background:radial-gradient(ellipse at 50% 100%,rgba(255,80,0,.18),transparent 55%);animation:pa 2.2s ease forwards;--px:0;--py:0;--pd:2.2s'; document.body.appendChild(f); setTimeout(() => f.remove(), 2300);
+    shakeAll(5, 1800); for (let i = 0; i < 3; i++) if (G.p2Alive[i]) { const [cx,cy]=carXY(i); sparks(5,cx,cy,['#ff4400','#ff8800','#ffcc00']); }
+  }},
+  { i:'⚙️', t:'GEAR SLIP!', c:'#ffcc44', fn() {
+    if (!G.p2Alive[G.active]) return; playGearSlip();
+    const eg = document.getElementById('eg' + G.active); const t = parseFloat(eg.style.top) || 0;
+    eg.style.transition = 'top 0.14s'; eg.style.top = (t + 14) + 'px'; setTimeout(() => { eg.style.top = t + 'px'; }, 160);
+    const [cx,cy] = carXY(G.active); sparks(4, cx, cy, ['#888','#aaa','#ccc']);
+  }},
+];
+function scheduleFakeouts() {
+  stopFakeouts();
+  function sched() {
+    if (G.phase !== 'p2-ride') return;
+    const iv = Math.max(2000, 8000 - G.fl * 50);
+    fkSchedT = setTimeout(() => {
+      if (G.phase !== 'p2-ride') return;
+      let idx; do { idx = Math.floor(Math.random() * FKS.length); } while (idx === lastFk);
+      lastFk = idx; const fk = FKS[idx]; showFakeout(fk.i, fk.t, fk.c); fk.fn(); sched();
+    }, iv * (0.5 + Math.random() * 0.9));
+  }
+  sched();
+}
+function stopFakeouts() { if (fkSchedT) { clearTimeout(fkSchedT); fkSchedT = null; } }
+function quakeWrap() { const w = document.getElementById('wrap'); w.classList.remove('gquake'); void w.offsetWidth; w.classList.add('gquake'); setTimeout(() => w.classList.remove('gquake'), 450); }
+function rfOn() { document.getElementById('rflash').classList.add('rfon'); setTimeout(() => document.getElementById('rflash').classList.remove('rfon'), 360); }
+function lightFlash() { const f = document.createElement('div'); f.style.cssText = 'position:fixed;top:0;right:0;bottom:0;left:0;z-index:390;pointer-events:none;background:rgba(220,240,255,.82)'; document.body.appendChild(f); setTimeout(() => f.style.background = 'rgba(220,240,255,0)', 75); setTimeout(() => f.remove(), 200); }
+function shakeAll(amp, dur) {
+  const end = performance.now() + dur;
+  (function loop(now) {
+    if (now >= end) return;
+    for (let i = 0; i < 3; i++) {
+      if (!G.p2Alive || G.p2Alive[i]) { const eg = document.getElementById('eg'+i); if (!eg) continue; const t = parseFloat(eg.style.top)||0; eg.style.top = (t + (Math.random()-.5)*amp) + 'px'; }
+    }
+    requestAnimationFrame(loop);
+  })(performance.now());
+}
+
+function newGame() {
+  document.getElementById('result-ov').classList.remove('show');
+  document.getElementById('result-ov').innerHTML = '';
+  startNewRound();
+}
+
+// =====================================================
+//  BOOT
+// =====================================================
+function handleMainBtn() { if (G.phase === 'idle' || G.phase === 'done') startNewRound(); }
+window.addEventListener('resize', () => { buildBg(); initPos(); });
+// Stars
+;(()=>{ const el=document.getElementById('stars-layer'); for(let i=0;i<140;i++){ const s=document.createElement('div'); s.className='star'; const sz=.6+Math.random()*2.2; s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*80}%;--d:${1.3+Math.random()*3.5}s;animation-delay:${Math.random()*4}s`; el.appendChild(s); } })();
+buildShafts(); updateStats(); startChainAnim();
+document.getElementById('act-btn').onclick = handleMainBtn;
+</script>
+</body>
+</html>

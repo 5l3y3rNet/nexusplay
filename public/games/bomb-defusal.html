@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Bomb Defusal — Demo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg:     #111820;
+  --s1:     #1a2330;
+  --s2:     #1f2c3c;
+  --s3:     #263444;
+  --s4:     #2e3f54;
+  --border: #354d66;
+  --border2:#405e7a;
+  --text:   #ddeeff;
+  --text2:  #a8c4d8;
+  --muted:  #5a7a90;
+  --red:    #ff3d52;
+  --red2:   #ff6070;
+  --orange: #ff7840;
+  --yellow: #ffcc44;
+  --green:  #2ee88a;
+  --green2: #60ffaa;
+  --blue:   #4aaaf0;
+  --blue2:  #70c0ff;
+  --purple: #a060f0;
+  --mono: 'Share Tech Mono', monospace;
+  --sans: 'Inter', sans-serif;
+  --r: 10px;
+  --r2: 6px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+html, body { height:100%; }
+body { background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh; }
+
+.app {
+  max-width:980px; margin:0 auto;
+  padding:14px 12px; display:flex; flex-direction:column; gap:12px; min-height:100vh;
+}
+
+/* ── HEADER ── */
+header {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; flex-wrap:wrap;
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:var(--r); padding:11px 18px;
+}
+.logo {
+  font-family:var(--mono); font-size:18px; letter-spacing:2px;
+  display:flex; align-items:center; gap:9px; color:var(--text);
+  font-weight:700;
+}
+.logo em { color:var(--red); font-style:normal; }
+
+.hright { display:flex; align-items:center; gap:8px; }
+
+.badge {
+  font-family:var(--mono); font-size:9px; letter-spacing:1px;
+  padding:3px 8px; border-radius:4px; font-weight:700;
+}
+.badge-demo { background:rgba(255,204,68,0.12); color:var(--yellow); border:1px solid rgba(255,204,68,0.3); }
+
+.bal-box {
+  background:var(--s2); border:1px solid var(--border);
+  border-radius:var(--r2); padding:5px 14px;
+  display:flex; flex-direction:column; align-items:flex-end;
+}
+.bal-lbl { font-family:var(--mono); font-size:8px; color:var(--muted); letter-spacing:1px; margin-bottom:1px; }
+.bal-val { font-family:var(--mono); font-size:17px; color:var(--green); letter-spacing:1px; font-weight:700; }
+
+/* icon buttons in header */
+.icon-btn {
+  width:34px; height:34px; border-radius:var(--r2);
+  background:var(--s2); border:1px solid var(--border);
+  color:var(--text2); font-size:15px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s; flex-shrink:0;
+}
+.icon-btn:hover { border-color:var(--border2); color:var(--text); background:var(--s3); }
+.icon-btn.on { border-color:var(--green); color:var(--green); background:rgba(46,232,138,.08); }
+
+/* ── MAIN GRID ── */
+.main {
+  display:grid; grid-template-columns:220px 1fr 210px; gap:12px; align-items:start;
+}
+@media(max-width:820px){ .main{grid-template-columns:1fr 1fr;} .col-c{grid-column:1/-1;order:-1;} }
+@media(max-width:520px){ .main{grid-template-columns:1fr;} }
+@media(max-width:480px){
+  .app{padding:8px 8px;}
+  header{padding:8px 12px;flex-wrap:wrap;}
+  .logo{font-size:14px;}
+  .bal-val{font-size:14px;}
+  .icon-btn{width:28px;height:28px;font-size:13px;}
+  .hright{gap:5px;}
+}
+
+/* ── CARD ── */
+.card {
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden;
+}
+.ctit {
+  font-family:var(--mono); font-size:9px; letter-spacing:2px; color:var(--muted);
+  padding:8px 14px; border-bottom:1px solid var(--border);
+  background:rgba(255,255,255,.02); text-transform:uppercase; font-weight:700;
+}
+.cbod { padding:14px; }
+
+/* ── LABELS ── */
+.lbl {
+  font-family:var(--mono); font-size:9px; color:var(--text2);
+  letter-spacing:1px; display:block; margin-bottom:5px; font-weight:700;
+}
+
+/* ── BET INPUT ── */
+.irow {
+  display:flex; align-items:center;
+  background:var(--s2); border:1px solid var(--border);
+  border-radius:var(--r2); overflow:hidden; margin-bottom:9px;
+  transition:border-color .15s;
+}
+.irow:focus-within { border-color:var(--blue); }
+.ipfx {
+  padding:0 11px; font-family:var(--mono); font-size:14px;
+  color:var(--yellow); border-right:1px solid var(--border);
+  display:flex; align-items:center; font-weight:700;
+}
+.bet-inp {
+  flex:1; background:transparent; border:none; outline:none;
+  color:var(--text); font-family:var(--mono); font-size:16px;
+  padding:9px 10px; font-weight:700;
+}
+.bet-inp:disabled { opacity:.35; }
+
+/* quick bets */
+.qbets { display:flex; gap:4px; margin-bottom:12px; }
+.qb {
+  flex:1; padding:6px 0; text-align:center;
+  background:var(--s2); border:1px solid var(--border); border-radius:var(--r2);
+  color:var(--text2); font-family:var(--mono); font-size:9px; cursor:pointer;
+  transition:all .12s; font-weight:700;
+}
+.qb:hover:not(:disabled){ border-color:var(--blue2); color:var(--blue2); background:rgba(74,170,240,.07); }
+.qb:disabled{ opacity:.2; cursor:not-allowed; }
+
+/* difficulty */
+.dbts { display:flex; gap:5px; margin-bottom:13px; }
+.dbt {
+  flex:1; padding:8px 3px; text-align:center;
+  background:var(--s2); border:1.5px solid var(--border); border-radius:var(--r2);
+  color:var(--muted); font-family:var(--mono); font-size:9px; letter-spacing:1px;
+  cursor:pointer; transition:all .15s; font-weight:700;
+}
+.dbt:hover:not(:disabled){ color:var(--text); border-color:var(--border2); }
+.dbt.e { background:rgba(46,232,138,.1); border-color:var(--green); color:var(--green); }
+.dbt.m { background:rgba(255,204,68,.08); border-color:var(--yellow); color:var(--yellow); }
+.dbt.h { background:rgba(255,61,82,.1);  border-color:var(--red); color:var(--red); }
+.dbt:disabled{ opacity:.2; cursor:not-allowed; }
+
+/* auto cashout */
+.ac-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+.tog { position:relative; width:34px; height:19px; flex-shrink:0; }
+.tog input { opacity:0; width:0; height:0; }
+.tsl {
+  position:absolute; top:0;right:0;bottom:0;left:0;
+  background:var(--s3); border:1px solid var(--border); border-radius:19px;
+  cursor:pointer; transition:.2s;
+}
+.tsl::before {
+  content:''; position:absolute; left:2px; top:2px;
+  width:13px; height:13px; border-radius:50%;
+  background:var(--muted); transition:.2s;
+}
+.tog input:checked+.tsl { background:rgba(46,232,138,.15); border-color:var(--green); }
+.tog input:checked+.tsl::before { transform:translateX(15px); background:var(--green); }
+.ac-lbl { font-family:var(--mono); font-size:9px; color:var(--text2); letter-spacing:1px; font-weight:700; }
+.ac-irow {
+  display:flex; align-items:center;
+  background:var(--s2); border:1px solid var(--border);
+  border-radius:var(--r2); overflow:hidden; margin-bottom:13px;
+  opacity:.3; transition:opacity .2s;
+}
+.ac-irow.on { opacity:1; }
+.ac-inp { flex:1; background:transparent; border:none; outline:none; color:var(--text); font-family:var(--mono); font-size:15px; padding:8px 10px; font-weight:700; }
+.ac-sfx { padding:0 10px; font-family:var(--mono); font-size:11px; color:var(--yellow); border-left:1px solid var(--border); font-weight:700; }
+
+/* ── BUTTONS ── */
+.btn-start {
+  width:100%; padding:13px; background:linear-gradient(135deg,#cc2030,var(--red));
+  border:none; border-radius:var(--r2); color:#fff;
+  font-family:var(--sans); font-size:14px; font-weight:800;
+  cursor:pointer; transition:all .12s; margin-bottom:8px;
+  letter-spacing:.5px; box-shadow:0 3px 12px rgba(255,61,82,.25);
+}
+.btn-start:hover:not(:disabled){ filter:brightness(1.1); transform:translateY(-1px); box-shadow:0 5px 18px rgba(255,61,82,.4); }
+.btn-start:disabled { opacity:.35; cursor:not-allowed; transform:none; box-shadow:none; }
+
+.btn-cash {
+  width:100%; padding:13px; background:linear-gradient(135deg,#18a060,var(--green));
+  border:none; border-radius:var(--r2); color:#051a0e;
+  font-family:var(--sans); font-size:14px; font-weight:800;
+  cursor:pointer; display:none; margin-bottom:8px; letter-spacing:.5px;
+  animation:cpulse 1.1s ease-in-out infinite;
+  box-shadow:0 3px 12px rgba(46,232,138,.25);
+}
+.btn-cash:hover:not(:disabled){ filter:brightness(1.1); transform:translateY(-1px); }
+.btn-cash:disabled { opacity:.3; cursor:not-allowed; animation:none; }
+@keyframes cpulse { 0%,100%{box-shadow:0 3px 12px rgba(46,232,138,.25)} 50%{box-shadow:0 4px 22px rgba(46,232,138,.55)} }
+
+.btn-sm {
+  width:100%; padding:7px; background:transparent;
+  border:1px solid var(--border); border-radius:var(--r2);
+  color:var(--muted); font-family:var(--mono); font-size:9px;
+  letter-spacing:1px; cursor:pointer; transition:.12s; font-weight:700;
+}
+.btn-sm:hover { border-color:var(--border2); color:var(--text2); }
+
+/* ── LADDER ── */
+.ladder { display:flex; flex-direction:column; gap:2px; }
+.lrow {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:5px 10px; border-radius:5px; border:1px solid transparent;
+}
+.lcut { font-family:var(--mono); font-size:10px; color:var(--muted); font-weight:700; }
+.lval { font-family:var(--mono); font-size:11px; color:var(--blue); font-weight:700; }
+.lrow.done { background:rgba(46,232,138,.07); border-color:rgba(46,232,138,.2); }
+.lrow.done .lcut { color:var(--green); }
+.lrow.done .lval { color:var(--green2); }
+.lrow.curr { background:rgba(255,204,68,.1); border-color:rgba(255,204,68,.35); }
+.lrow.curr .lcut { color:var(--yellow); }
+.lrow.curr .lval { color:var(--yellow); font-size:12px; }
+
+/* ── CENTER ── */
+.col-c { display:flex; flex-direction:column; gap:12px; }
+
+/* Multiplier hero */
+.mult-hero {
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:var(--r); padding:18px 16px 14px; text-align:center;
+}
+.mh-lbl { font-family:var(--mono); font-size:9px; color:var(--muted); letter-spacing:2px; margin-bottom:4px; font-weight:700; }
+.mh-val {
+  font-family:var(--mono); font-size:62px; color:var(--blue2);
+  line-height:1; letter-spacing:-2px; transition:color .25s; font-weight:700;
+}
+.mh-val .sx { font-size:28px; color:var(--muted); margin-left:3px; font-weight:400; }
+.mh-val.win  { color:var(--green2); text-shadow:0 0 30px rgba(96,255,170,.35); }
+.mh-val.loss { color:var(--red2); }
+.mh-val.hot  { color:var(--yellow); }
+
+.tbar-wrap { margin-top:12px; }
+.tbar-bg { height:7px; background:var(--s3); border-radius:4px; overflow:hidden; border:1px solid var(--border); }
+.tbar-fill { height:100%; border-radius:4px; transition:width .1s linear, background .4s; background:var(--green); }
+.tbar-row { display:flex; justify-content:space-between; align-items:center; margin-top:5px; }
+.tbar-lbl { font-family:var(--mono); font-size:9px; color:var(--muted); letter-spacing:1px; font-weight:700; }
+.tbar-sec { font-family:var(--mono); font-size:12px; color:var(--text); font-weight:700; letter-spacing:1px; }
+
+/* ── BOMB PANEL ── */
+.bomb-panel {
+  background:var(--s1); border:1px solid var(--border); border-radius:var(--r);
+  padding:18px 14px; min-height:310px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  position:relative; overflow:hidden; gap:14px;
+}
+.bomb-panel.sh-lo { animation:sh0 2.2s ease-in-out infinite; }
+.bomb-panel.sh-md { animation:sh1 .9s ease-in-out infinite; }
+.bomb-panel.sh-hi { animation:sh2 .32s ease-in-out infinite; }
+@keyframes sh0 { 0%,100%{transform:translateX(0)} 33%{transform:translateX(-1px)} 66%{transform:translateX(1px)} }
+@keyframes sh1 { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-2px)} 75%{transform:translateX(2px)} }
+@keyframes sh2 { 0%,100%{transform:translate(0,0)} 20%{transform:translate(-3px,1px)} 50%{transform:translate(2px,-1px)} 80%{transform:translate(-2px,2px)} }
+
+/* Idle */
+.idle-wrap { display:flex; flex-direction:column; align-items:center; gap:10px; opacity:.4; }
+.idle-wrap svg { animation:flt 3.5s ease-in-out infinite; }
+@keyframes flt { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.idle-txt { font-family:var(--mono); font-size:10px; color:var(--muted); letter-spacing:2px; font-weight:700; }
+
+/* Active */
+.active-wrap { display:none; flex-direction:column; align-items:center; width:100%; gap:14px; }
+
+/* Device */
+.device {
+  background:linear-gradient(170deg,#1e2e42,#111e2c);
+  border:1.5px solid #2e4258; border-radius:9px; padding:12px;
+  width:165px; box-shadow:0 6px 24px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.dev-scr {
+  background:#030e09; border:1.5px solid #0c2518; border-radius:5px;
+  padding:7px 8px; text-align:center; margin-bottom:9px;
+}
+.dev-time {
+  font-family:var(--mono); font-size:26px; color:#20f060;
+  text-shadow:0 0 8px #20f060; letter-spacing:4px; font-weight:700;
+}
+.dev-lights { display:flex; justify-content:space-between; padding:0 3px; }
+.dl {
+  width:9px; height:9px; border-radius:50%;
+  background:#1a2e42; border:1px solid #2e4258; transition:.2s;
+}
+.dl.g  { background:var(--green); box-shadow:0 0 7px var(--green); }
+.dl.o  { background:var(--orange); box-shadow:0 0 7px var(--orange); }
+.dl.r  { background:var(--red); box-shadow:0 0 7px var(--red); }
+.dl.bs { animation:bls 1.3s ease-in-out infinite; }
+.dl.bf { animation:blf .32s ease-in-out infinite; }
+.dl.bfr{ animation:blfr .11s ease-in-out infinite; }
+@keyframes bls { 0%,100%{opacity:1} 50%{opacity:.07} }
+@keyframes blf { 0%,100%{opacity:1} 50%{opacity:.04} }
+@keyframes blfr{ 0%,100%{opacity:1} 50%{opacity:0}   }
+
+/* ── WIRES ── */
+.wires-grid {
+  display:grid; grid-template-columns:repeat(6,1fr); gap:8px;
+  width:100%; max-width:440px;
+}
+@media(max-width:380px){ .wires-grid{grid-template-columns:repeat(3,1fr);gap:6px;} }
+.wire-btn {
+  display:flex; flex-direction:column; align-items:center;
+  background:var(--s2); border:1.5px solid var(--border);
+  border-radius:7px; cursor:pointer; padding:7px 4px 5px;
+  transition:all .12s; outline:none; position:relative;
+}
+.wire-btn:hover:not(:disabled){
+  transform:translateY(-4px); border-color:var(--border2);
+  background:var(--s3); box-shadow:0 4px 14px rgba(0,0,0,.4);
+}
+.wire-btn:disabled { cursor:not-allowed; }
+
+.wmult {
+  font-family:var(--mono); font-size:9px; color:var(--text2);
+  margin-bottom:5px; font-weight:700; letter-spacing:.3px;
+  text-align:center; line-height:1.2; min-height:11px;
+}
+.wbody {
+  width:7px; height:34px; border-radius:4px; flex-shrink:0;
+  transition:all .2s; transform-origin:top center;
+}
+.wlbl { font-family:var(--mono); font-size:7px; color:var(--muted); margin-top:5px; letter-spacing:.3px; font-weight:700; text-align:center; }
+
+/* Wire states */
+.wire-btn.cut { background:var(--s1); border-color:rgba(46,232,138,.3); }
+.wire-btn.cut .wbody { transform:scaleY(.38); opacity:.3; }
+.wire-btn.cut .wmult { color:var(--green); }
+.wire-btn.cut .wlbl  { color:rgba(46,232,138,.4); }
+
+.wire-btn.boom { background:rgba(255,61,82,.08); border-color:var(--red); }
+.wire-btn.boom .wbody { transform:scaleY(.38); box-shadow:0 0 14px var(--red) !important; }
+.wire-btn.boom .wmult { color:var(--red); }
+
+.wire-btn.trap { background:rgba(255,61,82,.07); border-color:rgba(255,61,82,.5); }
+.wire-btn.trap .wbody { box-shadow:0 0 10px var(--red),0 0 20px rgba(255,61,82,.35) !important; animation:tp .7s ease-in-out infinite; }
+.wire-btn.trap .wmult { color:var(--red2); font-size:11px; }
+.wire-btn.trap .wlbl  { color:var(--red2); opacity:.7; }
+@keyframes tp { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+/* Sparks */
+.sparks-c { position:absolute; top:6px; left:50%; transform:translateX(-50%); pointer-events:none; z-index:5; }
+.spark { position:absolute; width:3px; height:3px; border-radius:50%; animation:spk .42s ease-out forwards; }
+@keyframes spk { 0%{transform:translate(0,0) scale(1);opacity:1} 100%{transform:translate(var(--sx),var(--sy)) scale(0);opacity:0} }
+
+/* Status */
+.status-msg { font-family:var(--mono); font-size:10px; letter-spacing:1px; color:var(--muted); text-align:center; min-height:15px; font-weight:700; }
+.status-msg.warn { color:var(--yellow); }
+.status-msg.bad  { color:var(--red2); }
+.status-msg.good { color:var(--green); }
+
+/* Overlays */
+.ov {
+  position:absolute; top:0;right:0;bottom:0;left:0; border-radius:var(--r);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  z-index:10; opacity:0; pointer-events:none; transition:opacity .2s;
+  background:rgba(10,15,20,.88); backdrop-filter:blur(4px);
+}
+.ov.on { opacity:1; pointer-events:all; }
+.ov-title { font-family:var(--mono); font-size:28px; font-weight:700; animation:pop .35s ease-out; letter-spacing:1px; }
+.ov-sub   { font-family:var(--mono); font-size:11px; margin-top:6px; letter-spacing:1px; color:var(--text2); }
+.ov-amt   { font-family:var(--mono); font-size:40px; margin-top:5px; font-weight:700; }
+@keyframes pop { 0%{transform:scale(.2);opacity:0} 65%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
+
+/* ── RIGHT ── */
+.col-r { display:flex; flex-direction:column; gap:12px; }
+
+.pills { display:flex; flex-wrap:wrap; gap:4px; padding:10px 12px; }
+.pill { font-family:var(--mono); font-size:9px; padding:3px 7px; border-radius:4px; letter-spacing:.5px; font-weight:700; }
+.pill.w { background:rgba(46,232,138,.1);  color:var(--green2); border:1px solid rgba(46,232,138,.25); }
+.pill.l { background:rgba(255,61,82,.1);   color:var(--red2);   border:1px solid rgba(255,61,82,.25); }
+
+.hist-scroll { max-height:205px; overflow-y:auto; }
+.hist-scroll::-webkit-scrollbar { width:3px; }
+.hist-scroll::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.hrow {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:6px 12px; border-bottom:1px solid rgba(53,77,102,.4);
+  font-family:var(--mono); font-size:10px; animation:slin .2s ease-out;
+}
+@keyframes slin { from{transform:translateX(6px);opacity:0} }
+.hrow.w { border-left:2px solid var(--green); }
+.hrow.l { border-left:2px solid var(--red); }
+.hbet { color:var(--muted); }
+.hmult.w { color:var(--green2); font-weight:700; }
+.hmult.l { color:var(--red2); font-weight:700; }
+.hres.w  { color:var(--green2); font-weight:700; }
+.hres.l  { color:var(--red2); font-weight:700; }
+
+/* Fairness */
+.ff { margin-bottom:8px; }
+.ff label { font-family:var(--mono); font-size:8px; color:var(--muted); letter-spacing:1px; display:block; margin-bottom:3px; font-weight:700; }
+.fval { font-family:var(--mono); font-size:9px; color:var(--blue); background:var(--s2); border:1px solid var(--border); padding:5px 8px; border-radius:4px; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.fi { width:100%; background:var(--s2); border:1px solid var(--border); border-radius:4px; outline:none; color:var(--blue); font-family:var(--mono); font-size:9px; padding:5px 8px; }
+.fnote { font-family:var(--mono); font-size:8px; color:var(--muted); line-height:1.65; padding:9px 12px; border-top:1px solid var(--border); }
+
+/* Flash */
+.flash { position:fixed; top:0;right:0;bottom:0;left:0; pointer-events:none; z-index:999; opacity:0; }
+.flash.fr { background:rgba(255,61,82,.2);   opacity:1; animation:fo .32s forwards; }
+.flash.fg { background:rgba(46,232,138,.1);  opacity:1; animation:fo .25s forwards; }
+.flash.fy { background:rgba(255,204,68,.12); opacity:1; animation:fo .2s forwards; }
+@keyframes fo { to{opacity:0} }
+
+/* Footer */
+footer {
+  display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+  background:var(--s1); border:1px solid var(--border); border-radius:var(--r); padding:9px 16px;
+}
+.fnote-foot { font-family:var(--mono); font-size:8px; color:var(--muted); line-height:1.7; font-weight:700; }
+
+/* ── INFO MODAL ── */
+.modal-bg {
+  position:fixed; top:0;right:0;bottom:0;left:0; background:rgba(8,12,18,.88); backdrop-filter:blur(6px);
+  z-index:200; display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition:opacity .2s; padding:16px;
+}
+.modal-bg.on { opacity:1; pointer-events:all; }
+.modal {
+  background:var(--s1); border:1px solid var(--border2);
+  border-radius:12px; max-width:540px; width:100%;
+  max-height:90vh; overflow-y:auto; padding:0;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+.modal::-webkit-scrollbar { width:4px; }
+.modal::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.modal-head {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 20px; border-bottom:1px solid var(--border);
+  position:sticky; top:0; background:var(--s1); z-index:1;
+}
+.modal-title { font-family:var(--mono); font-size:15px; color:var(--text); font-weight:700; letter-spacing:1px; }
+.modal-close {
+  width:28px; height:28px; border-radius:5px;
+  background:var(--s2); border:1px solid var(--border);
+  color:var(--text2); font-size:14px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; transition:.12s;
+}
+.modal-close:hover { background:var(--s3); color:var(--text); }
+.modal-body { padding:20px; display:flex; flex-direction:column; gap:18px; }
+.info-section {}
+.info-section h3 { font-family:var(--mono); font-size:10px; letter-spacing:2px; color:var(--muted); margin-bottom:8px; font-weight:700; text-transform:uppercase; }
+.info-section p, .info-section li { font-size:13px; color:var(--text2); line-height:1.7; }
+.info-section ul { list-style:none; display:flex; flex-direction:column; gap:5px; }
+.info-section li::before { content:'→ '; color:var(--blue); font-weight:700; }
+.diff-table { width:100%; border-collapse:collapse; }
+.diff-table th { font-family:var(--mono); font-size:9px; letter-spacing:1px; color:var(--muted); text-align:left; padding:5px 8px; border-bottom:1px solid var(--border); font-weight:700; }
+.diff-table td { font-size:12px; padding:7px 8px; border-bottom:1px solid rgba(53,77,102,.4); }
+.diff-table tr:last-child td { border-bottom:none; }
+.diff-table .td-e { color:var(--green); font-weight:700; }
+.diff-table .td-m { color:var(--yellow); font-weight:700; }
+.diff-table .td-h { color:var(--red2); font-weight:700; }
+.info-sep { height:1px; background:var(--border); }
+</style>
+</head>
+<body>
+
+<div class="flash" id="fl"></div>
+
+<!-- INFO MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">💣 HOW TO PLAY</span>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="info-section">
+        <h3>// OBJECTIVE</h3>
+        <p>A bomb is wired with 12 coloured wires. Some are <strong style="color:var(--red)">traps</strong> — cut one and the bomb detonates. Your goal: cut as many safe wires as possible, collect multiplier winnings, and cash out before hitting a trap or running out of time.</p>
+      </div>
+      <div class="info-sep"></div>
+      <div class="info-section">
+        <h3>// HOW TO PLAY</h3>
+        <ul>
+          <li>Enter a bet amount and choose a difficulty.</li>
+          <li>Press <strong style="color:var(--red)">START ROUND</strong> — the bomb activates.</li>
+          <li>Each wire shows its multiplier reward if it is safe.</li>
+          <li>Trap wires show <strong style="color:var(--red)">???</strong> — you don't know which until you cut.</li>
+          <li>Cut a safe wire → multiplier increases → press <strong style="color:var(--green)">CASH OUT</strong> to collect.</li>
+          <li>Cut a trap wire → bomb detonates → bet is lost.</li>
+          <li>The countdown timer runs at all times — if it hits 0, bomb detonates.</li>
+          <li>After every round, trap wires are revealed in red.</li>
+        </ul>
+      </div>
+      <div class="info-sep"></div>
+      <div class="info-section">
+        <h3>// DIFFICULTY COMPARISON</h3>
+        <table class="diff-table">
+          <tr><th>MODE</th><th>WIRES</th><th>TRAPS</th><th>SAFE</th><th>MAX PAYOUT</th></tr>
+          <tr>
+            <td class="td-e">EASY</td><td>12</td><td>1</td><td>11</td><td class="td-e">3.55×</td>
+          </tr>
+          <tr>
+            <td class="td-m">MEDIUM</td><td>12</td><td>3</td><td>9</td><td class="td-m">14.60×</td>
+          </tr>
+          <tr>
+            <td class="td-h">HARD</td><td>12</td><td>5</td><td>7</td><td class="td-h">32.40×</td>
+          </tr>
+        </table>
+      </div>
+      <div class="info-sep"></div>
+      <div class="info-section">
+        <h3>// AUTO CASHOUT</h3>
+        <p>Enable Auto Cashout and set a target multiplier. If you cut a safe wire and your current multiplier reaches or exceeds the target, you automatically cash out.</p>
+      </div>
+      <div class="info-sep"></div>
+      <div class="info-section">
+        <h3>// DISCLAIMER</h3>
+        <p style="color:var(--muted);font-size:12px;">This is a <strong style="color:var(--yellow)">demo only</strong>. No real money. Fake balance only. Target RTP: 97%. Demo uses browser randomness — real RTP and provably fair logic must be enforced server-side.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+
+<!-- HEADER -->
+<header>
+  <div class="logo">💣 <em>BOMB</em> DEFUSAL</div>
+  <div class="hright">
+    <span class="badge badge-demo">DEMO</span>
+    <div class="bal-box">
+      <span class="bal-lbl">BALANCE</span>
+      <span class="bal-val">$<span id="balDisp">1000.00</span></span>
+    </div>
+    <button class="icon-btn" id="btnSound" title="Toggle Sound">🔇</button>
+    <button class="icon-btn" id="btnInfo"  title="How to Play">ℹ️</button>
+  </div>
+</header>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- LEFT -->
+<div style="display:flex;flex-direction:column;gap:12px;">
+  <div class="card">
+    <div class="ctit">// BET</div>
+    <div class="cbod">
+      <span class="lbl">AMOUNT</span>
+      <div class="irow">
+        <span class="ipfx">$</span>
+        <input class="bet-inp" id="betInp" type="number" value="10" min="1" max="1000" step="1">
+      </div>
+      <div class="qbets">
+        <button class="qb" data-v="1">$1</button>
+        <button class="qb" data-v="5">$5</button>
+        <button class="qb" data-v="10">$10</button>
+        <button class="qb" data-v="25">$25</button>
+        <button class="qb" data-v="50">$50</button>
+      </div>
+
+      <span class="lbl">DIFFICULTY</span>
+      <div class="dbts">
+        <button class="dbt e" data-d="easy">EASY</button>
+        <button class="dbt" data-d="medium">MED</button>
+        <button class="dbt" data-d="hard">HARD</button>
+      </div>
+
+      <div class="ac-row">
+        <label class="tog"><input type="checkbox" id="acTog"><span class="tsl"></span></label>
+        <span class="ac-lbl">AUTO CASHOUT AT</span>
+      </div>
+      <div class="ac-irow" id="acWrap">
+        <input class="ac-inp" id="acInp" type="number" value="2.00" min="1.01" step="0.01" disabled>
+        <span class="ac-sfx">×</span>
+      </div>
+
+      <button class="btn-start" id="btnStart">▶  START ROUND</button>
+      <button class="btn-cash"  id="btnCash">💰  CASH OUT</button>
+      <button class="btn-sm"    id="btnReset">↺ RESET BALANCE ($1,000)</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ctit">// WIRE MULTIPLIERS</div>
+    <div class="cbod" style="padding-top:8px;">
+      <div class="ladder" id="ladder"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CENTER -->
+<div class="col-c">
+  <div class="mult-hero">
+    <div class="mh-lbl">CURRENT MULTIPLIER</div>
+    <div class="mh-val" id="mDisp">0.00<span class="sx">×</span></div>
+    <div class="tbar-wrap">
+      <div class="tbar-bg"><div class="tbar-fill" id="tFill" style="width:100%"></div></div>
+      <div class="tbar-row">
+        <span class="tbar-lbl" id="riskLbl">— PLACE YOUR BET —</span>
+        <span class="tbar-sec" id="tSec"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="bomb-panel" id="bombPanel">
+    <div class="idle-wrap" id="idleW">
+      <svg width="70" height="86" viewBox="0 0 70 86">
+        <rect x="7" y="24" width="56" height="50" rx="7" fill="#1e2e42" stroke="#2e4258" stroke-width="1.5"/>
+        <rect x="14" y="31" width="42" height="20" rx="3" fill="#030e09" stroke="#0c2518" stroke-width="1"/>
+        <text x="35" y="46" text-anchor="middle" font-family="Share Tech Mono" font-size="13" fill="#20f060" opacity="0.45">10.0</text>
+        <circle cx="21" cy="62" r="3.5" fill="#1a2e42" stroke="#2e4258"/>
+        <circle cx="35" cy="62" r="3.5" fill="#1a2e42" stroke="#2e4258"/>
+        <circle cx="49" cy="62" r="3.5" fill="#1a2e42" stroke="#2e4258"/>
+        <line x1="28" y1="24" x2="36" y2="13" stroke="#ffcc44" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="36" cy="10" r="4.5" fill="#ff7840" opacity="0.6"/>
+      </svg>
+      <div class="idle-txt">AWAITING ACTIVATION</div>
+    </div>
+
+    <div class="active-wrap" id="activeW">
+      <div class="device">
+        <div class="dev-scr"><div class="dev-time" id="devTime">10.0</div></div>
+        <div class="dev-lights" id="devLights">
+          <div class="dl"></div><div class="dl"></div><div class="dl"></div>
+          <div class="dl"></div><div class="dl"></div>
+        </div>
+      </div>
+      <div class="wires-grid" id="wiresGrid"></div>
+      <div class="status-msg" id="statMsg"></div>
+    </div>
+
+    <div class="ov" id="ovExp">
+      <div class="ov-title" style="color:var(--red2)">💥 DETONATED</div>
+      <div class="ov-sub" id="ovExpSub">WRONG WIRE — ROUND OVER</div>
+    </div>
+    <div class="ov" id="ovWin">
+      <div class="ov-title" style="color:var(--green2)">✓ CASHED OUT</div>
+      <div class="ov-amt" id="ovAmt" style="color:var(--yellow)"></div>
+    </div>
+    <div class="ov" id="ovTime">
+      <div class="ov-title" style="color:var(--red2)">⏱ TIME'S UP</div>
+      <div class="ov-sub" style="color:var(--text2)">BOMB DETONATED — ROUND OVER</div>
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT -->
+<div class="col-r">
+  <div class="card">
+    <div class="ctit">// RECENT</div>
+    <div class="pills" id="pillsRow">
+      <span style="font-family:var(--mono);font-size:9px;color:var(--muted);">No rounds yet</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ctit">// HISTORY</div>
+    <div class="hist-scroll" id="histList">
+      <div style="padding:12px;font-family:var(--mono);font-size:9px;color:var(--muted);text-align:center;">No rounds played</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ctit">// PROVABLY FAIR (DEMO)</div>
+    <div class="cbod">
+      <div class="ff"><label>SERVER SEED</label><span class="fval">hidden-demo-seed-••••••</span></div>
+      <div class="ff"><label>CLIENT SEED</label><input class="fi" id="cSeedInp" type="text" value="player-seed-001" maxlength="32"></div>
+      <div class="ff"><label>NONCE</label><span class="fval" id="nonceDisp">0</span></div>
+    </div>
+    <div class="fnote">Real provably fair requires server seeds with hashed commitments, client seed, nonce, and post-round verification.</div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<footer>
+  <div class="fnote-foot">
+    ⚠ DEMO ONLY — No real money. Fake balance only. Target RTP: 97%<br>
+    Real fairness must be enforced server-side.
+  </div>
+  <div style="display:flex;gap:6px;align-items:center;">
+    <button class="btn-sm" style="width:auto;padding:6px 12px;" id="btnReset2">↺ RESET</button>
+  </div>
+</footer>
+
+</div><!-- /app -->
+
+<script>
+/* =========================================================
+   BOMB DEFUSAL — v5
+   =========================================================
+   Difficulty → exact safe wire counts and max multipliers:
+   Easy:   12 wires, 1 trap,  11 safe → max 3.55×
+   Medium: 12 wires, 3 traps,  9 safe → max 14.60×
+   Hard:   12 wires, 5 traps,  7 safe → max 32.40×
+
+   Multiplier formula per difficulty:
+   Each step scales geometrically so that the last safe wire
+   lands exactly on the target max multiplier.
+   ratio = (maxMult / startMult) ^ (1 / (safeCount - 1))
+   mults[i] = round(startMult * ratio^i, 2)
+   ========================================================= */
+
+// ── GENERATE MULTIPLIER LADDERS ──────────────────────────
+function genMults(safeCount, startMult, maxMult) {
+  if (safeCount === 1) return [maxMult];
+  const ratio = Math.pow(maxMult / startMult, 1 / (safeCount - 1));
+  return Array.from({length: safeCount}, (_, i) =>
+    Math.round(startMult * Math.pow(ratio, i) * 100) / 100
+  );
+}
+
+const DIFF_CFG = {
+  easy: {
+    danger: 1,
+    mults: genMults(11, 1.10, 3.55),   // 11 safe wires, 1.10× → 3.55×
+    label: 'EASY · 1 TRAP',
+    color: 'var(--green)',
+    freqs: [220, 246, 261, 277, 294, 311, 330, 349, 370, 415, 440],
+  },
+  medium: {
+    danger: 3,
+    mults: genMults(9, 1.20, 14.60),    // 9 safe wires, 1.20× → 14.60×
+    label: 'MEDIUM · 3 TRAPS',
+    color: 'var(--yellow)',
+    freqs: [294, 330, 370, 415, 466, 523, 587, 659, 784],
+  },
+  hard: {
+    danger: 5,
+    mults: genMults(7, 1.50, 32.40),    // 7 safe wires, 1.50× → 32.40×
+    label: 'HARD · 5 TRAPS',
+    color: 'var(--red)',
+    freqs: [370, 440, 523, 622, 740, 932, 1175],
+  },
+};
+const TOTAL_WIRES = 12;
+
+// Wire colors — vivid, easy to distinguish on the darker background
+const WCOLS = [
+  {name:'RED',    hex:'#ff4055'}, {name:'BLUE',  hex:'#4aaaf0'},
+  {name:'GREEN',  hex:'#2ee88a'}, {name:'YELLOW',hex:'#ffcc44'},
+  {name:'ORANGE', hex:'#ff7840'}, {name:'PURPLE',hex:'#a060f0'},
+  {name:'WHITE',  hex:'#c8e0f4'}, {name:'CYAN',  hex:'#30ccf0'},
+  {name:'PINK',   hex:'#f040a0'}, {name:'LIME',  hex:'#aaee30'},
+  {name:'TEAL',   hex:'#30f0c8'}, {name:'GOLD',  hex:'#f0cc30'},
+];
+
+// ── STATE ────────────────────────────────────────────────
+const G = {
+  bal:1000, bet:10, active:false, cutsDone:0,
+  dangerIdxs:[], slotMultMap:{}, currMult:0,
+  diff:'easy', acOn:false, acTarget:2.00,
+  soundOn:false, history:[], nonce:0,
+  timerMs:0, timerLeft:0, timerRaf:null, timerLastTs:null, _lastTickMs:0,
+};
+
+// ── DOM ──────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const balDisp=$('balDisp'),betInp=$('betInp'),mDisp=$('mDisp'),tFill=$('tFill'),
+  riskLbl=$('riskLbl'),tSec=$('tSec'),bombPanel=$('bombPanel'),
+  idleW=$('idleW'),activeW=$('activeW'),wiresGrid=$('wiresGrid'),
+  statMsg=$('statMsg'),ovExp=$('ovExp'),ovExpSub=$('ovExpSub'),
+  ovWin=$('ovWin'),ovAmt=$('ovAmt'),ovTime=$('ovTime'),
+  btnStart=$('btnStart'),btnCash=$('btnCash'),btnSound=$('btnSound'),
+  btnInfo=$('btnInfo'),histList=$('histList'),pillsRow=$('pillsRow'),
+  ladder=$('ladder'),devTime=$('devTime'),devLights=$('devLights'),
+  nonceDisp=$('nonceDisp'),fl=$('fl'),
+  acTog=$('acTog'),acInp=$('acInp'),acWrap=$('acWrap'),
+  modalBg=$('modalBg'),modalClose=$('modalClose');
+
+// ── AUDIO ENGINE ─────────────────────────────────────────
+let AC = null;
+function ctx() {
+  if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+  return AC;
+}
+
+function osc(freq, type, start, dur, vol, pitchEnd) {
+  if (!G.soundOn) return;
+  try {
+    const c = ctx(), o = c.createOscillator(), g = c.createGain();
+    o.connect(g); g.connect(c.destination);
+    o.type = type; o.frequency.setValueAtTime(freq, start);
+    if (pitchEnd) o.frequency.exponentialRampToValueAtTime(pitchEnd, start + dur);
+    g.gain.setValueAtTime(vol, start);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+    o.start(start); o.stop(start + dur + 0.01);
+  } catch(e){}
+}
+
+function noiseBurst(start, dur, vol, loFreq, hiFreq) {
+  if (!G.soundOn) return;
+  try {
+    const c = ctx();
+    const buf = c.createBuffer(1, c.sampleRate * dur, c.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i=0;i<data.length;i++) data[i] = Math.random()*2-1;
+    const src = c.createBufferSource();
+    const filt = c.createBiquadFilter();
+    const g = c.createGain();
+    src.buffer = buf; filt.type = 'bandpass';
+    filt.frequency.value = (loFreq + hiFreq) / 2;
+    filt.Q.value = 0.6;
+    src.connect(filt); filt.connect(g); g.connect(c.destination);
+    g.gain.setValueAtTime(vol, start);
+    g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+    src.start(start); src.stop(start + dur + 0.01);
+  } catch(e){}
+}
+
+/* ── WIRE CUT SOUND ──────────────────────────────────────
+   Physical snip: noise burst (scissors cutting)
+   + confirmation tone (ascending pitch per level)
+   + harmonic sparkle (more overtones = higher multiplier)
+*/
+function sndCut(level, diff) {
+  if (!G.soundOn) return;
+  const c = ctx(), now = c.currentTime;
+  const freqs = DIFF_CFG[diff].freqs;
+  const f = freqs[Math.min(level-1, freqs.length-1)];
+
+  // Physical snip — narrow bandpass noise
+  noiseBurst(now, 0.05, 0.3, 2000, 5000);
+  // Short click transient
+  osc(1800, 'square', now, 0.025, 0.15, 400);
+
+  // Confirmation tone — pitch rises with level
+  const vol = 0.10 + (level / DIFF_CFG[diff].mults.length) * 0.16;
+  osc(f,      'triangle', now + 0.03, 0.14, vol);
+  osc(f*1.5,  'sine',     now + 0.05, 0.10, vol * 0.5);
+
+  // Harmonic sparkle grows with level
+  if (level >= 3) osc(f*2,   'sine', now + 0.07, 0.09, vol * 0.35);
+  if (level >= 5) osc(f*3,   'sine', now + 0.09, 0.08, vol * 0.22);
+  if (level >= 7) osc(f*4,   'sine', now + 0.11, 0.10, vol * 0.15);
+  // Hard mode: tense undertone
+  if (diff === 'hard' && level >= 3) osc(f * 0.67, 'triangle', now + 0.03, 0.10, vol * 0.28);
+}
+
+/* ── WRONG WIRE / EXPLOSION SOUND ────────────────────────
+   Low sub thud → rising noise → crackling sawtooth distortion
+   → high fizz tail = realistic explosion feel
+*/
+function sndExplode() {
+  if (!G.soundOn) return;
+  const c = ctx(), now = c.currentTime;
+
+  // Deep sub boom
+  osc(55,  'sine',     now,      0.7,  0.40, 25);
+  osc(80,  'sine',     now,      0.5,  0.28, 30);
+  // Mid crunch
+  osc(200, 'sawtooth', now+0.02, 0.4,  0.22, 40);
+  osc(120, 'sawtooth', now+0.04, 0.55, 0.20, 30);
+  // High crack noise
+  noiseBurst(now,      0.08, 0.5, 800,  8000);
+  noiseBurst(now+0.05, 0.4,  0.3, 200,  2000);
+  noiseBurst(now+0.1,  0.6,  0.2, 100,  800);
+  // Ringing aftermath
+  osc(440, 'sine',     now+0.08, 0.3, 0.06, 220);
+}
+
+/* ── CASHOUT SOUND ───────────────────────────────────────
+   Ascending coin-stack arpeggio — addictive, rewarding feel
+*/
+function sndCashout() {
+  if (!G.soundOn) return;
+  const c = ctx(), now = c.currentTime;
+  const notes = [330, 392, 494, 588, 659, 784, 988];
+  notes.forEach((f, i) => {
+    const t = now + i * 0.07;
+    osc(f,      'sine', t, 0.22, 0.16 + i*0.015);
+    osc(f*2,    'sine', t, 0.12, 0.05);
+    if (i === notes.length-1) {
+      // Final chime shimmer
+      osc(f*1.5, 'sine', t+0.05, 0.18, 0.08);
+      osc(f*3,   'sine', t+0.07, 0.12, 0.04);
+    }
+  });
+  // Coin jingle noise
+  noiseBurst(now, 0.06, 0.15, 3000, 9000);
+}
+
+/* ── START ROUND SOUND ───────────────────────────────────
+   Three-tone activation chirp — device powering on
+*/
+function sndStart() {
+  if (!G.soundOn) return;
+  const c = ctx(), now = c.currentTime;
+  osc(300, 'square', now,       0.06, 0.10, 300);
+  osc(400, 'square', now+0.07,  0.07, 0.09, 400);
+  osc(600, 'square', now+0.14,  0.09, 0.10, 600);
+  noiseBurst(now, 0.05, 0.08, 400, 2000);
+}
+
+/* ── TICK SOUND ──────────────────────────────────────────
+   Gets sharper and louder as time runs out
+*/
+function sndTick(urgency) {
+  if (!G.soundOn) return;
+  const c = ctx(), now = c.currentTime;
+  const f = 700 + urgency * 900;
+  const v = 0.04 + urgency * 0.13;
+  osc(f, 'square', now, 0.022, v, f*1.1);
+}
+
+/* ── TIME'S UP ───────────────────────────────────────────
+   Same as explosion but with a clock-stop click before it
+*/
+function sndTimesUp() {
+  if (!G.soundOn) return;
+  const c = ctx(), now = c.currentTime;
+  osc(1200, 'square', now, 0.05, 0.15, 200); // clock stop click
+  setTimeout(()=>sndExplode(), 100);
+}
+
+// ── FLASH ────────────────────────────────────────────────
+function flash(cls) { fl.className='flash'; void fl.offsetWidth; fl.className='flash '+cls; }
+
+// ── SPARKS ───────────────────────────────────────────────
+function sparks(btn, col) {
+  const c = document.createElement('div'); c.className='sparks-c'; btn.appendChild(c);
+  for (let i=0;i<10;i++) {
+    const s=document.createElement('div'); s.className='spark';
+    const a=Math.random()*Math.PI*2, d=14+Math.random()*28;
+    s.style.setProperty('--sx',Math.cos(a)*d+'px');
+    s.style.setProperty('--sy',Math.sin(a)*d+'px');
+    s.style.background = Math.random()>.4 ? col : '#fff';
+    s.style.animationDelay = Math.random()*0.06+'s';
+    c.appendChild(s);
+  }
+  setTimeout(()=>c.remove(), 550);
+}
+
+// ── LIGHTS ───────────────────────────────────────────────
+function setLights(urgency) {
+  const ls = devLights.querySelectorAll('.dl');
+  ls.forEach(l=>l.className='dl');
+  if (!G.active) return;
+  if (urgency < 0.25) {
+    ls.forEach((l,i)=>{ if(i%2===0) l.classList.add('g','bs'); });
+  } else if (urgency < 0.5) {
+    ls.forEach((l,i)=>l.classList.add(i%2?'o':'g','bs'));
+  } else if (urgency < 0.72) {
+    ls.forEach(l=>l.classList.add('o','bf'));
+  } else {
+    ls.forEach(l=>l.classList.add('r','bfr'));
+  }
+}
+
+// ── TIMER RAF LOOP ───────────────────────────────────────
+function tickTimer(ts) {
+  if (!G.active) return;
+  if (G.timerLastTs===null) G.timerLastTs=ts;
+  const dt=ts-G.timerLastTs; G.timerLastTs=ts;
+  G.timerLeft=Math.max(0, G.timerLeft-dt);
+  const sec=G.timerLeft/1000, pct=G.timerLeft/G.timerMs;
+
+  tFill.style.width=(pct*100)+'%';
+  tSec.textContent=sec.toFixed(1)+'s';
+  devTime.textContent=sec.toFixed(1);
+
+  if (pct>0.5)       tFill.style.background='var(--green)';
+  else if (pct>0.25) tFill.style.background='var(--yellow)';
+  else               tFill.style.background='var(--red)';
+
+  const urgency=1-pct;
+  const tickInt=pct>0.5?1000:pct>0.25?450:160;
+  if ((G.timerMs-G.timerLeft)-G._lastTickMs>tickInt) {
+    G._lastTickMs=G.timerMs-G.timerLeft; sndTick(urgency);
+  }
+
+  bombPanel.classList.remove('sh-lo','sh-md','sh-hi');
+  if (G.active){
+    if (pct<0.15)      bombPanel.classList.add('sh-hi');
+    else if (pct<0.35) bombPanel.classList.add('sh-md');
+    else if (pct<0.65) bombPanel.classList.add('sh-lo');
+  }
+  setLights(urgency);
+
+  if (G.timerLeft<=0){ timesUp(); return; }
+  G.timerRaf=requestAnimationFrame(tickTimer);
+}
+function startTimer() {
+  G.timerMs=10000+Math.random()*3500; G.timerLeft=G.timerMs;
+  G.timerLastTs=null; G._lastTickMs=0;
+  G.timerRaf=requestAnimationFrame(tickTimer);
+}
+function stopTimer() { if(G.timerRaf) cancelAnimationFrame(G.timerRaf); G.timerRaf=null; }
+
+// ── BALANCE ──────────────────────────────────────────────
+function addBal(d){ G.bal=Math.max(0,G.bal+d); balDisp.textContent=G.bal.toFixed(2); }
+
+// ── LADDER ───────────────────────────────────────────────
+function buildLadder() {
+  ladder.innerHTML='';
+  const mults=DIFF_CFG[G.diff].mults, total=mults.length;
+  mults.forEach((m,i)=>{
+    const row=document.createElement('div'); row.className='lrow';
+    if (G.active){
+      if (i<G.cutsDone)       row.classList.add('done');
+      else if (i===G.cutsDone) row.classList.add('curr');
+    }
+    row.innerHTML=`<span class="lcut">WIRE ${i+1}/${total}</span><span class="lval">${m.toFixed(2)}×</span>`;
+    ladder.appendChild(row);
+  });
+}
+
+// ── MULT DISPLAY ─────────────────────────────────────────
+function setMDisp(val, cls=''){
+  mDisp.innerHTML=`${typeof val==='number'?val.toFixed(2):val}<span class="sx">×</span>`;
+  mDisp.className='mh-val'+(cls?' '+cls:'');
+}
+
+// ── WIRE RENDER ──────────────────────────────────────────
+function renderWires() {
+  wiresGrid.innerHTML='';
+  const cols=[...WCOLS].sort(()=>Math.random()-.5);
+  for (let i=0;i<TOTAL_WIRES;i++){
+    const col=cols[i], m=G.slotMultMap[i];
+    const btn=document.createElement('button');
+    btn.className='wire-btn'; btn.dataset.slot=i;
+    const multLabel=m!==null?m.toFixed(2)+'×':'???';
+    btn.innerHTML=`
+      <div class="wmult">${multLabel}</div>
+      <div class="wbody" style="background:${col.hex};box-shadow:0 0 7px ${col.hex}44;"></div>
+      <div class="wlbl">${col.name}</div>`;
+    btn.addEventListener('click',()=>cutWire(i,btn,col.hex));
+    wiresGrid.appendChild(btn);
+  }
+}
+
+// ── STATUS ───────────────────────────────────────────────
+function setStat(msg,cls=''){
+  statMsg.textContent=msg; statMsg.className='status-msg'+(cls?' '+cls:'');
+}
+
+// ── LOCK CONTROLS ────────────────────────────────────────
+function lock(on){
+  betInp.disabled=on;
+  document.querySelectorAll('.qb,.dbt').forEach(b=>b.disabled=on);
+  acTog.disabled=on;
+  acInp.disabled=on||!G.acOn;
+}
+
+// ── START ROUND ──────────────────────────────────────────
+function startRound(){
+  const bet=parseFloat(betInp.value);
+  if (isNaN(bet)||bet<=0)  { setStat('INVALID BET AMOUNT','warn'); return; }
+  if (bet>G.bal)           { setStat('INSUFFICIENT BALANCE','bad'); return; }
+
+  G.bet=bet; G.cutsDone=0; G.currMult=0; G.active=true;
+  G.nonce++; nonceDisp.textContent=G.nonce;
+  addBal(-bet);
+
+  // Shuffle to pick danger slots
+  const pool=Array.from({length:TOTAL_WIRES},(_,i)=>i);
+  for (let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  G.dangerIdxs=pool.slice(0,DIFF_CFG[G.diff].danger);
+
+  // Build slot→mult map
+  const mults=DIFF_CFG[G.diff].mults; let mi=0;
+  G.slotMultMap={};
+  for (let i=0;i<TOTAL_WIRES;i++){
+    G.slotMultMap[i]=G.dangerIdxs.includes(i)?null:mults[mi++];
+  }
+
+  idleW.style.display='none'; activeW.style.display='flex';
+  ovExp.classList.remove('on'); ovWin.classList.remove('on'); ovTime.classList.remove('on');
+  bombPanel.classList.remove('sh-lo','sh-md','sh-hi');
+
+  renderWires(); buildLadder(); setMDisp('1.00');
+  setStat(`${DIFF_CFG[G.diff].label} — CUT A WIRE TO BEGIN`,'warn');
+  riskLbl.textContent='TIME REMAINING';
+
+  btnStart.style.display='none';
+  btnCash.style.display='block';
+  btnCash.disabled=true;
+
+  startTimer(); sndStart(); lock(true);
+}
+
+// ── REVEAL TRAPS ─────────────────────────────────────────
+function revealTraps(){
+  wiresGrid.querySelectorAll('.wire-btn').forEach(btn=>{
+    const slot=+btn.dataset.slot;
+    if (G.dangerIdxs.includes(slot)&&!btn.classList.contains('boom')){
+      btn.classList.add('trap');
+      const lbl=btn.querySelector('.wmult'); if(lbl) lbl.textContent='💣';
+    }
+  });
+  wiresGrid.querySelectorAll('.wire-btn.boom').forEach(btn=>{
+    const lbl=btn.querySelector('.wmult'); if(lbl) lbl.textContent='💣';
+  });
+}
+
+// ── CUT WIRE ─────────────────────────────────────────────
+function cutWire(slotIdx,btn,hex){
+  if (!G.active) return;
+  wiresGrid.querySelectorAll('.wire-btn').forEach(b=>b.disabled=true);
+  const isDanger=G.dangerIdxs.includes(slotIdx);
+
+  if (isDanger){
+    // DETONATION
+    btn.classList.add('boom','cut');
+    stopTimer(); G.active=false;
+    flash('fr'); sndExplode();
+    devLights.querySelectorAll('.dl').forEach(l=>l.className='dl r');
+    bombPanel.classList.remove('sh-lo','sh-md','sh-hi');
+    setMDisp('0.00','loss');
+    revealTraps();
+    addHistory(G.bet,0,false);
+    setTimeout(()=>{ ovExpSub.textContent=`WIRE ${slotIdx+1} WAS A TRAP — ROUND OVER`; ovExp.classList.add('on'); setStat('DETONATED','bad'); }, 500);
+    setTimeout(endRound, 2700);
+
+  } else {
+    // SAFE CUT
+    btn.classList.add('cut');
+    sparks(btn,hex);
+    G.cutsDone++;
+    G.currMult=G.slotMultMap[slotIdx];
+    const level=G.cutsDone;
+    const safeCount=TOTAL_WIRES-DIFF_CFG[G.diff].danger;
+
+    sndCut(level,G.diff);
+    flash(level>=safeCount*0.7?'fy':'fg');
+    setMDisp(G.currMult.toFixed(2), level>=Math.ceil(safeCount/2)?'win':'');
+    buildLadder();
+    btnCash.disabled=false;
+
+    if (G.cutsDone>=safeCount){ setTimeout(()=>cashOut(true),350); return; }
+
+    const remaining=TOTAL_WIRES-G.cutsDone;
+    const dangerLeft=G.dangerIdxs.filter(i=>{
+      const cuts=[...wiresGrid.querySelectorAll('.wire-btn.cut')].map(b=>+b.dataset.slot);
+      return !cuts.includes(i);
+    }).length;
+    const dp=dangerLeft/remaining;
+    setStat(`${remaining-dangerLeft} SAFE WIRES LEFT · ${Math.round(dp*100)}% TRAP CHANCE NEXT`,'warn');
+
+    setTimeout(()=>{
+      wiresGrid.querySelectorAll('.wire-btn:not(.cut)').forEach(b=>b.disabled=false);
+      if (G.acOn&&G.currMult>=G.acTarget) cashOut(false);
+    },250);
+  }
+}
+
+// ── CASH OUT ─────────────────────────────────────────────
+function cashOut(auto){
+  if (!G.active) return;
+  if (G.cutsDone===0) return;
+  G.active=false; stopTimer();
+  wiresGrid.querySelectorAll('.wire-btn').forEach(b=>b.disabled=true);
+  bombPanel.classList.remove('sh-lo','sh-md','sh-hi');
+  devLights.querySelectorAll('.dl').forEach(l=>l.className='dl g');
+
+  const pay=Math.round(G.bet*G.currMult*100)/100;
+  addBal(pay); sndCashout(); flash('fg');
+  setMDisp(G.currMult.toFixed(2),'win');
+  revealTraps();
+  addHistory(G.bet,G.currMult,true);
+  setTimeout(()=>{ ovAmt.textContent='+$'+pay.toFixed(2); ovWin.classList.add('on'); },400);
+  setTimeout(endRound,2600);
+}
+
+// ── TIME'S UP ────────────────────────────────────────────
+function timesUp(){
+  if (!G.active) return;
+  G.active=false; sndTimesUp(); flash('fr');
+  bombPanel.classList.remove('sh-lo','sh-md','sh-hi');
+  setMDisp('0.00','loss');
+  tFill.style.width='0%'; tSec.textContent='0.0s'; devTime.textContent='0.0';
+  devLights.querySelectorAll('.dl').forEach(l=>l.className='dl r');
+  revealTraps(); addHistory(G.bet,0,false);
+  setTimeout(()=>ovTime.classList.add('on'),500);
+  setTimeout(endRound,2700);
+}
+
+// ── END ROUND ────────────────────────────────────────────
+function endRound(){
+  G.active=false; stopTimer();
+  bombPanel.classList.remove('sh-lo','sh-md','sh-hi');
+  ovExp.classList.remove('on'); ovWin.classList.remove('on'); ovTime.classList.remove('on');
+  idleW.style.display='flex'; activeW.style.display='none';
+  btnStart.style.display='block'; btnCash.style.display='none';
+  lock(false);
+  tFill.style.width='100%'; tFill.style.background='var(--green)';
+  tSec.textContent=''; riskLbl.textContent='— PLACE YOUR BET —';
+  devTime.textContent='10.0';
+  devLights.querySelectorAll('.dl').forEach(l=>l.className='dl');
+  setMDisp('0.00'); setStat(''); buildLadder();
+}
+
+// ── HISTORY ──────────────────────────────────────────────
+function addHistory(bet,mult,win){
+  const pay=win?Math.round(bet*mult*100)/100:0;
+  G.history.unshift({bet,mult,win,pay});
+  if (G.history.length>15) G.history.pop();
+  renderHistory(); renderPills();
+}
+function renderHistory(){
+  if (!G.history.length){
+    histList.innerHTML='<div style="padding:12px;font-family:var(--mono);font-size:9px;color:var(--muted);text-align:center;">No rounds played</div>';
+    return;
+  }
+  histList.innerHTML=G.history.map(r=>`
+    <div class="hrow ${r.win?'w':'l'}">
+      <span class="hbet">$${r.bet.toFixed(2)}</span>
+      <span class="hmult ${r.win?'w':'l'}">${r.win?r.mult.toFixed(2)+'×':'💥'}</span>
+      <span class="hres ${r.win?'w':'l'}">${r.win?'+$'+r.pay.toFixed(2):'-$'+r.bet.toFixed(2)}</span>
+    </div>`).join('');
+}
+function renderPills(){
+  if (!G.history.length){
+    pillsRow.innerHTML='<span style="font-family:var(--mono);font-size:9px;color:var(--muted);">No rounds yet</span>';
+    return;
+  }
+  pillsRow.innerHTML=G.history.slice(0,10).map(r=>
+    `<span class="pill ${r.win?'w':'l'}">${r.win?r.mult.toFixed(2)+'×':'💥'}</span>`
+  ).join('');
+}
+
+// ── DIFFICULTY ───────────────────────────────────────────
+function setDiff(d){
+  G.diff=d;
+  document.querySelectorAll('.dbt').forEach(b=>{
+    b.className='dbt';
+    if (b.dataset.d===d) b.classList.add(d==='easy'?'e':d==='medium'?'m':'h');
+  });
+  buildLadder();
+}
+
+// ── EVENTS ───────────────────────────────────────────────
+btnStart.addEventListener('click',startRound);
+btnCash.addEventListener('click',()=>{ if(G.cutsDone===0)return; cashOut(false); });
+['btnReset','btnReset2'].forEach(id=>{ const b=$(id); if(b) b.addEventListener('click',()=>{ if(G.active)return; G.bal=1000; balDisp.textContent='1000.00'; }); });
+
+btnSound.addEventListener('click',()=>{
+  G.soundOn=!G.soundOn;
+  btnSound.textContent=G.soundOn?'🔊':'🔇';
+  btnSound.className=G.soundOn?'icon-btn on':'icon-btn';
+  if (G.soundOn) try{ ctx().resume(); }catch(e){}
+});
+btnInfo.addEventListener('click',()=>modalBg.classList.add('on'));
+modalClose.addEventListener('click',()=>modalBg.classList.remove('on'));
+modalBg.addEventListener('click',e=>{ if(e.target===modalBg) modalBg.classList.remove('on'); });
+
+document.querySelectorAll('.qb').forEach(b=>b.addEventListener('click',()=>betInp.value=b.dataset.v));
+document.querySelectorAll('.dbt').forEach(b=>b.addEventListener('click',()=>setDiff(b.dataset.d)));
+
+acTog.addEventListener('change',()=>{
+  G.acOn=acTog.checked;
+  acWrap.className=G.acOn?'ac-irow on':'ac-irow';
+  acInp.disabled=!G.acOn;
+});
+acInp.addEventListener('change',()=>{
+  const v=parseFloat(acInp.value);
+  G.acTarget=isNaN(v)||v<1.01?2.00:v; acInp.value=G.acTarget.toFixed(2);
+});
+betInp.addEventListener('change',()=>{
+  const v=parseFloat(betInp.value);
+  if (isNaN(v)||v<=0) betInp.value=1;
+  if (v>G.bal) betInp.value=Math.floor(G.bal);
+});
+
+// ── INIT ─────────────────────────────────────────────────
+buildLadder();
+</script>
+</body>
+</html>

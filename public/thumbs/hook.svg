@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#020d1a"/>
+  <rect width="400" height="300" fill="url(#ocean)" opacity="0.6"/>
+  <defs><linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0ea5e9" stop-opacity="0.3"/><stop offset="100%" stop-color="#0ea5e9" stop-opacity="0.05"/></linearGradient></defs>
+  <line x1="200" y1="0" x2="200" y2="120" stroke="#94a3b8" stroke-width="2"/>
+  <path d="M200 120 Q200 160 220 160 Q250 160 250 190 Q250 220 220 220" stroke="#0ea5e9" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="200" cy="10" r="6" fill="#94a3b8"/>
+  <ellipse cx="185" cy="215" rx="18" ry="8" fill="#f59e0b" opacity="0.9"/>
+  <text x="200" y="265" text-anchor="middle" fill="#ffffff" font-size="18" font-family="sans-serif" font-weight="bold" letter-spacing="3">DEEP HOOK</text>
+  <text x="200" y="285" text-anchor="middle" fill="#0ea5e9" font-size="11" font-family="monospace">ARCADE GAME</text>
+</svg>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#120500"/>
+  <rect x="170" y="10" width="60" height="150" rx="3" fill="#1c1c1c"/>
+  <rect x="170" y="10" width="60" height="10" fill="#f97316" opacity="0.5"/>
+  <rect x="175" y="25" width="10" height="10" fill="#6b7280" opacity="0.5"/>
+  <rect x="195" y="25" width="10" height="10" fill="#6b7280" opacity="0.5"/>
+  <rect x="215" y="25" width="10" height="10" fill="#f97316" opacity="0.8"/>
+  <ellipse cx="200" cy="160" rx="12" ry="10" fill="#1e40af"/>
+  <circle cx="200" cy="145" r="7" fill="#fde68a"/>
+  <line x1="196" y1="170" x2="193" y2="190" stroke="#1e40af" stroke-width="2"/>
+  <line x1="204" y1="170" x2="207" y2="190" stroke="#1e40af" stroke-width="2"/>
+  <path d="M185 160 Q200 140 215 160" stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="4,4"/>
+  <text x="200" y="265" text-anchor="middle" fill="#ffffff" font-size="16" font-family="sans-serif" font-weight="bold" letter-spacing="2">DAREDEVIL DROP</text>
+  <text x="200" y="285" text-anchor="middle" fill="#f97316" font-size="11" font-family="monospace">CRASH GAME</text>
+</svg>

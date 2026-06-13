@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>XENOCRAFT</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;}
+:root{
+  --bg:#060918;--card:#0c1235;--card2:#121848;
+  --blue:#00d8ff;--purple:#b855ff;--green:#00ff99;
+  --red:#ff3355;--gold:#ffcc00;--dim:#2e3d8a;
+  --text:#dde8ff;--muted:#5068b8;--r:13px;
+}
+html,body{width:100%;height:100%;overflow:hidden;color:var(--text);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;}
+body{
+  display:flex;flex-direction:row;align-items:stretch;justify-content:center;
+  background:radial-gradient(ellipse at 50% -5%,#0d1248 0%,transparent 50%),
+             radial-gradient(ellipse at 15% 85%,#120830 0%,transparent 40%),#060918;
+}
+
+#stars{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:0;}
+#fx{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:50;}
+#flash{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:45;opacity:0;transition:opacity .12s;}
+
+/* ── game wrap ── */
+#wrap{
+  position:relative;z-index:1;
+  width:100%;max-width:430px;flex-shrink:0;
+  height:100%;overflow:hidden;
+  display:flex;flex-direction:column;
+  padding:0 14px 14px;gap:6px;
+}
+
+/* ── live panel ── */
+#live-panel{
+  display:none;
+  flex-direction:column;
+  width:190px;flex-shrink:0;
+  height:100%;overflow:hidden;
+  padding:16px 8px 14px 2px;
+  gap:8px;position:relative;z-index:1;
+}
+@media(min-width:580px){#live-panel{display:flex;}}
+.panel-hdr{
+  display:flex;align-items:center;gap:8px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;
+}
+.live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);box-shadow:0 0 8px var(--green);
+  animation:dot-blink 1.6s ease-in-out infinite;flex-shrink:0;
+}
+@keyframes dot-blink{0%,100%{opacity:1}50%{opacity:.35}}
+.panel-title{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--muted);text-transform:uppercase;}
+#feed-list{flex:1;overflow:hidden;display:flex;flex-direction:column;gap:4px;justify-content:flex-start;}
+.feed-entry{
+  display:flex;align-items:center;gap:7px;
+  padding:6px 8px;border-radius:9px;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  flex-shrink:0;
+}
+.feed-entry.fe-win{border-color:rgba(0,255,153,.14);}
+.feed-entry.fe-bust{border-color:rgba(255,51,85,.1);}
+.feed-av{
+  width:26px;height:26px;border-radius:50%;border:1.5px solid;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;flex-shrink:0;
+}
+.feed-info{flex:1;min-width:0;}
+.feed-name{font-size:11px;font-weight:600;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.feed-detail{font-size:10px;display:block;}
+.fwin{color:var(--green);}.fbust{color:var(--red);}
+.feed-amt{font-size:10px;color:var(--muted);font-weight:600;flex-shrink:0;}
+
+/* ── top bar ── */
+#topbar{display:flex;justify-content:space-between;align-items:flex-start;padding:12px 2px 6px;flex-shrink:0;}
+#coins-display{display:flex;align-items:center;gap:6px;font-size:20px;font-weight:800;color:var(--gold);text-shadow:0 0 16px rgba(255,204,0,.5);font-variant-numeric:tabular-nums;min-width:100px;}
+.logo{font-size:16px;font-weight:800;letter-spacing:4px;color:var(--blue);text-shadow:0 0 20px rgba(0,216,255,.6);padding-top:2px;}
+#top-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;min-width:100px;}
+#top-actions{display:flex;gap:7px;}
+.icon-btn{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;padding:0;}
+.icon-btn:hover{background:rgba(255,255,255,.13);color:var(--text);border-color:rgba(255,255,255,.28);}
+.icon-btn:active{transform:scale(.88);}
+.icon-btn.muted-state{color:var(--red);border-color:rgba(255,51,85,.3);}
+#best-display{font-size:10px;color:var(--muted);text-align:right;line-height:1.5;}
+
+/* ── ship ── */
+#ship-area{text-align:center;flex-shrink:0;padding:2px 0 0;}
+#ship-svg{display:inline-block;animation:float 3.2s ease-in-out infinite;transition:filter .5s;will-change:transform;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+#ship-lv{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-top:4px;transition:color .4s;color:var(--muted);}
+
+/* ── ladder ── */
+#ladder{display:flex;gap:5px;flex-shrink:0;justify-content:center;flex-wrap:nowrap;overflow:hidden;}
+.rung{flex:0 0 auto;padding:4px 9px;border:1px solid var(--dim);border-radius:7px;font-size:11px;font-weight:600;color:var(--dim);transition:all .3s;}
+.rung.done{border-color:rgba(0,255,153,.4);color:rgba(0,255,153,.6);}
+.rung.secured{border-color:var(--gold);color:var(--gold);box-shadow:0 0 12px rgba(255,204,0,.4);animation:rung-pulse 1.2s ease-in-out infinite;}
+.rung.nexttgt{border-color:rgba(0,216,255,.5);color:rgba(0,216,255,.75);}
+@keyframes rung-pulse{0%,100%{box-shadow:0 0 8px rgba(255,204,0,.3)}50%{box-shadow:0 0 22px rgba(255,204,0,.8)}}
+
+/* ── msg ── */
+#msg{text-align:center;font-size:13px;font-weight:600;letter-spacing:.5px;min-height:22px;flex-shrink:0;transition:color .3s;color:var(--muted);}
+#msg.c-win{color:var(--green);text-shadow:0 0 10px rgba(0,255,153,.5);}
+#msg.c-lose{color:var(--red);text-shadow:0 0 10px rgba(255,51,85,.5);}
+#msg.c-gold{color:var(--gold);text-shadow:0 0 10px rgba(255,204,0,.5);}
+#msg.c-near{color:#ff9900;text-shadow:0 0 10px rgba(255,153,0,.5);}
+
+/* ── arena ── */
+#arena{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px;overflow:hidden;min-height:0;padding-top:6px;}
+
+/* ── bet UI ── */
+#bet-ui{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;flex:1;}
+
+/* ghost preview pods */
+#preview-pods{display:flex;gap:12px;justify-content:center;padding:2px 0;}
+.ghost-pod{
+  width:92px;aspect-ratio:.75;
+  border:1.5px solid rgba(0,216,255,.2);border-radius:var(--r);
+  background:linear-gradient(160deg,rgba(18,24,72,.85),rgba(12,18,53,.92));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;position:relative;overflow:hidden;
+  animation:ghost-pulse 2.8s ease-in-out infinite;
+  box-shadow:0 0 18px rgba(0,216,255,.06);
+}
+.ghost-pod:nth-child(2){animation-delay:.7s;}
+.ghost-pod:nth-child(3){animation-delay:1.4s;}
+/* scan line */
+.ghost-pod::after{content:'';position:absolute;width:100%;height:38%;background:linear-gradient(to bottom,transparent,rgba(0,216,255,.12),transparent);animation:ghost-scan 2.2s linear infinite;top:-40%;}
+.ghost-pod:nth-child(2)::after{animation-delay:.5s;}
+.ghost-pod:nth-child(3)::after{animation-delay:1s;}
+@keyframes ghost-scan{0%{top:-40%}100%{top:110%}}
+@keyframes ghost-pulse{0%,100%{border-color:rgba(0,216,255,.2)}50%{border-color:rgba(0,216,255,.45);box-shadow:0 0 24px rgba(0,216,255,.15)}}
+.ghost-face{opacity:.22;filter:saturate(0.6);}
+.ghost-pod-lbl{font-size:9px;letter-spacing:2px;color:rgba(0,216,255,.3);font-weight:600;text-transform:uppercase;}
+
+.preview-label{font-size:11px;letter-spacing:2px;color:rgba(0,216,255,.42);text-transform:uppercase;font-weight:600;}
+
+/* bet controls */
+.bet-row{display:flex;align-items:center;gap:10px;}
+.adj{width:42px;height:42px;border-radius:9px;border:2px solid var(--purple);background:var(--card);color:var(--purple);font-size:22px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;font-weight:300;line-height:1;}
+.adj:hover{background:var(--purple);color:#fff;}
+.adj:active{transform:scale(.88);}
+#bet-val{width:110px;height:42px;background:var(--card);border:2px solid var(--purple);color:#fff;font-size:18px;text-align:center;border-radius:9px;font-family:inherit;font-weight:700;outline:none;-moz-appearance:textfield;user-select:text;-webkit-user-select:text;transition:border-color .2s,box-shadow .2s;}
+#bet-val::-webkit-inner-spin-button,#bet-val::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+#bet-val:focus{border-color:var(--blue);box-shadow:0 0 14px rgba(0,216,255,.3);}
+.quick-row{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;}
+.qb{padding:5px 11px;border-radius:20px;background:var(--card);border:1px solid var(--dim);color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;}
+.qb:hover{border-color:var(--blue);color:var(--blue);}
+.qb:active{transform:scale(.92);}
+#play-btn{width:100%;max-width:260px;padding:14px;border:none;border-radius:var(--r);background:linear-gradient(135deg,var(--blue),#0090cc);color:#000;font-size:15px;font-weight:800;letter-spacing:3px;cursor:pointer;box-shadow:0 0 26px rgba(0,216,255,.45);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:8px;}
+#play-btn:hover{box-shadow:0 0 44px rgba(0,216,255,.7);transform:translateY(-1px);}
+#play-btn:active{transform:scale(.95);}
+#play-btn:disabled{opacity:.35;cursor:default;box-shadow:none;transform:none;}
+#refill-btn{width:100%;max-width:260px;padding:13px;border:2px solid var(--gold);border-radius:var(--r);background:transparent;color:var(--gold);font-size:13px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+#refill-btn:hover{background:rgba(255,204,0,.1);box-shadow:0 0 20px rgba(255,204,0,.35);}
+
+/* inner mobile feed */
+#inner-feed{width:100%;max-width:310px;margin-top:4px;}
+#inner-feed .panel-hdr{padding-bottom:8px;margin-bottom:6px;}
+#inner-feed-list{display:flex;flex-direction:column;gap:3px;max-height:130px;overflow:hidden;}
+#inner-feed .feed-entry{padding:5px 7px;}
+@media(min-width:580px){#inner-feed{display:none;}}
+
+/* ── pods ── */
+#pods-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;}
+#pods{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.pod{width:var(--pw,96px);aspect-ratio:.85;border:2px solid var(--purple);border-radius:var(--r);background:linear-gradient(180deg,var(--card2) 0%,var(--card) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 0 14px rgba(184,85,255,.18),inset 0 1px 0 rgba(255,255,255,.07);transition:transform .18s,border-color .18s,box-shadow .18s;}
+.pod::before{content:'';position:absolute;top:0;right:0;bottom:0;left:0;background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,transparent 55%);pointer-events:none;}
+.pod:not(.no-hover):hover{transform:translateY(-5px) scale(1.04);border-color:var(--blue);box-shadow:0 0 28px rgba(0,216,255,.5);}
+.pod .face{line-height:1;animation:pod-bob 2.2s ease-in-out infinite;}
+.pod .pod-lbl{font-size:.52em;letter-spacing:2px;color:var(--purple);font-weight:600;}
+@keyframes pod-bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+.pod .cover{position:absolute;top:0;right:0;bottom:0;left:0;background:linear-gradient(160deg,var(--card2),var(--card));border-radius:inherit;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .25s;}
+.cover-q{font-size:28px;font-weight:800;color:rgba(0,216,255,.38);text-shadow:0 0 18px rgba(0,216,255,.25);}
+.pod .cover::after{content:'';position:absolute;width:100%;height:45%;background:linear-gradient(to bottom,transparent,rgba(0,216,255,.2),transparent);animation:scan 1.7s linear infinite;top:-50%;}
+@keyframes scan{0%{top:-50%}100%{top:110%}}
+.pod.no-cover .cover{display:none;}
+.pod.safe{border-color:var(--green);box-shadow:0 0 28px rgba(0,255,153,.6);background:linear-gradient(180deg,rgba(0,255,153,.1),rgba(0,30,18,.85));}
+.pod.trap{border-color:var(--red);box-shadow:0 0 28px rgba(255,51,85,.6);background:linear-gradient(180deg,rgba(255,51,85,.1),rgba(30,0,8,.85));}
+.pod.near-miss{border-color:var(--green);box-shadow:0 0 30px rgba(0,255,153,.7);animation:nm-pulse .55s ease-in-out 4;}
+@keyframes nm-pulse{0%,100%{box-shadow:0 0 16px rgba(0,255,153,.4)}50%{box-shadow:0 0 48px rgba(0,255,153,.95)}}
+.pod.picked-win{animation:pod-bounce .4s ease-out;}
+.pod.picked-lose{animation:pod-shake .35s;}
+@keyframes pod-bounce{0%{transform:scale(1)}40%{transform:scale(1.15)}70%{transform:scale(.95)}100%{transform:scale(1)}}
+@keyframes pod-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}60%{transform:translateX(7px)}}
+.odds-lbl{font-size:11px;color:var(--muted);letter-spacing:.5px;}
+.odds-lbl b{color:var(--green);}
+
+/* ── decision ── */
+#decision-row{display:flex;gap:12px;width:100%;justify-content:center;}
+.btn-cash{flex:1;max-width:200px;padding:13px 10px;border:none;border-radius:var(--r);background:linear-gradient(135deg,var(--gold),#cc9800);color:#000;font-size:13px;font-weight:800;letter-spacing:1px;cursor:pointer;box-shadow:0 0 18px rgba(255,204,0,.4);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-cash:hover{box-shadow:0 0 36px rgba(255,204,0,.75);}
+.btn-cash:active{transform:scale(.95);}
+.btn-risk{flex:1;max-width:200px;padding:13px 10px;border:none;border-radius:var(--r);background:linear-gradient(135deg,var(--purple),#7700cc);color:#fff;font-size:13px;font-weight:800;letter-spacing:1px;cursor:pointer;box-shadow:0 0 18px rgba(184,85,255,.4);transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-risk:hover{box-shadow:0 0 36px rgba(184,85,255,.75);}
+.btn-risk:active{transform:scale(.95);}
+
+/* ── history ── */
+#history{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;min-height:20px;flex-shrink:0;}
+.htag{padding:2px 9px;border-radius:20px;font-size:11px;letter-spacing:.5px;font-weight:600;}
+.htag.w{background:rgba(0,255,153,.12);color:var(--green);}
+.htag.b{background:rgba(255,51,85,.12);color:var(--red);}
+
+/* ── info modal ── */
+#info-modal{position:fixed;top:0;right:0;bottom:0;left:0;z-index:100;background:rgba(0,0,0,.8);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:20px;}
+#info-modal.open{display:flex;}
+#info-box{background:var(--card2);border:1px solid rgba(0,216,255,.2);border-radius:16px;padding:24px 20px;max-width:380px;width:100%;box-shadow:0 0 50px rgba(0,0,0,.7);max-height:90vh;overflow-y:auto;}
+#info-box h2{color:var(--blue);letter-spacing:4px;font-size:16px;text-align:center;margin-bottom:18px;text-shadow:0 0 18px rgba(0,216,255,.5);}
+.info-section{margin-bottom:16px;}
+.info-section h3{font-size:11px;letter-spacing:2px;color:var(--purple);margin-bottom:7px;text-transform:uppercase;}
+.info-section p,.info-section li{font-size:12px;color:var(--muted);line-height:1.7;}
+.info-section ul{padding-left:18px;}
+.info-section li{margin-bottom:3px;}
+#info-close{width:100%;margin-top:16px;padding:12px;border:2px solid rgba(0,216,255,.4);border-radius:10px;background:transparent;color:var(--blue);font-size:13px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;}
+#info-close:hover{background:rgba(0,216,255,.1);border-color:var(--blue);}
+
+/* misc */
+@keyframes shake{0%,100%{transform:translateX(0)}10%{transform:translateX(-10px)}30%{transform:translateX(10px)}50%{transform:translateX(-7px)}70%{transform:translateX(7px)}90%{transform:translateX(-3px)}}
+.shaking{animation:shake .45s;}
+.coin-pop{position:fixed;pointer-events:none;z-index:55;font-weight:800;font-size:18px;color:var(--gold);text-shadow:0 0 10px var(--gold);animation:cpop .9s ease-out forwards;}
+@keyframes cpop{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-70px) scale(1.5)}}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<canvas id="fx"></canvas>
+<div id="flash"></div>
+
+<div id="info-modal">
+  <div id="info-box">
+    <h2>XENOCRAFT</h2>
+    <div class="info-section">
+      <h3>How to Play</h3>
+      <ul>
+        <li>Set your bet between $1 and $500</li>
+        <li>Press ENHANCE to launch your mission</li>
+        <li>Each round: pick one pod — avoid the traps</li>
+        <li>Every safe pick multiplies your potential payout</li>
+        <li>Cash out anytime or risk it all for the next tier</li>
+      </ul>
+    </div>
+    <div class="info-section">
+      <h3>Multiplier Tiers</h3>
+      <ul>
+        <li>Level 1–2 — 3 pods, 1 trap (66% safe) → 1.35× / 1.80×</li>
+        <li>Level 3–4 — 4 pods, 2 traps (50% safe) → 3.2× / 5.8×</li>
+        <li>Level 5–6 — 5 pods, 3 traps (40% safe) → 13× / 29×</li>
+        <li>Level 7 — 6 pods, 4 traps (33% safe) → 80×</li>
+      </ul>
+    </div>
+    <div class="info-section">
+      <h3>Laser Cannon</h3>
+      <p>Your ship upgrades visually with each successful pick. Reach the 80× legendary tier for maximum enhancement.</p>
+    </div>
+    <button id="info-close">CLOSE</button>
+  </div>
+</div>
+
+<div id="wrap">
+  <div id="topbar">
+    <div id="coins-display">
+      <svg width="13" height="17" viewBox="0 0 13 17"><polygon points="7.5,0 1.5,9.5 6,9.5 5,17 11.5,7.5 7,7.5" fill="#ffcc00"/></svg>
+      <span id="coins-val">1,000</span>
+    </div>
+    <div class="logo">XENOCRAFT</div>
+    <div id="top-right">
+      <div id="top-actions">
+        <button class="icon-btn" id="vol-btn" title="Toggle sound">
+          <svg id="vol-icon" width="17" height="15" viewBox="0 0 17 15" fill="none"></svg>
+        </button>
+        <button class="icon-btn" id="info-btn" title="How to play">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor" stroke-width="1.4"/>
+            <line x1="7.5" y1="6.5" x2="7.5" y2="11.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            <circle cx="7.5" cy="4" r="1" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      <div id="best-display">BEST<br>—</div>
+    </div>
+  </div>
+
+  <div id="ship-area">
+    <div id="ship-svg">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 76" width="110" height="70">
+        <defs>
+          <radialGradient id="bm" cx="50%" cy="0%" r="100%">
+            <stop offset="0%" stop-color="#00d8ff" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#00d8ff" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="dg" cx="38%" cy="28%" r="72%">
+            <stop offset="0%" stop-color="#1e2d9a"/><stop offset="100%" stop-color="#0a1240"/>
+          </radialGradient>
+          <radialGradient id="bg2" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1a2580"/><stop offset="100%" stop-color="#111a60"/>
+          </radialGradient>
+        </defs>
+        <polygon points="44,62 76,62 94,76 26,76" fill="url(#bm)"/>
+        <ellipse cx="60" cy="54" rx="52" ry="15" fill="url(#bg2)"/>
+        <ellipse cx="60" cy="54" rx="52" ry="15" fill="none" stroke="#00d8ff" stroke-width="1.5"/>
+        <ellipse cx="60" cy="50" rx="42" ry="7" fill="rgba(0,216,255,.07)"/>
+        <ellipse cx="60" cy="38" rx="28" ry="20" fill="url(#dg)"/>
+        <ellipse cx="60" cy="38" rx="28" ry="20" fill="none" stroke="#00d8ff" stroke-width="1.5"/>
+        <ellipse cx="51" cy="30" rx="9" ry="6" fill="rgba(255,255,255,.09)" transform="rotate(-18,51,30)"/>
+        <circle cx="20" cy="56" r="3.5" fill="#ff3366" opacity=".95"/>
+        <circle cx="34" cy="62" r="3.5" fill="#ffcc00" opacity=".95"/>
+        <circle cx="60" cy="65" r="3.5" fill="#00ff99" opacity=".95"/>
+        <circle cx="86" cy="62" r="3.5" fill="#00d8ff" opacity=".95"/>
+        <circle cx="100" cy="56" r="3.5" fill="#b855ff" opacity=".95"/>
+      </svg>
+    </div>
+    <div id="ship-lv">LASER CANNON +0</div>
+  </div>
+
+  <div id="ladder"></div>
+  <div id="msg">Place your bet and enhance the cannon</div>
+  <div id="arena"></div>
+  <div id="history"></div>
+</div>
+
+<!-- Live feed panel (desktop) -->
+<div id="live-panel">
+  <div class="panel-hdr">
+    <span class="live-dot"></span>
+    <span class="panel-title">Live Feed</span>
+  </div>
+  <div id="feed-list"></div>
+</div>
+
+<script>
+'use strict';
+
+const LEVELS=[
+  {pods:3,traps:1,mult:1.35},{pods:3,traps:1,mult:1.80},
+  {pods:4,traps:2,mult:3.2},{pods:4,traps:2,mult:5.8},
+  {pods:5,traps:3,mult:13},{pods:5,traps:3,mult:29},
+  {pods:6,traps:4,mult:80},
+];
+const STORAGE_KEY='xeno3';
+
+// ── SVG HELPERS ──────────────────────────────────────
+function boltSVG(sz=13,col='currentColor'){
+  return `<svg width="${sz}" height="${Math.round(sz*1.3)}" viewBox="0 0 13 17" style="flex-shrink:0"><polygon points="8,0 2,9.5 6.5,9.5 5.5,17 12,7.5 7,7.5" fill="${col}"/></svg>`;
+}
+function coinSVG(sz=14){
+  return `<svg width="${sz}" height="${sz}" viewBox="0 0 16 16" style="flex-shrink:0"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="8" y="12" text-anchor="middle" font-size="9" font-weight="800" fill="currentColor" font-family="system-ui">$</text></svg>`;
+}
+
+// ── ALIEN DESIGNS ────────────────────────────────────
+// 8 distinct alien faces — each unique shape, eye style, expression
+function alienSVG(idx){
+  const d=idx%8;
+  const W=52,H=62;
+  const base=`xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="42" height="50"`;
+  switch(d){
+    case 0: // ZETA — classic Roswell, inverted pear, huge almond eyes
+      return `<svg ${base}>
+        <path d="M26,6 C13,6 7,17 7,28 C7,42 13,52 20,57 Q23,61 26,61 Q29,61 32,57 C39,52 45,42 45,28 C45,17 39,6 26,6Z" fill="#0a2015" stroke="#00ff99" stroke-width="1.5"/>
+        <ellipse cx="17" cy="27" rx="8" ry="11" fill="#010e06" stroke="#00ff99" stroke-width="1"/>
+        <ellipse cx="17" cy="28" rx="4" ry="6" fill="#00ff99" opacity=".55"/>
+        <ellipse cx="15" cy="24" rx="2.5" ry="3" fill="rgba(255,255,255,.35)"/>
+        <ellipse cx="35" cy="27" rx="8" ry="11" fill="#010e06" stroke="#00ff99" stroke-width="1"/>
+        <ellipse cx="35" cy="28" rx="4" ry="6" fill="#00ff99" opacity=".55"/>
+        <ellipse cx="33" cy="24" rx="2.5" ry="3" fill="rgba(255,255,255,.35)"/>
+        <ellipse cx="23.5" cy="43" rx="1.5" ry="2" fill="#00ff99" opacity=".3"/>
+        <ellipse cx="28.5" cy="43" rx="1.5" ry="2" fill="#00ff99" opacity=".3"/>
+        <path d="M19,52 Q26,57 33,52" fill="none" stroke="#00ff99" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="26" y1="7" x2="23" y2="1" stroke="#00ff99" stroke-width="1.5"/>
+        <circle cx="23" cy="1" r="2.5" fill="#00ff99"/>
+      </svg>`;
+    case 1: // ORION — aquatic, round, large circular eyes, fin bumps, wide grin
+      return `<svg ${base}>
+        <circle cx="26" cy="34" r="23" fill="#091a2e" stroke="#00d8ff" stroke-width="1.5"/>
+        <path d="M16,13 Q20,5 24,11" fill="none" stroke="#00d8ff" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M28,11 Q32,5 36,13" fill="none" stroke="#00d8ff" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="18" cy="29" r="8.5" fill="#00060f" stroke="#00d8ff" stroke-width="1"/>
+        <circle cx="18" cy="29" r="5.5" fill="#004a8a"/>
+        <circle cx="18" cy="29" r="3" fill="#00d8ff" opacity=".7"/>
+        <circle cx="15.5" cy="26" r="2.2" fill="rgba(255,255,255,.4)"/>
+        <circle cx="34" cy="29" r="8.5" fill="#00060f" stroke="#00d8ff" stroke-width="1"/>
+        <circle cx="34" cy="29" r="5.5" fill="#004a8a"/>
+        <circle cx="34" cy="29" r="3" fill="#00d8ff" opacity=".7"/>
+        <circle cx="31.5" cy="26" r="2.2" fill="rgba(255,255,255,.4)"/>
+        <path d="M16,44 Q26,54 36,44" fill="none" stroke="#00d8ff" stroke-width="1.8" stroke-linecap="round"/>
+        <line x1="20" y1="44" x2="20" y2="50" stroke="#00d8ff" stroke-width="1.3" opacity=".6"/>
+        <line x1="26" y1="45" x2="26" y2="52" stroke="#00d8ff" stroke-width="1.3" opacity=".6"/>
+        <line x1="32" y1="44" x2="32" y2="50" stroke="#00d8ff" stroke-width="1.3" opacity=".6"/>
+      </svg>`;
+    case 2: // VEX — psionic, tall rectangle, crown spikes, single cyclops eye
+      return `<svg ${base}>
+        <rect x="9" y="12" width="34" height="46" rx="8" fill="#1a0830" stroke="#b855ff" stroke-width="1.5"/>
+        <polygon points="14,12 18,3 22,12" fill="#b855ff" opacity=".55"/>
+        <polygon points="22,12 26,1 30,12" fill="#b855ff" opacity=".8"/>
+        <polygon points="30,12 34,3 38,12" fill="#b855ff" opacity=".55"/>
+        <circle cx="26" cy="33" r="13" fill="#0e0020" stroke="#b855ff" stroke-width="1.5"/>
+        <circle cx="26" cy="33" r="9" fill="#5500aa" opacity=".7"/>
+        <circle cx="26" cy="33" r="5.5" fill="#b855ff" opacity=".85"/>
+        <circle cx="26" cy="33" r="2.5" fill="#e8aaff"/>
+        <ellipse cx="22" cy="29" rx="3" ry="2.5" fill="rgba(255,255,255,.4)"/>
+        <line x1="19" y1="52" x2="33" y2="52" stroke="#b855ff" stroke-width="1" opacity=".5"/>
+        <circle cx="18" cy="52" r="1.5" fill="#b855ff" opacity=".4"/>
+        <circle cx="34" cy="52" r="1.5" fill="#b855ff" opacity=".4"/>
+      </svg>`;
+    case 3: // IGNIS — warrior, hexagonal, slit eyes, furrowed brow, fanged grimace
+      return `<svg ${base}>
+        <path d="M26,4 L44,16 L46,36 L36,56 L16,56 L6,36 L8,16Z" fill="#1e0505" stroke="#ff3355" stroke-width="1.5"/>
+        <line x1="17" y1="12" x2="13" y2="4" stroke="#ff3355" stroke-width="2" stroke-linecap="round"/>
+        <line x1="35" y1="12" x2="39" y2="4" stroke="#ff3355" stroke-width="2" stroke-linecap="round"/>
+        <path d="M11,23 L22,26" stroke="#ff3355" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M30,26 L41,23" stroke="#ff3355" stroke-width="1.5" stroke-linecap="round"/>
+        <ellipse cx="18" cy="29" rx="8.5" ry="4.5" fill="#2a0505" stroke="#ff3355" stroke-width="1"/>
+        <ellipse cx="18" cy="29" rx="3.5" ry="2" fill="#ff3355" opacity=".9"/>
+        <ellipse cx="34" cy="29" rx="8.5" ry="4.5" fill="#2a0505" stroke="#ff3355" stroke-width="1"/>
+        <ellipse cx="34" cy="29" rx="3.5" ry="2" fill="#ff3355" opacity=".9"/>
+        <path d="M16,44 Q26,52 36,44" fill="none" stroke="#ff3355" stroke-width="1.5"/>
+        <line x1="20" y1="44" x2="19" y2="50" stroke="#ff3355" stroke-width="1.5"/>
+        <line x1="26" y1="45" x2="26" y2="51" stroke="#ff3355" stroke-width="1.5"/>
+        <line x1="32" y1="44" x2="33" y2="50" stroke="#ff3355" stroke-width="1.5"/>
+      </svg>`;
+    case 4: // SOL — solar/happy, round with rays, crescent closed eyes, big smile
+      return `<svg ${base}>
+        <line x1="26" y1="8" x2="26" y2="2" stroke="#ffcc00" stroke-width="1.5" opacity=".45"/>
+        <line x1="37" y1="11" x2="41" y2="6" stroke="#ffcc00" stroke-width="1.5" opacity=".45"/>
+        <line x1="42" y1="22" x2="48" y2="19" stroke="#ffcc00" stroke-width="1.5" opacity=".45"/>
+        <line x1="15" y1="11" x2="11" y2="6" stroke="#ffcc00" stroke-width="1.5" opacity=".45"/>
+        <line x1="10" y1="22" x2="4" y2="19" stroke="#ffcc00" stroke-width="1.5" opacity=".45"/>
+        <circle cx="26" cy="35" r="23" fill="#1e1400" stroke="#ffcc00" stroke-width="1.5"/>
+        <path d="M14,31 Q18,26 22,31" fill="none" stroke="#ffcc00" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M30,31 Q34,26 38,31" fill="none" stroke="#ffcc00" stroke-width="2.2" stroke-linecap="round"/>
+        <circle cx="14" cy="40" r="4.5" fill="#ff9944" opacity=".18"/>
+        <circle cx="38" cy="40" r="4.5" fill="#ff9944" opacity=".18"/>
+        <path d="M15,44 Q26,56 37,44" fill="none" stroke="#ffcc00" stroke-width="2" stroke-linecap="round"/>
+        <rect x="23" y="44" width="6" height="5" rx="1.5" fill="#ffcc00" opacity=".55"/>
+      </svg>`;
+    case 5: // FLUX — void/alien, elongated oval, three stacked eyes
+      return `<svg ${base}>
+        <ellipse cx="26" cy="33" rx="16" ry="29" fill="#05181a" stroke="#00ffee" stroke-width="1.5"/>
+        <line x1="13" y1="24" x2="21" y2="24" stroke="#00ffee" stroke-width=".8" opacity=".25"/>
+        <line x1="31" y1="24" x2="39" y2="24" stroke="#00ffee" stroke-width=".8" opacity=".25"/>
+        <line x1="13" y1="42" x2="21" y2="42" stroke="#00ffee" stroke-width=".8" opacity=".25"/>
+        <line x1="31" y1="42" x2="39" y2="42" stroke="#00ffee" stroke-width=".8" opacity=".25"/>
+        <circle cx="26" cy="19" r="5.5" fill="#001e1a" stroke="#00ffee" stroke-width="1"/>
+        <circle cx="26" cy="19" r="3.2" fill="#00ffee" opacity=".65"/>
+        <circle cx="24.5" cy="17.5" r="1.8" fill="rgba(255,255,255,.4)"/>
+        <circle cx="26" cy="33" r="5.5" fill="#001e1a" stroke="#00ffee" stroke-width="1"/>
+        <circle cx="26" cy="33" r="3.2" fill="#00ffee" opacity=".65"/>
+        <circle cx="24.5" cy="31.5" r="1.8" fill="rgba(255,255,255,.4)"/>
+        <circle cx="26" cy="47" r="5.5" fill="#001e1a" stroke="#00ffee" stroke-width="1"/>
+        <circle cx="26" cy="47" r="3.2" fill="#00ffee" opacity=".65"/>
+        <circle cx="24.5" cy="45.5" r="1.8" fill="rgba(255,255,255,.4)"/>
+      </svg>`;
+    case 6: // NYX — cosmic/ethereal, wide flat face, spiral eyes, gems on forehead
+      return `<svg ${base}>
+        <ellipse cx="26" cy="36" rx="23" ry="18" fill="#180820" stroke="#dd55ff" stroke-width="1.5"/>
+        <ellipse cx="26" cy="19" rx="11" ry="9" fill="#180820" stroke="#dd55ff" stroke-width="1.5"/>
+        <circle cx="22" cy="19" r="2" fill="#dd55ff" opacity=".55"/>
+        <circle cx="26" cy="14" r="2.2" fill="#dd55ff" opacity=".8"/>
+        <circle cx="30" cy="19" r="2" fill="#dd55ff" opacity=".55"/>
+        <circle cx="17" cy="33" r="8" fill="#0e0020" stroke="#dd55ff" stroke-width="1"/>
+        <path d="M17,33 m0,-5 a5,5 0 0,1 5,5 a4,4 0 0,1 -4,4 a3,3 0 0,1 -3,-3 a2,2 0 0,1 2,-2" fill="none" stroke="#dd55ff" stroke-width="1.3" opacity=".85"/>
+        <circle cx="17" cy="33" r="1.8" fill="#dd55ff"/>
+        <circle cx="15" cy="30.5" r="1.8" fill="rgba(255,255,255,.38)"/>
+        <circle cx="35" cy="33" r="8" fill="#0e0020" stroke="#dd55ff" stroke-width="1"/>
+        <path d="M35,33 m0,-5 a5,5 0 0,1 5,5 a4,4 0 0,1 -4,4 a3,3 0 0,1 -3,-3 a2,2 0 0,1 2,-2" fill="none" stroke="#dd55ff" stroke-width="1.3" opacity=".85"/>
+        <circle cx="35" cy="33" r="1.8" fill="#dd55ff"/>
+        <circle cx="33" cy="30.5" r="1.8" fill="rgba(255,255,255,.38)"/>
+        <path d="M19,47 Q26,53 33,47" fill="none" stroke="#dd55ff" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>`;
+    default: // AERO — gaseous, huge dome, compound insectoid eyes
+      return `<svg ${base}>
+        <ellipse cx="26" cy="27" rx="23" ry="25" fill="#04090e"/>
+        <ellipse cx="26" cy="27" rx="23" ry="25" fill="none" stroke="#00d8ff" stroke-width="1.5"/>
+        <ellipse cx="26" cy="48" rx="11" ry="10" fill="#04090e" stroke="#00d8ff" stroke-width="1.5"/>
+        <ellipse cx="16" cy="25" rx="10" ry="12" fill="#001820"/>
+        <ellipse cx="16" cy="25" rx="10" ry="12" fill="none" stroke="#00d8ff" stroke-width="1"/>
+        <circle cx="12" cy="21" r="3.2" fill="#00d8ff" opacity=".22" stroke="#00d8ff" stroke-width=".5"/>
+        <circle cx="19" cy="20" r="3.2" fill="#00d8ff" opacity=".28" stroke="#00d8ff" stroke-width=".5"/>
+        <circle cx="23" cy="25" r="3.2" fill="#00d8ff" opacity=".22" stroke="#00d8ff" stroke-width=".5"/>
+        <circle cx="13" cy="29" r="3.2" fill="#00d8ff" opacity=".28" stroke="#00d8ff" stroke-width=".5"/>
+        <circle cx="20" cy="30" r="3.2" fill="#00d8ff" opacity=".22" stroke="#00d8ff" stroke-width=".5"/>
+        <ellipse cx="36" cy="25" rx="10" ry="12" fill="#001820"/>
+        <ellipse cx="36" cy="25" rx="10" ry="12" fill="none" stroke="#00d8ff" stroke-width="1"/>
+        <circle cx="32" cy="21" r="3.2" fill="#00d8ff" opacity=".22" stroke="#00d8ff" stroke-width=".5"/>
+        <circle cx="39" cy="20" r="3.2" fill="#00d8ff" opacity=".28" stroke="#00d8ff" stroke-width=".5"/>
+        <circle cx="43" cy="25" r="3.2" fill="#00d8ff" opacity=".22" stroke="#00d8ff" stroke-width=".5"/>
+        <circle cx="33" cy="29" r="3.2" fill="#00d8ff" opacity=".28" stroke="#00d8ff" stroke-width=".5"/>
+        <circle cx="40" cy="30" r="3.2" fill="#00d8ff" opacity=".22" stroke="#00d8ff" stroke-width=".5"/>
+        <line x1="20" y1="51" x2="24" y2="54" stroke="#00d8ff" stroke-width="1" opacity=".4"/>
+        <line x1="26" y1="55" x2="26" y2="58" stroke="#00d8ff" stroke-width="1" opacity=".4"/>
+        <line x1="28" y1="51" x2="32" y2="54" stroke="#00d8ff" stroke-width="1" opacity=".4"/>
+        <line x1="22" y1="49" x2="30" y2="49" stroke="#00d8ff" stroke-width="1" opacity=".55"/>
+      </svg>`;
+  }
+}
+
+function gemSVG(){
+  return `<svg viewBox="0 0 40 46" width="32" height="37" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="20,2 38,15 32,44 8,44 2,15" fill="rgba(0,255,153,.18)" stroke="#00ff99" stroke-width="1.5"/>
+    <polygon points="20,2 38,15 20,12" fill="rgba(0,255,153,.45)"/>
+    <polygon points="2,15 20,12 20,2" fill="rgba(0,255,153,.35)"/>
+    <polygon points="2,15 8,44 20,12" fill="rgba(0,255,153,.14)"/>
+    <polygon points="38,15 32,44 20,12" fill="rgba(0,255,153,.24)"/>
+    <line x1="2" y1="15" x2="38" y2="15" stroke="rgba(0,255,153,.45)" stroke-width="1"/>
+    <circle cx="20" cy="26" r="3" fill="rgba(0,255,153,.3)" stroke="rgba(0,255,153,.6)" stroke-width=".8"/>
+  </svg>`;
+}
+
+function skullSVG(){
+  return `<svg viewBox="0 0 40 46" width="32" height="37" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20,3 C9,3 3,11 3,22 C3,31 8,37 14,39 L14,43 L26,43 L26,39 C32,37 37,31 37,22 C37,11 31,3 20,3 Z" fill="#220505" stroke="#ff3355" stroke-width="1.5"/>
+    <ellipse cx="14" cy="22" rx="5.5" ry="6.5" fill="#ff3355" opacity=".9"/>
+    <ellipse cx="26" cy="22" rx="5.5" ry="6.5" fill="#ff3355" opacity=".9"/>
+    <ellipse cx="14" cy="23" rx="2.8" ry="3.3" fill="#090808"/>
+    <ellipse cx="26" cy="23" rx="2.8" ry="3.3" fill="#090808"/>
+    <path d="M14,34 L17,30 L20,34 L23,30 L26,34" fill="none" stroke="#ff3355" stroke-width="1.5" stroke-linecap="round"/>
+  </svg>`;
+}
+
+// ── LIVE FEED ────────────────────────────────────────
+const FEED_NAMES=['Alex_B','Mila_K','Kai77','ZaraX','Leo_G','Nova88','ReX','Ivy_P','Finn','Luna99','AceQ','StarJ','Kira','BoltX','Memo','Zoe_9','Drake','KimS','Jax','Yuki'];
+const FEED_BETS=[1,5,10,25,50,100,150,250,500];
+const FEED_MULTS=LEVELS.map(l=>l.mult);
+const AV_COLORS=['#00ff99','#00d8ff','#b855ff','#ff3355','#ffcc00','#ff9944','#00ffee','#dd55ff'];
+
+function makeFeedEl(entry){
+  const el=document.createElement('div');
+  el.className='feed-entry '+(entry.win?'fe-win':'fe-bust');
+  const col=AV_COLORS[Math.floor(Math.random()*AV_COLORS.length)];
+  const init=entry.name[0].toUpperCase();
+  const detail=entry.win
+    ? `<span class="feed-detail fwin">${entry.mult}× +${entry.payout}</span>`
+    : `<span class="feed-detail fbust">bust +${entry.lvl}</span>`;
+  el.innerHTML=`<div class="feed-av" style="color:${col};border-color:${col};background:${col}18">${init}</div>
+    <div class="feed-info"><span class="feed-name">${entry.name}</span>${detail}</div>
+    <div class="feed-amt">$${entry.bet}</div>`;
+  return el;
+}
+
+function genEntry(){
+  const name=FEED_NAMES[Math.floor(Math.random()*FEED_NAMES.length)];
+  const bet=FEED_BETS[Math.floor(Math.random()*FEED_BETS.length)];
+  if(Math.random()<0.55){
+    const mult=FEED_MULTS[Math.floor(Math.random()*FEED_MULTS.length)];
+    return{name,bet,win:true,mult,payout:Math.floor(bet*mult)};
+  }
+  return{name,bet,win:false,lvl:Math.floor(Math.random()*4)};
+}
+
+function pushFeedEntry(){
+  const entry=genEntry();
+  const el=makeFeedEl(entry);
+  el.style.cssText='opacity:0;transform:translateY(-8px);transition:opacity .35s,transform .35s';
+  ['feed-list','inner-feed-list'].forEach(id=>{
+    const list=document.getElementById(id);
+    if(!list)return;
+    const clone=el.cloneNode(true);
+    clone.style.cssText=el.style.cssText;
+    list.insertBefore(clone,list.firstChild);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{clone.style.opacity='1';clone.style.transform='translateY(0)';}));
+    const max=id==='inner-feed-list'?5:18;
+    while(list.children.length>max)list.removeChild(list.lastChild);
+  });
+}
+
+function initFeed(){
+  for(let i=0;i<10;i++) pushFeedEntry();
+  const tick=()=>{pushFeedEntry();setTimeout(tick,2200+Math.random()*2800);};
+  setTimeout(tick,1500);
+}
+
+// ── STATE ────────────────────────────────────────────
+const S={coins:1000,bet:100,level:0,traps:new Set(),pickedIdx:-1,phase:'idle',winPot:0,bestBal:1000,history:[]};
+let volumeOn=true;
+
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({coins:S.coins,bestBal:S.bestBal,history:S.history.slice(0,9)}));}catch(_){}}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(d){S.coins=d.coins??1000;S.bestBal=d.bestBal??S.coins;S.history=d.history??[];}
+    if(S.coins<0)S.coins=0;
+  }catch(_){}
+}
+
+// ── AUDIO ────────────────────────────────────────────
+let AC=null;
+function ac(){if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC;}
+function tone(f,t,d,v=.22,dl=0){
+  if(!volumeOn)return;
+  try{const ctx=ac(),o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type=t;o.frequency.value=f;const ts=ctx.currentTime+dl;g.gain.setValueAtTime(v,ts);g.gain.exponentialRampToValueAtTime(.001,ts+d);o.start(ts);o.stop(ts+d);}catch(_){}
+}
+const SFX={
+  click:()=>tone(800,'square',.04,.1),
+  hover:()=>tone(650,'sine',.03,.06),
+  win:()=>{tone(440,'sine',.14,.28);tone(550,'sine',.14,.26,.1);tone(660,'sine',.22,.24,.2);tone(880,'sine',.38,.2,.33);},
+  bust:()=>{tone(220,'sawtooth',.3,.3);tone(140,'sawtooth',.42,.28,.18);tone(80,'square',.55,.26,.36);},
+  near:()=>{tone(330,'sine',.18,.15);tone(280,'sine',.22,.12,.15);},
+  cash:()=>{[620,720,830,970,1100].forEach((f,i)=>tone(f,'sine',.12,.18,i*.07));},
+  levelup:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,'sine',.2,.22,i*.09));},
+};
+
+// ── STARS ────────────────────────────────────────────
+(function(){
+  const c=document.getElementById('stars'),ctx=c.getContext('2d');
+  const rs=()=>{c.width=innerWidth;c.height=innerHeight;};rs();addEventListener('resize',rs);
+  const st=Array.from({length:220},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.6+.2,s:Math.random()*.38+.04,a:Math.random()*.9+.15}));
+  (function t(){ctx.clearRect(0,0,c.width,c.height);st.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${s.a})`;ctx.fill();s.y+=s.s;if(s.y>c.height){s.y=0;s.x=Math.random()*c.width;}});requestAnimationFrame(t);})();
+})();
+
+// ── PARTICLES ────────────────────────────────────────
+const fxC=document.getElementById('fx'),fxX=fxC.getContext('2d');let pts=[];
+(function(){const rs=()=>{fxC.width=innerWidth;fxC.height=innerHeight;};rs();addEventListener('resize',rs);
+(function t(){fxX.clearRect(0,0,fxC.width,fxC.height);pts=pts.filter(p=>p.life>0);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.1;p.vx*=.98;p.life-=.022;const[r,g,b]=p.rgb;fxX.beginPath();fxX.arc(p.x,p.y,p.r,0,Math.PI*2);fxX.fillStyle=`rgba(${r},${g},${b},${p.life})`;fxX.fill();});requestAnimationFrame(t);})();})();
+function burst(x,y,rgb,n=55){for(let i=0;i<n;i++){const a=(Math.PI*2/n)*i+Math.random()*.5,sp=Math.random()*8+2;pts.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,rgb,r:Math.random()*4+1,life:1});}}
+function burstAtShip(rgb,n=55){const el=document.getElementById('ship-svg'),r=el.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,rgb,n);}
+
+// ── DOM HELPERS ──────────────────────────────────────
+function setMsg(t,c=''){const el=document.getElementById('msg');el.textContent=t;el.className=c;}
+function updateTop(){document.getElementById('coins-val').textContent=fmt(S.coins);document.getElementById('best-display').innerHTML=`BEST<br>${fmt(S.bestBal)}`;}
+function updateShip(){
+  const lv=document.getElementById('ship-lv');lv.textContent=`LASER CANNON +${S.level}`;
+  const el=document.getElementById('ship-svg');
+  if(S.level>=6){el.style.filter='drop-shadow(0 0 28px gold) drop-shadow(0 0 60px #ff8800)';lv.style.color='#ffcc00';}
+  else if(S.level>=4){el.style.filter='drop-shadow(0 0 22px #b855ff) drop-shadow(0 0 44px #7700cc)';lv.style.color='var(--purple)';}
+  else if(S.level>=2){el.style.filter='drop-shadow(0 0 18px #00d8ff)';lv.style.color='var(--blue)';}
+  else{el.style.filter='drop-shadow(0 0 8px #223)';lv.style.color='var(--muted)';}
+}
+function buildLadder(){document.getElementById('ladder').innerHTML=LEVELS.map((l,i)=>`<div class="rung" id="rng${i}">${l.mult}×</div>`).join('');}
+function updateLadder(){LEVELS.forEach((_,i)=>{const el=document.getElementById(`rng${i}`);if(!el)return;el.className='rung';if(i<S.level-1)el.classList.add('done');else if(i===S.level-1&&S.phase==='decision')el.classList.add('secured');else if(i===S.level)el.classList.add('nexttgt');});}
+function addHistory(txt,type){S.history.unshift({txt,type});if(S.history.length>9)S.history.pop();document.getElementById('history').innerHTML=S.history.map(h=>`<span class="htag ${h.type}">${h.txt}</span>`).join('');save();}
+function fmt(n){return Math.floor(n).toLocaleString();}
+function flashScreen(c,d=350){const el=document.getElementById('flash');el.style.background=c;el.style.opacity='1';setTimeout(()=>{el.style.opacity='0';},d);}
+function screenShake(){document.getElementById('wrap').classList.add('shaking');setTimeout(()=>document.getElementById('wrap').classList.remove('shaking'),460);}
+function coinPop(amt){const el=document.getElementById('ship-svg'),r=el.getBoundingClientRect();const d=document.createElement('div');d.className='coin-pop';d.textContent='+'+fmt(amt);d.style.left=(r.left+r.width/2-30)+'px';d.style.top=(r.top-10)+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),900);}
+function clampBet(v){return Math.max(1,Math.min(Math.min(S.coins,500),parseInt(v)||1));}
+function updateVolUI(){
+  const icon=document.getElementById('vol-icon'),btn=document.getElementById('vol-btn');
+  if(volumeOn){icon.innerHTML=`<path d="M1,4 L1,11 L5,11 L9,14 L9,1 L5,4 Z" fill="currentColor"/><path d="M11,4 Q14.5,7.5 11,11" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M13,2 Q17.5,7.5 13,13" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>`;btn.classList.remove('muted-state');}
+  else{icon.innerHTML=`<path d="M1,4 L1,11 L5,11 L9,14 L9,1 L5,4 Z" fill="currentColor" opacity=".4"/><line x1="11" y1="4" x2="17" y2="11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><line x1="17" y1="4" x2="11" y2="11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>`;btn.classList.add('muted-state');}
+}
+
+// ── ARENA RENDERS ─────────────────────────────────────
+function renderBetUI(){
+  S.phase='idle';
+  const broke=S.coins<=0;
+  document.getElementById('arena').innerHTML=`
+    <div id="bet-ui">
+      ${!broke?`
+        <div id="preview-pods">
+          <div class="ghost-pod"><div class="ghost-face">${alienSVG(0)}</div><span class="ghost-pod-lbl">POD</span></div>
+          <div class="ghost-pod"><div class="ghost-face">${alienSVG(2)}</div><span class="ghost-pod-lbl">POD</span></div>
+          <div class="ghost-pod"><div class="ghost-face">${alienSVG(4)}</div><span class="ghost-pod-lbl">POD</span></div>
+        </div>
+        <div class="preview-label">Choose your pod — avoid the trap</div>
+        <div class="bet-row">
+          <button class="adj" id="btn-minus">−</button>
+          <input id="bet-val" type="number" min="1" max="500" value="${clampBet(S.bet)}">
+          <button class="adj" id="btn-plus">+</button>
+        </div>
+        <div class="quick-row">
+          <button class="qb" data-q="1">$1</button>
+          <button class="qb" data-q="25">$25</button>
+          <button class="qb" data-q="100">$100</button>
+          <button class="qb" data-q="250">$250</button>
+          <button class="qb" data-frac=".5">½</button>
+          <button class="qb" data-frac="1">MAX</button>
+        </div>
+      `:''}
+      <button ${broke?'id="refill-btn"':'id="play-btn"'} ${!broke&&S.coins<1?'disabled':''}>
+        ${broke?`<svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8,4 L8,12 M5,7 L8,4 L11,7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> SALVAGE SHIP +500`
+        :`${boltSVG(13,'#000')} ENHANCE`}
+      </button>
+      ${!broke?`
+        <div id="inner-feed">
+          <div class="panel-hdr"><span class="live-dot"></span><span class="panel-title">Live Feed</span></div>
+          <div id="inner-feed-list"></div>
+        </div>
+      `:''}
+    </div>`;
+
+  if(broke){document.getElementById('refill-btn').onclick=()=>{SFX.cash();S.coins=500;S.bet=Math.min(S.bet,500);updateTop();save();setMsg('Ship salvaged. Back in action!','c-gold');renderBetUI();};return;}
+
+  document.getElementById('btn-minus').onclick=()=>{SFX.click();adjBet(-10);};
+  document.getElementById('btn-plus').onclick=()=>{SFX.click();adjBet(+10);};
+  const inp=document.getElementById('bet-val');
+  inp.addEventListener('input',e=>{S.bet=clampBet(e.target.value);});
+  inp.addEventListener('blur',e=>{S.bet=clampBet(e.target.value);e.target.value=S.bet;});
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();});
+  document.querySelectorAll('.qb').forEach(b=>{b.onclick=()=>{SFX.click();if(b.dataset.q)S.bet=clampBet(b.dataset.q);if(b.dataset.frac)S.bet=Math.max(1,Math.floor(Math.min(S.coins,500)*parseFloat(b.dataset.frac)));document.getElementById('bet-val').value=S.bet;};});
+  document.getElementById('play-btn').onclick=startRun;
+
+  // populate inner feed with existing entries from main feed
+  const src=document.getElementById('feed-list');
+  const dst=document.getElementById('inner-feed-list');
+  if(src&&dst){Array.from(src.children).slice(0,5).forEach(el=>dst.appendChild(el.cloneNode(true)));}
+}
+
+function renderPods(){
+  const cfg=LEVELS[S.level],safe=cfg.pods-cfg.traps,pct=Math.round(safe/cfg.pods*100);
+  const pw=cfg.pods<=3?100:cfg.pods===4?88:cfg.pods===5?76:66;
+  S.traps=new Set();while(S.traps.size<cfg.traps)S.traps.add(Math.floor(Math.random()*cfg.pods));
+  document.getElementById('arena').innerHTML=`<div id="pods-wrap"><div id="pods" style="--pw:${pw}px"></div><div class="odds-lbl">Pick a safe pod — <b>${pct}%</b> safe</div></div>`;
+  const row=document.getElementById('pods');
+  for(let i=0;i<cfg.pods;i++){
+    const pod=document.createElement('div');pod.className='pod';pod.style.animationDelay=(i*.22)+'s';
+    pod.innerHTML=`<div class="cover"><span class="cover-q">?</span></div><div class="face" style="animation-delay:${i*.3}s">${alienSVG(i)}</div><div class="pod-lbl">POD ${i+1}</div>`;
+    pod.addEventListener('mouseenter',()=>SFX.hover());pod.addEventListener('click',()=>pickPod(i));row.appendChild(pod);
+  }
+}
+
+function renderDecision(){
+  S.phase='decision';updateLadder();
+  const next=LEVELS[S.level];document.getElementById('decision-row')?.remove();
+  const row=document.createElement('div');row.id='decision-row';
+  row.innerHTML=`<button class="btn-cash" id="btn-cash">${coinSVG(14)} TAKE ${fmt(S.winPot)}</button>${next?`<button class="btn-risk" id="btn-risk">${boltSVG(12,'#fff')} RISK ${next.mult}×</button>`:''}`;
+  document.getElementById('arena').appendChild(row);
+  document.getElementById('btn-cash').onclick=doCashOut;if(next)document.getElementById('btn-risk').onclick=doRisk;
+}
+
+// ── GAME FLOW ─────────────────────────────────────────
+function adjBet(d){S.bet=clampBet(S.bet+d);const inp=document.getElementById('bet-val');if(inp)inp.value=S.bet;}
+function startRun(){
+  const inp=document.getElementById('bet-val');if(inp)S.bet=clampBet(inp.value);
+  if(S.bet>S.coins||S.coins<1)return;
+  SFX.click();S.coins-=S.bet;S.level=0;S.winPot=0;S.phase='picking';
+  updateTop();updateShip();updateLadder();setMsg('Choose carefully...','');renderPods();
+}
+function pickPod(idx){
+  if(S.phase!=='picking')return;S.phase='revealing';S.pickedIdx=idx;SFX.click();
+  document.querySelectorAll('.pod').forEach(p=>{p.classList.add('no-hover');p.style.cursor='default';p.onclick=null;});
+  const pods=Array.from(document.querySelectorAll('.pod'));pods[idx].querySelector('.cover')?.remove();
+  setTimeout(()=>{
+    pods.forEach((p,i)=>{p.querySelector('.cover')?.remove();p.classList.add('no-cover');const face=p.querySelector('.face');if(S.traps.has(i)){face.innerHTML=skullSVG();p.classList.add('trap');}else{face.innerHTML=gemSVG();p.classList.add('safe');}});
+    const isWin=!S.traps.has(idx);
+    if(isWin){pods[idx].classList.add('picked-win');onPickWin();}else{pods[idx].classList.add('picked-lose');onPickBust();}
+  },350);
+}
+function onPickWin(){
+  SFX.win();S.level++;S.winPot=S.bet*LEVELS[S.level-1].mult;updateShip();
+  burstAtShip([0,255,153],45);flashScreen('rgba(0,255,153,.12)');
+  if(S.level===LEVELS.length){setMsg(`LEGENDARY! +${fmt(S.winPot)} credits`,'c-gold');setTimeout(()=>doMaxCash(),700);return;}
+  setMsg(`SAFE! Secured ${LEVELS[S.level-1].mult}× — take it or risk more?`,'c-win');setTimeout(()=>renderDecision(),600);
+}
+function onPickBust(){
+  SFX.bust();screenShake();burstAtShip([255,51,85],70);flashScreen('rgba(255,30,50,.3)');S.phase='bust';
+  setMsg(`BUSTED at +${S.level}`,'c-lose');
+  setTimeout(()=>{Array.from(document.querySelectorAll('.pod')).forEach((p,i)=>{if(!S.traps.has(i))p.classList.add('near-miss');});SFX.near();setMsg('So close... you almost had it','c-near');},620);
+  setTimeout(()=>{addHistory(`BUST −${fmt(S.bet)}`,'b');S.level=0;updateShip();updateLadder();renderBetUI();setMsg(S.coins>0?'Ship destroyed. Bet again?':'Ship salvaged — refill and try again','');},2400);
+}
+function doCashOut(){
+  if(S.phase!=='decision')return;S.phase='cashing';SFX.cash();
+  const amount=Math.floor(S.winPot);S.coins+=amount;if(S.coins>S.bestBal)S.bestBal=S.coins;updateTop();
+  burstAtShip([255,204,7],80);flashScreen('rgba(255,204,0,.2)');coinPop(amount);
+  addHistory(`${LEVELS[S.level-1].mult}× +${fmt(amount)}`,'w');setMsg(`CASHED OUT — +${fmt(amount)} credits!`,'c-gold');
+  S.level=0;setTimeout(()=>{updateShip();updateLadder();renderBetUI();setMsg('Nice play. Run it again?','');},2000);
+}
+function doRisk(){if(S.phase!=='decision')return;SFX.click();S.phase='picking';setMsg('Choose carefully...','');renderPods();}
+function doMaxCash(){
+  SFX.cash();SFX.levelup();const amount=Math.floor(S.winPot);S.coins+=amount;if(S.coins>S.bestBal)S.bestBal=S.coins;updateTop();
+  burstAtShip([255,204,7],120);flashScreen('rgba(255,204,0,.35)');coinPop(amount);
+  addHistory(`${LEVELS[LEVELS.length-1].mult}× +${fmt(amount)}`,'w');setMsg(`LEGENDARY RUN — +${fmt(amount)} credits!`,'c-gold');
+  S.level=0;setTimeout(()=>{updateShip();updateLadder();renderBetUI();setMsg('MAXIMUM ENHANCEMENT — legendary!','c-gold');},2600);
+}
+
+// ── CONTROLS ─────────────────────────────────────────
+document.getElementById('vol-btn').onclick=()=>{volumeOn=!volumeOn;updateVolUI();};
+document.getElementById('info-btn').onclick=()=>{document.getElementById('info-modal').classList.add('open');};
+document.getElementById('info-close').onclick=()=>{document.getElementById('info-modal').classList.remove('open');};
+document.getElementById('info-modal').addEventListener('click',e=>{if(e.target===document.getElementById('info-modal'))document.getElementById('info-modal').classList.remove('open');});
+
+// ── BOOT ──────────────────────────────────────────────
+load();buildLadder();updateTop();updateShip();updateLadder();updateVolUI();
+document.getElementById('history').innerHTML=S.history.map(h=>`<span class="htag ${h.type}">${h.txt}</span>`).join('');
+renderBetUI();setMsg('Place your bet and enhance the cannon','');
+initFeed();
+</script>
+</body>
+</html>
