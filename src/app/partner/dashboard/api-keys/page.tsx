@@ -68,7 +68,7 @@ export default function ApiKeysPage() {
           </div>
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <button onClick={loadKeys} style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><RefreshCw size={15} /></button>
-            <button onClick={() => setShowNew(true)} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#3b82f6", color: "#ffffff", fontSize: "0.75rem", fontWeight: 600, padding: "0.375rem 0.75rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
+            <button onClick={() => setShowNew(true)} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#f5a623", color: "#09090b", fontSize: "0.75rem", fontWeight: 600, padding: "0.375rem 0.75rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
               <Plus size={13} /> New key
             </button>
           </div>
@@ -134,7 +134,7 @@ export default function ApiKeysPage() {
               ))}
             </div>
             <div style={{ display: "flex", gap: "0.75rem" }}>
-              <button onClick={createKey} disabled={creating} style={{ flex: 1, background: "#3b82f6", color: "#ffffff", fontWeight: 600, fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
+              <button onClick={createKey} disabled={creating} style={{ flex: 1, background: "#f5a623", color: "#09090b", fontWeight: 600, fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
                 {creating ? "Creating…" : "Create"}
               </button>
               <button onClick={() => setShowNew(false)} style={{ flex: 1, background: "#27272a", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>

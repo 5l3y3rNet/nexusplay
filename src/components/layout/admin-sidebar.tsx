@@ -18,7 +18,7 @@ export function AdminSidebar({ onClose }: { onClose?: () => void }) {
     <aside style={{ display: "flex", flexDirection: "column", width: "14rem", borderRight: "1px solid #1c1f2b", background: "#0a0b10", height: "100%" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "4rem", padding: "0 1.25rem", borderBottom: "1px solid #1c1f2b", flexShrink: 0 }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem", textDecoration: "none" }}>
-          <span style={{ fontWeight: 800, color: "#fafafa", fontSize: "1.0625rem", letterSpacing: "0.05em" }}>KAN<span style={{ color: "#3b82f6" }}>I</span></span>
+          <span style={{ fontWeight: 800, color: "#fafafa", fontSize: "1.0625rem", letterSpacing: "0.05em" }}>KAN<span style={{ color: "#f5a623" }}>I</span></span>
         </Link>
         {onClose && <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#71757f" }}><X size={16} /></button>}
       </div>
@@ -28,7 +28,7 @@ export function AdminSidebar({ onClose }: { onClose?: () => void }) {
         {navItems.map(item => {
           const active = pathname === item.href || pathname.startsWith(item.href + "/");
           return (
-            <Link key={item.label} href={item.href} style={{ display: "flex", alignItems: "center", gap: "0.625rem", padding: "0.625rem 0.75rem", borderRadius: "0.5rem", textDecoration: "none", fontSize: "0.9375rem", marginBottom: "0.125rem", background: active ? "rgba(59,130,246,0.12)" : "transparent", color: active ? "#60a5fa" : "#8b8f9b" }}>
+            <Link key={item.label} href={item.href} style={{ display: "flex", alignItems: "center", gap: "0.625rem", padding: "0.625rem 0.75rem", borderRadius: "0.5rem", textDecoration: "none", fontSize: "0.9375rem", marginBottom: "0.125rem", background: active ? "rgba(245,166,35,0.12)" : "transparent", color: active ? "#f5a623" : "#8b8f9b" }}>
               {item.icon}{item.label}
             </Link>
           );

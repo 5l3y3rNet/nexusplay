@@ -57,7 +57,7 @@ export default function SettingsPage() {
             </div>
 
             <button onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}
-              style={{ background: "#3b82f6", color: "#ffffff", fontWeight: 600, fontSize: "0.875rem", padding: "0.625rem 1.25rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
+              style={{ background: "#f5a623", color: "#09090b", fontWeight: 600, fontSize: "0.875rem", padding: "0.625rem 1.25rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
               {saved ? "Saved!" : "Save changes"}
             </button>
           </div>

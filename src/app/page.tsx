@@ -34,7 +34,7 @@ export default function HomePage() {
 
       {/* HERO */}
       <section style={{ background: "#09090b", minHeight: "90vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.14) 0%, transparent 60%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 0%, rgba(245,166,35,0.14) 0%, transparent 60%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "4rem 1.25rem", width: "100%", position: "relative" }}>
           <div style={{ maxWidth: "44rem" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#18181b", border: "1px solid #27272a", borderRadius: "9999px", padding: "0.375rem 0.875rem", marginBottom: "1.75rem" }}>
@@ -49,7 +49,7 @@ export default function HomePage() {
               Ten premium crash and arcade games, a production-grade API, and a partner portal built for serious casino operators.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
-              <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#3b82f6", color: "#ffffff", fontWeight: 700, fontSize: "0.9375rem", padding: "0.75rem 1.5rem", borderRadius: "0.5rem", textDecoration: "none" }}>
+              <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "0.9375rem", padding: "0.75rem 1.5rem", borderRadius: "0.5rem", textDecoration: "none" }}>
                 Start integrating <ArrowRight size={16} />
               </Link>
               <Link href="/games" style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", color: "#71717a", fontSize: "0.9375rem", textDecoration: "none", padding: "0.75rem 0.25rem" }}>
@@ -74,7 +74,7 @@ export default function HomePage() {
         <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "0 1.25rem" }}>
           <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: "2rem", gap: "1rem" }}>
             <div>
-              <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#60a5fa", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>Game Catalog</p>
+              <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#f5a623", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>Game Catalog</p>
               <h2 style={{ fontSize: "clamp(1.5rem, 4vw, 1.875rem)", fontWeight: 700, color: "#fafafa" }}>All 10 games</h2>
             </div>
             <Link href="/games" style={{ display: "flex", alignItems: "center", gap: "0.375rem", fontSize: "0.875rem", color: "#71717a", textDecoration: "none", flexShrink: 0 }}>
@@ -91,14 +91,14 @@ export default function HomePage() {
       <section style={{ background: "#09090b", borderTop: "1px solid #27272a", padding: "4rem 0" }}>
         <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "0 1.25rem" }}>
           <div style={{ maxWidth: "36rem", marginBottom: "3rem" }}>
-            <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#60a5fa", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>Platform</p>
+            <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#f5a623", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>Platform</p>
             <h2 style={{ fontSize: "clamp(1.5rem, 4vw, 1.875rem)", fontWeight: 700, color: "#fafafa", marginBottom: "0.75rem" }}>Built for production from day one</h2>
             <p style={{ color: "#52525b", lineHeight: 1.7 }}>Designed around the requirements of licensed casino operators. Security and reliability are non-negotiable.</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1px", background: "#27272a" }}>
             {features.map((f, i) => (
               <div key={i} style={{ background: "#09090b", padding: "1.75rem" }}>
-                <div style={{ width: "2.25rem", height: "2.25rem", background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: "0.5rem", display: "flex", alignItems: "center", justifyContent: "center", color: "#60a5fa", marginBottom: "1rem" }}>{f.icon}</div>
+                <div style={{ width: "2.25rem", height: "2.25rem", background: "rgba(245,166,35,0.1)", border: "1px solid rgba(245,166,35,0.2)", borderRadius: "0.5rem", display: "flex", alignItems: "center", justifyContent: "center", color: "#f5a623", marginBottom: "1rem" }}>{f.icon}</div>
                 <h3 style={{ fontWeight: 600, color: "#fafafa", marginBottom: "0.5rem", fontSize: "0.9375rem" }}>{f.title}</h3>
                 <p style={{ fontSize: "0.875rem", color: "#52525b", lineHeight: 1.65 }}>{f.desc}</p>
               </div>
@@ -112,7 +112,7 @@ export default function HomePage() {
         <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "0 1.25rem" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "3rem", alignItems: "center" }}>
             <div>
-              <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#60a5fa", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>Integration</p>
+              <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#f5a623", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>Integration</p>
               <h2 style={{ fontSize: "clamp(1.5rem, 4vw, 1.875rem)", fontWeight: 700, color: "#fafafa", marginBottom: "0.75rem" }}>Live in under 30 minutes</h2>
               <p style={{ color: "#52525b", lineHeight: 1.7, marginBottom: "2rem" }}>Four steps from credentials to a live game. No custom backend required.</p>
               <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
@@ -127,7 +127,7 @@ export default function HomePage() {
                 ))}
               </div>
               <div style={{ marginTop: "2rem", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                <Link href="/docs" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#3b82f6", color: "#ffffff", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem 1.25rem", borderRadius: "0.375rem", textDecoration: "none" }}>Read the docs</Link>
+                <Link href="/docs" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem 1.25rem", borderRadius: "0.375rem", textDecoration: "none" }}>Read the docs</Link>
                 <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "#71717a", fontSize: "0.875rem", textDecoration: "none", padding: "0.625rem 0" }}>Get API keys <ArrowRight size={14} /></Link>
               </div>
             </div>
@@ -170,7 +170,7 @@ iframe.src = launchUrl;`}
           <h2 style={{ fontSize: "clamp(1.75rem, 5vw, 2.25rem)", fontWeight: 700, color: "#fafafa", marginBottom: "1rem" }}>Ready to integrate?</h2>
           <p style={{ color: "#52525b", marginBottom: "2rem", lineHeight: 1.7 }}>Join casino operators running NexusPlay games. Full API access, sandbox environment, dedicated integration support.</p>
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "0.75rem" }}>
-            <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#3b82f6", color: "#ffffff", fontWeight: 700, padding: "0.875rem 1.75rem", borderRadius: "0.5rem", textDecoration: "none" }}>
+            <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#f5a623", color: "#09090b", fontWeight: 700, padding: "0.875rem 1.75rem", borderRadius: "0.5rem", textDecoration: "none" }}>
               Create partner account <ArrowRight size={16} />
             </Link>
             <Link href="/docs" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "#71717a", fontSize: "0.875rem", textDecoration: "none" }}>

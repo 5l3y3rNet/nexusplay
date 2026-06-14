@@ -29,9 +29,9 @@ export function GameCard({ game }: { game: Game }) {
       <div style={{ padding: "0 1rem 1rem", marginTop: "auto" }}>
         <button
           onClick={() => window.open(`/play?game=${game.id}`, "_blank", "noopener")}
-          style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", background: "rgba(59,130,246,0.12)", border: "1px solid rgba(59,130,246,0.3)", color: "#60a5fa", fontSize: "0.8125rem", fontWeight: 600, padding: "0.625rem", borderRadius: "0.375rem", cursor: "pointer", transition: "all 0.15s" }}
-          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(59,130,246,0.2)"; }}
-          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(59,130,246,0.12)"; }}
+          style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", background: "rgba(245,166,35,0.12)", border: "1px solid rgba(245,166,35,0.3)", color: "#f5a623", fontSize: "0.8125rem", fontWeight: 600, padding: "0.625rem", borderRadius: "0.375rem", cursor: "pointer", transition: "all 0.15s" }}
+          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(245,166,35,0.2)"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(245,166,35,0.12)"; }}
         >
           ▶ Play Demo
         </button>

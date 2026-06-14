@@ -28,7 +28,7 @@ const drives = [
 ];
 
 const sectionLabel = (text: string) => (
-  <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#60a5fa", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.75rem" }}>{text}</p>
+  <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#f5a623", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.75rem" }}>{text}</p>
 );
 
 export default function AboutPage() {
@@ -58,7 +58,7 @@ export default function AboutPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1rem" }}>
             {principles.map((p, i) => (
               <div key={i} style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "1rem", padding: "1.75rem", display: "flex", flexDirection: "column", gap: "0.875rem" }}>
-                <div style={{ width: "2.5rem", height: "2.5rem", borderRadius: "0.625rem", background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.22)", display: "flex", alignItems: "center", justifyContent: "center", color: "#60a5fa" }}>{p.icon}</div>
+                <div style={{ width: "2.5rem", height: "2.5rem", borderRadius: "0.625rem", background: "rgba(245,166,35,0.1)", border: "1px solid rgba(245,166,35,0.22)", display: "flex", alignItems: "center", justifyContent: "center", color: "#f5a623" }}>{p.icon}</div>
                 <h3 style={{ fontSize: "1.0625rem", fontWeight: 700, color: "#fafafa", lineHeight: 1.3 }}>{p.title}</h3>
                 <p style={{ fontSize: "0.9375rem", color: "#71717a", lineHeight: 1.65 }}>{p.body}</p>
               </div>
@@ -77,7 +77,7 @@ export default function AboutPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
             {founders.map((f, i) => (
               <div key={i} style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "1rem", padding: "1.75rem", display: "flex", gap: "1.25rem", alignItems: "flex-start" }}>
-                <div style={{ flexShrink: 0, width: "3.5rem", height: "3.5rem", borderRadius: "0.875rem", background: "linear-gradient(135deg, #3b82f6, #2563eb)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", fontWeight: 800, color: "#ffffff" }}>{f.initial}</div>
+                <div style={{ flexShrink: 0, width: "3.5rem", height: "3.5rem", borderRadius: "0.875rem", background: "linear-gradient(135deg, #f5a623, #d4881a)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", fontWeight: 800, color: "#09090b" }}>{f.initial}</div>
                 <div>
                   <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#fafafa" }}>{f.name}</h3>
                   <p style={{ fontSize: "0.8125rem", fontFamily: "monospace", color: "#fafafa", marginBottom: "0.625rem", marginTop: "0.125rem" }}>{f.role}</p>
@@ -138,7 +138,7 @@ export default function AboutPage() {
             If you run a casino or aggregator, we'd love a conversation.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", justifyContent: "center" }}>
-            <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#3b82f6", color: "#ffffff", fontWeight: 700, fontSize: "0.9375rem", padding: "0.875rem 1.75rem", borderRadius: "0.625rem", textDecoration: "none" }}>
+            <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "0.9375rem", padding: "0.875rem 1.75rem", borderRadius: "0.625rem", textDecoration: "none" }}>
               Partner with us <ArrowRight size={16} />
             </Link>
             <Link href="/games" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#18181b", border: "1px solid #27272a", color: "#fafafa", fontWeight: 600, fontSize: "0.9375rem", padding: "0.875rem 1.75rem", borderRadius: "0.625rem", textDecoration: "none" }}>

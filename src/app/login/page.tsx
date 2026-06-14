@@ -29,7 +29,7 @@ export default function LoginPage() {
       <div style={{ width: "100%", maxWidth: "23rem" }}>
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <a href="/" style={{ textDecoration: "none" }}>
-            <span style={{ fontWeight: 800, color: "#fafafa", fontSize: "1.75rem", letterSpacing: "0.05em" }}>KAN<span style={{ color: "#3b82f6" }}>I</span></span>
+            <span style={{ fontWeight: 800, color: "#fafafa", fontSize: "1.75rem", letterSpacing: "0.05em" }}>KAN<span style={{ color: "#f5a623" }}>I</span></span>
           </a>
           <h1 style={{ fontSize: "1.375rem", fontWeight: 700, color: "#fafafa", marginTop: "1.25rem", marginBottom: "0.375rem" }}>Operator sign in</h1>
           <p style={{ fontSize: "0.9375rem", color: "#71717a" }}>Use the credentials provided by KANI</p>
@@ -50,7 +50,7 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
-          <button type="submit" disabled={loading} style={{ background: loading ? "#2563eb" : "#3b82f6", color: "#ffffff", fontWeight: 700, fontSize: "1rem", padding: "0.8125rem", borderRadius: "0.75rem", border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
+          <button type="submit" disabled={loading} style={{ background: loading ? "#d4881a" : "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "1rem", padding: "0.8125rem", borderRadius: "0.75rem", border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
             {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>
