@@ -63,7 +63,7 @@ export default function PartnerGamesPage() {
                   <div style={{ padding: "1rem" }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
                       <h3 style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.9375rem" }}>{game.title}</h3>
-                      <button onClick={() => window.open(`/play?game=${game.id}`, "_blank")} style={{ background: "none", border: "none", cursor: "pointer", color: "#f5a623" }} title="Play demo"><Play size={15} /></button>
+                      <button onClick={() => window.open(`/play?game=${game.id}`, "_blank")} style={{ background: "none", border: "none", cursor: "pointer", color: "#fafafa" }} title="Play demo"><Play size={15} /></button>
                     </div>
                     <div style={{ fontSize: "0.75rem", fontFamily: "monospace", color: "#22c55e", marginBottom: "0.75rem" }}>{game.rtp} RTP</div>
                     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#080a0f", border: "1px solid #1e2230", borderRadius: "0.375rem", padding: "0.375rem 0.625rem" }}>

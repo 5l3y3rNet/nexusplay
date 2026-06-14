@@ -53,7 +53,7 @@ export default function InquiriesPage() {
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <button onClick={() => setMob(true)} className="admin-menu-btn" style={{ background: "none", border: "none", cursor: "pointer", color: "#71757f", display: "flex" }}><Menu size={18} /></button>
             <h2 style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>Partner Inquiries</h2>
-            {list.filter(i => i.status === "new").length > 0 && <span style={{ fontSize: "0.6875rem", fontFamily: "monospace", background: "rgba(245,166,35,0.15)", color: "#f5a623", border: "1px solid rgba(245,166,35,0.3)", padding: "0.125rem 0.5rem", borderRadius: "9999px" }}>{list.filter(i => i.status === "new").length} new</span>}
+            {list.filter(i => i.status === "new").length > 0 && <span style={{ fontSize: "0.6875rem", fontFamily: "monospace", background: "rgba(255,255,255,0.1)", color: "#fafafa", border: "1px solid rgba(255,255,255,0.2)", padding: "0.125rem 0.5rem", borderRadius: "9999px" }}>{list.filter(i => i.status === "new").length} new</span>}
           </div>
           <button onClick={load} style={{ background: "none", border: "none", cursor: "pointer", color: "#71757f" }}><RefreshCw size={15} /></button>
         </header>
@@ -69,19 +69,19 @@ export default function InquiriesPage() {
             : (
             <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
               {filtered.map(i => (
-                <div key={i.id} style={{ background: "#0c0e16", border: `1px solid ${i.status === "new" ? "rgba(245,166,35,0.25)" : "#161a26"}`, borderRadius: "0.75rem", padding: "1.25rem" }}>
+                <div key={i.id} style={{ background: "#0c0e16", border: `1px solid ${i.status === "new" ? "rgba(255,255,255,0.18)" : "#161a26"}`, borderRadius: "0.75rem", padding: "1.25rem" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", marginBottom: "0.75rem", flexWrap: "wrap" }}>
                     <div>
                       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
                         <span style={{ fontSize: "1rem", fontWeight: 700, color: "#fafafa" }}>{i.company || i.name}</span>
-                        {i.status === "new" && <span style={{ fontSize: "0.625rem", fontFamily: "monospace", background: "rgba(245,166,35,0.15)", color: "#f5a623", padding: "0.125rem 0.5rem", borderRadius: "9999px" }}>NEW</span>}
+                        {i.status === "new" && <span style={{ fontSize: "0.625rem", fontFamily: "monospace", background: "rgba(255,255,255,0.1)", color: "#fafafa", padding: "0.125rem 0.5rem", borderRadius: "9999px" }}>NEW</span>}
                       </div>
                       <div style={{ fontSize: "0.8125rem", color: "#71757f" }}>{i.name} · {i.role || "—"}</div>
                     </div>
                     <div style={{ fontSize: "0.75rem", color: "#5a5e6b" }}>{new Date(i.created_at).toLocaleString()}</div>
                   </div>
 
-                  <a href={`mailto:${i.email}`} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", fontSize: "0.8125rem", color: "#f5a623", textDecoration: "none", marginBottom: "0.75rem" }}>
+                  <a href={`mailto:${i.email}`} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", fontSize: "0.8125rem", color: "#fafafa", textDecoration: "none", marginBottom: "0.75rem" }}>
                     <Mail size={13} /> {i.email}
                   </a>
 

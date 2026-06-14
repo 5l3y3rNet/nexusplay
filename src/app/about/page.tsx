@@ -28,7 +28,7 @@ const drives = [
 ];
 
 const sectionLabel = (text: string) => (
-  <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#f5a623", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.75rem" }}>{text}</p>
+  <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#52525b", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "0.75rem" }}>{text}</p>
 );
 
 export default function AboutPage() {
@@ -57,10 +57,10 @@ export default function AboutPage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1rem" }}>
             {principles.map((p, i) => (
-              <div key={i} style={{ background: "#0f0f12", border: "1px solid #1f1f23", borderRadius: "1rem", padding: "1.75rem", display: "flex", flexDirection: "column", gap: "0.875rem" }}>
-                <div style={{ width: "2.5rem", height: "2.5rem", borderRadius: "0.625rem", background: "rgba(245,166,35,0.1)", border: "1px solid rgba(245,166,35,0.2)", display: "flex", alignItems: "center", justifyContent: "center", color: "#f5a623" }}>{p.icon}</div>
+              <div key={i} style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "1rem", padding: "1.75rem", display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+                <div style={{ width: "2.5rem", height: "2.5rem", borderRadius: "0.625rem", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fafafa" }}>{p.icon}</div>
                 <h3 style={{ fontSize: "1.0625rem", fontWeight: 700, color: "#fafafa", lineHeight: 1.3 }}>{p.title}</h3>
-                <p style={{ fontSize: "0.9375rem", color: "#8b8b94", lineHeight: 1.65 }}>{p.body}</p>
+                <p style={{ fontSize: "0.9375rem", color: "#71717a", lineHeight: 1.65 }}>{p.body}</p>
               </div>
             ))}
           </div>
@@ -76,12 +76,12 @@ export default function AboutPage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
             {founders.map((f, i) => (
-              <div key={i} style={{ background: "#0f0f12", border: "1px solid #1f1f23", borderRadius: "1rem", padding: "1.75rem", display: "flex", gap: "1.25rem", alignItems: "flex-start" }}>
-                <div style={{ flexShrink: 0, width: "3.5rem", height: "3.5rem", borderRadius: "0.875rem", background: "linear-gradient(135deg, #f5a623, #d4881a)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", fontWeight: 800, color: "#09090b" }}>{f.initial}</div>
+              <div key={i} style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "1rem", padding: "1.75rem", display: "flex", gap: "1.25rem", alignItems: "flex-start" }}>
+                <div style={{ flexShrink: 0, width: "3.5rem", height: "3.5rem", borderRadius: "0.875rem", background: "linear-gradient(135deg, #fafafa, #a1a1aa)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", fontWeight: 800, color: "#09090b" }}>{f.initial}</div>
                 <div>
                   <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#fafafa" }}>{f.name}</h3>
-                  <p style={{ fontSize: "0.8125rem", fontFamily: "monospace", color: "#f5a623", marginBottom: "0.625rem", marginTop: "0.125rem" }}>{f.role}</p>
-                  <p style={{ fontSize: "0.9375rem", color: "#8b8b94", lineHeight: 1.6 }}>{f.body}</p>
+                  <p style={{ fontSize: "0.8125rem", fontFamily: "monospace", color: "#fafafa", marginBottom: "0.625rem", marginTop: "0.125rem" }}>{f.role}</p>
+                  <p style={{ fontSize: "0.9375rem", color: "#71717a", lineHeight: 1.6 }}>{f.body}</p>
                 </div>
               </div>
             ))}
@@ -96,12 +96,12 @@ export default function AboutPage() {
             {sectionLabel("What we bring")}
             <h2 style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)", fontWeight: 700, color: "#fafafa", letterSpacing: "-0.02em" }}>Four things you get on day one</h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1px", background: "#1f1f23", border: "1px solid #1f1f23", borderRadius: "1rem", overflow: "hidden" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1px", background: "#27272a", border: "1px solid #27272a", borderRadius: "1rem", overflow: "hidden" }}>
             {bring.map((b, i) => (
-              <div key={i} style={{ background: "#0f0f12", padding: "1.75rem" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "2.25rem", height: "2.25rem", borderRadius: "0.5rem", background: "rgba(245,166,35,0.1)", color: "#f5a623", marginBottom: "1rem" }}>{b.icon}</div>
+              <div key={i} style={{ background: "#111113", padding: "1.75rem" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "2.25rem", height: "2.25rem", borderRadius: "0.5rem", background: "rgba(255,255,255,0.06)", color: "#fafafa", marginBottom: "1rem" }}>{b.icon}</div>
                 <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#fafafa", marginBottom: "0.5rem" }}>{b.title}</h3>
-                <p style={{ fontSize: "0.875rem", color: "#8b8b94", lineHeight: 1.6 }}>{b.body}</p>
+                <p style={{ fontSize: "0.875rem", color: "#71717a", lineHeight: 1.6 }}>{b.body}</p>
               </div>
             ))}
           </div>
@@ -117,10 +117,10 @@ export default function AboutPage() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
             {drives.map((d, i) => (
-              <div key={i} style={{ background: "#0f0f12", border: "1px solid #1f1f23", borderRadius: "1rem", padding: "1.75rem", position: "relative" }}>
-                <div style={{ fontSize: "2.5rem", fontWeight: 800, color: "#1f1f23", fontFamily: "monospace", lineHeight: 1, marginBottom: "0.75rem" }}>0{i + 1}</div>
+              <div key={i} style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "1rem", padding: "1.75rem", position: "relative" }}>
+                <div style={{ fontSize: "2.5rem", fontWeight: 800, color: "#27272a", fontFamily: "monospace", lineHeight: 1, marginBottom: "0.75rem" }}>0{i + 1}</div>
                 <h3 style={{ fontSize: "1.125rem", fontWeight: 700, color: "#fafafa", marginBottom: "0.625rem" }}>{d.title}</h3>
-                <p style={{ fontSize: "0.9375rem", color: "#8b8b94", lineHeight: 1.65 }}>{d.body}</p>
+                <p style={{ fontSize: "0.9375rem", color: "#71717a", lineHeight: 1.65 }}>{d.body}</p>
               </div>
             ))}
           </div>
@@ -138,7 +138,7 @@ export default function AboutPage() {
             If you run a casino or aggregator, we'd love a conversation.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", justifyContent: "center" }}>
-            <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "0.9375rem", padding: "0.875rem 1.75rem", borderRadius: "0.625rem", textDecoration: "none" }}>
+            <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#fafafa", color: "#09090b", fontWeight: 700, fontSize: "0.9375rem", padding: "0.875rem 1.75rem", borderRadius: "0.625rem", textDecoration: "none" }}>
               Partner with us <ArrowRight size={16} />
             </Link>
             <Link href="/games" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#18181b", border: "1px solid #27272a", color: "#fafafa", fontWeight: 600, fontSize: "0.9375rem", padding: "0.875rem 1.75rem", borderRadius: "0.625rem", textDecoration: "none" }}>
