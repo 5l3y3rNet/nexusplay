@@ -85,7 +85,7 @@ export default function AdminGamesPage() {
           </div>
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <button onClick={load} style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><RefreshCw size={15} /></button>
-            <button onClick={() => setShowAdd(true)} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#fafafa", color: "#09090b", fontSize: "0.8125rem", fontWeight: 700, padding: "0.5rem 0.875rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
+            <button onClick={() => setShowAdd(true)} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#3b82f6", color: "#ffffff", fontSize: "0.8125rem", fontWeight: 700, padding: "0.5rem 0.875rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
               <Plus size={14} /> Add Game
             </button>
           </div>
@@ -166,7 +166,7 @@ export default function AdminGamesPage() {
               </div>
               <div><label style={lbl}>Description</label><textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={2} placeholder="Short game description" style={{ ...inp, resize: "none" }} /></div>
               <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-                <button onClick={addGame} disabled={saving} style={{ flex: 1, background: "#fafafa", color: "#09090b", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>{saving ? "Adding…" : "Add Game"}</button>
+                <button onClick={addGame} disabled={saving} style={{ flex: 1, background: "#3b82f6", color: "#ffffff", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>{saving ? "Adding…" : "Add Game"}</button>
                 <button onClick={() => setShowAdd(false)} style={{ flex: 1, background: "#27272a", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>
               </div>
             </div>
@@ -190,7 +190,7 @@ export default function AdminGamesPage() {
               </div>
               <div><label style={lbl}>Description</label><textarea value={editing.description} onChange={e => setEditing({ ...editing, description: e.target.value })} rows={3} style={{ ...inp, resize: "none" }} /></div>
               <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-                <button onClick={saveEdit} disabled={saving} style={{ flex: 1, background: "#fafafa", color: "#09090b", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>{saving ? "Saving…" : "Save"}</button>
+                <button onClick={saveEdit} disabled={saving} style={{ flex: 1, background: "#3b82f6", color: "#ffffff", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>{saving ? "Saving…" : "Save"}</button>
                 <button onClick={() => setEditing(null)} style={{ flex: 1, background: "#27272a", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>
               </div>
             </div>

@@ -84,7 +84,7 @@ export default async function GamePage({ params }: { params: Promise<{ slug: str
 {JSON.stringify({gameId:game.id,playerId:"player_xyz",currency:"USD",balance:1000},null,2)}
                 </pre>
               </div>
-              <Link href="/partner" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#fafafa", color: "#09090b", fontWeight: 700, fontSize: "0.875rem", padding: "0.75rem", borderRadius: "0.375rem", textDecoration: "none" }}>
+              <Link href="/partner" style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#3b82f6", color: "#ffffff", fontWeight: 700, fontSize: "0.875rem", padding: "0.75rem", borderRadius: "0.375rem", textDecoration: "none" }}>
                 Get API Access
               </Link>
             </div>

@@ -39,8 +39,8 @@ export function PartnerSidebar({ onClose }: { onClose?: () => void }) {
                 display: "flex", alignItems: "center", gap: "0.625rem",
                 padding: "0.5rem 0.75rem", borderRadius: "0.375rem", textDecoration: "none",
                 fontSize: "0.875rem",
-                background: active ? "#27272a" : "transparent",
-                color: active ? "#fafafa" : "#71717a",
+                background: active ? "rgba(59,130,246,0.12)" : "transparent",
+                color: active ? "#60a5fa" : "#71717a",
               }}>
                 {item.icon}{item.label}
               </Link>

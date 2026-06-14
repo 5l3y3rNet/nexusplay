@@ -26,7 +26,7 @@ export default function GamesPage() {
     <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "#09090b" }}>
       <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "2.5rem 1.25rem" }}>
         <div style={{ marginBottom: "2rem" }}>
-          <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#52525b", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>Game Catalog</p>
+          <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#60a5fa", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>Game Catalog</p>
           <h1 style={{ fontSize: "2rem", fontWeight: 700, color: "#fafafa" }}>All games</h1>
           <p style={{ color: "#52525b", fontSize: "0.875rem", marginTop: "0.375rem" }}>{filtered.length} of {games.length} titles</p>
         </div>
@@ -41,7 +41,7 @@ export default function GamesPage() {
           {/* Category pills - scrollable on mobile */}
           <div style={{ display: "flex", gap: "0.375rem", overflowX: "auto", paddingBottom: "2px" }}>
             {cats.map(c => (
-              <button key={c} onClick={() => setCat(c)} style={{ padding: "0.5rem 0.875rem", fontSize: "0.8125rem", fontFamily: "monospace", borderRadius: "0.375rem", border: "1px solid", cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0, background: cat === c ? "#fafafa" : "transparent", color: cat === c ? "#09090b" : "#71717a", borderColor: cat === c ? "#fafafa" : "#27272a" }}>
+              <button key={c} onClick={() => setCat(c)} style={{ padding: "0.5rem 0.875rem", fontSize: "0.8125rem", fontFamily: "monospace", borderRadius: "0.375rem", border: "1px solid", cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0, background: cat === c ? "#3b82f6" : "transparent", color: cat === c ? "#ffffff" : "#71717a", borderColor: cat === c ? "#3b82f6" : "#27272a" }}>
                 {c}
               </button>
             ))}

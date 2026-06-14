@@ -25,7 +25,7 @@ function GamePlayer() {
     return (
       <div style={{ minHeight: "100vh", background: "#09090b", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: "1rem", fontFamily: "system-ui" }}>
         <p style={{ color: "#71717a" }}>Game not found.</p>
-        <button onClick={() => router.push("/games")} style={{ background: "#fafafa", color: "#09090b", border: "none", borderRadius: "0.5rem", padding: "0.625rem 1.25rem", cursor: "pointer", fontWeight: 700 }}>Browse Games</button>
+        <button onClick={() => router.push("/games")} style={{ background: "#3b82f6", color: "#ffffff", border: "none", borderRadius: "0.5rem", padding: "0.625rem 1.25rem", cursor: "pointer", fontWeight: 700 }}>Browse Games</button>
       </div>
     );
   }

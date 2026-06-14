@@ -28,7 +28,7 @@ export default function DocsPage() {
             <div style={{ fontWeight: 600, color: "#fafafa", marginBottom: "0.375rem" }}>New to NexusPlay?</div>
             <div style={{ fontSize: "0.875rem", color: "#71717a" }}>Follow the getting started guide to go from zero to a live game in 30 minutes.</div>
           </div>
-          <Link href="/docs/getting-started" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#fafafa", color: "#09090b", fontWeight: 600, fontSize: "0.875rem", padding: "0.625rem 1.25rem", borderRadius: "0.375rem", textDecoration: "none", flexShrink: 0 }}>
+          <Link href="/docs/getting-started" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#3b82f6", color: "#ffffff", fontWeight: 600, fontSize: "0.875rem", padding: "0.625rem 1.25rem", borderRadius: "0.375rem", textDecoration: "none", flexShrink: 0 }}>
             Quick start <ArrowRight size={14} />
           </Link>
         </div>

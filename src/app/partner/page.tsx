@@ -81,7 +81,7 @@ export default function PartnerPage() {
 
           {/* LEFT — pitch */}
           <div>
-            <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#52525b", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: "1rem" }}>Partner with us</p>
+            <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#60a5fa", textTransform: "uppercase", letterSpacing: "0.14em", marginBottom: "1rem" }}>Partner with us</p>
             <h1 style={{ fontSize: "clamp(2.25rem, 6vw, 3.5rem)", fontWeight: 800, color: "#fafafa", lineHeight: 1.05, letterSpacing: "-0.03em", marginBottom: "1.5rem" }}>
               Let&apos;s put something new in your lobby
             </h1>
@@ -104,7 +104,7 @@ export default function PartnerPage() {
             </div>
 
             <p style={{ fontSize: "0.9375rem", color: "#71717a" }}>
-              Prefer email? <a href="mailto:hello@kani.studio" style={{ color: "#d4d4d8", textDecoration: "none", fontWeight: 600 }}>hello@kani.studio</a>
+              Prefer email? <a href="mailto:hello@kani.studio" style={{ color: "#60a5fa", textDecoration: "none", fontWeight: 600 }}>hello@kani.studio</a>
             </p>
           </div>
 
@@ -146,7 +146,7 @@ export default function PartnerPage() {
                   const active = selectedGames.includes(g.id);
                   return (
                     <button key={g.id} onClick={() => toggleGame(g.id)} type="button"
-                      style={{ fontSize: "0.75rem", fontWeight: 600, fontFamily: "monospace", letterSpacing: "0.03em", padding: "0.5rem 0.875rem", borderRadius: "9999px", cursor: "pointer", textTransform: "uppercase", border: "1px solid", background: active ? "rgba(255,255,255,0.1)" : "#111113", color: active ? "#fafafa" : "#a1a1aa", borderColor: active ? "rgba(255,255,255,0.25)" : "#27272a" }}>
+                      style={{ fontSize: "0.75rem", fontWeight: 600, fontFamily: "monospace", letterSpacing: "0.03em", padding: "0.5rem 0.875rem", borderRadius: "9999px", cursor: "pointer", textTransform: "uppercase", border: "1px solid", background: active ? "rgba(59,130,246,0.15)" : "#111113", color: active ? "#60a5fa" : "#a1a1aa", borderColor: active ? "rgba(59,130,246,0.4)" : "#27272a" }}>
                       {g.title}
                     </button>
                   );
@@ -164,7 +164,7 @@ export default function PartnerPage() {
             </div>
 
             <button onClick={submit} disabled={loading}
-              style={{ width: "100%", background: loading ? "#52525b" : "#fafafa", color: "#09090b", fontWeight: 700, fontSize: "1rem", padding: "0.9375rem", borderRadius: "0.75rem", border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
+              style={{ width: "100%", background: loading ? "#2563eb" : "#3b82f6", color: "#ffffff", fontWeight: 700, fontSize: "1rem", padding: "0.9375rem", borderRadius: "0.75rem", border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
               {loading ? "Sending…" : "Send — we reply within 24h"}
             </button>
             <p style={{ textAlign: "center", fontSize: "0.8125rem", color: "#52525b", marginTop: "1rem" }}>
