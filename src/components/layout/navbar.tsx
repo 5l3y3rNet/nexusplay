@@ -38,7 +38,7 @@ export function Navbar() {
         }
       `}</style>
       <header style={{ position: "fixed", top: "0.75rem", left: "50%", transform: "translateX(-50%)", zIndex: 50, width: "calc(100% - 1.5rem)", maxWidth: "62rem" }}>
-        <div style={{ background: "rgba(14,16,22,0.85)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid #1c1f2b", borderRadius: "9999px", padding: "0 0.5rem 0 1.25rem" }}>
+        <div style={{ background: "rgba(14,16,22,0.85)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: "1px solid #1e2740", borderRadius: "9999px", padding: "0 0.5rem 0 1.25rem" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "3.25rem" }}>
             <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem", textDecoration: "none", flexShrink: 0 }}>
               <span style={{ fontWeight: 800, color: "#fafafa", fontSize: "1.125rem", letterSpacing: "0.05em" }}>KAN<span style={{ color: "#f5a623" }}>I</span></span>
@@ -54,11 +54,11 @@ export function Navbar() {
 
             <div className="nav-desktop" style={{ alignItems: "center", gap: "0.5rem" }}>
               {!loading && user ? (
-                <Link href={dashHref} style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#f5a623", color: "#09090b", fontSize: "0.875rem", fontWeight: 700, padding: "0.5rem 1.125rem", borderRadius: "9999px", textDecoration: "none" }}>
+                <Link href={dashHref} style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "#f5a623", color: "#090D1A", fontSize: "0.875rem", fontWeight: 700, padding: "0.5rem 1.125rem", borderRadius: "9999px", textDecoration: "none" }}>
                   {isAdmin && <Shield size={14} />}<LayoutDashboard size={14} /> Dashboard
                 </Link>
               ) : (
-                <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", background: "#f5a623", color: "#09090b", fontSize: "0.875rem", fontWeight: 700, padding: "0.5rem 1.25rem", borderRadius: "9999px", textDecoration: "none" }}>
+                <Link href="/partner" style={{ display: "inline-flex", alignItems: "center", background: "#f5a623", color: "#090D1A", fontSize: "0.875rem", fontWeight: 700, padding: "0.5rem 1.25rem", borderRadius: "9999px", textDecoration: "none" }}>
                   Partner with us
                 </Link>
               )}
@@ -71,18 +71,18 @@ export function Navbar() {
         </div>
 
         {open && (
-          <div style={{ marginTop: "0.5rem", background: "rgba(14,16,22,0.97)", backdropFilter: "blur(20px)", border: "1px solid #1c1f2b", borderRadius: "1.25rem", padding: "0.75rem" }}>
+          <div style={{ marginTop: "0.5rem", background: "rgba(14,16,22,0.97)", backdropFilter: "blur(20px)", border: "1px solid #1e2740", borderRadius: "1.25rem", padding: "0.75rem" }}>
             <nav style={{ display: "flex", flexDirection: "column", gap: "0.125rem", marginBottom: "0.5rem" }}>
               {navLinks.map(link => (
-                <Link key={link.href} href={link.href} onClick={() => setOpen(false)} style={{ display: "block", padding: "0.75rem 1rem", fontSize: "1rem", fontWeight: 500, color: isActive(link) ? "#fafafa" : "#9aa0ad", textDecoration: "none", borderRadius: "0.625rem", background: isActive(link) ? "#161a26" : "transparent" }}>
+                <Link key={link.href} href={link.href} onClick={() => setOpen(false)} style={{ display: "block", padding: "0.75rem 1rem", fontSize: "1rem", fontWeight: 500, color: isActive(link) ? "#fafafa" : "#9aa0ad", textDecoration: "none", borderRadius: "0.625rem", background: isActive(link) ? "#1e2740" : "transparent" }}>
                   {link.label}
                 </Link>
               ))}
             </nav>
             {!loading && user ? (
-              <Link href={dashHref} onClick={() => setOpen(false)} style={{ display: "block", padding: "0.875rem", fontSize: "1rem", fontWeight: 700, background: "#f5a623", color: "#09090b", textDecoration: "none", textAlign: "center", borderRadius: "0.75rem" }}>Dashboard</Link>
+              <Link href={dashHref} onClick={() => setOpen(false)} style={{ display: "block", padding: "0.875rem", fontSize: "1rem", fontWeight: 700, background: "#f5a623", color: "#090D1A", textDecoration: "none", textAlign: "center", borderRadius: "0.75rem" }}>Dashboard</Link>
             ) : (
-              <Link href="/partner" onClick={() => setOpen(false)} style={{ display: "block", padding: "0.875rem", fontSize: "1rem", fontWeight: 700, background: "#f5a623", color: "#09090b", textDecoration: "none", textAlign: "center", borderRadius: "0.75rem" }}>Partner with us</Link>
+              <Link href="/partner" onClick={() => setOpen(false)} style={{ display: "block", padding: "0.875rem", fontSize: "1rem", fontWeight: 700, background: "#f5a623", color: "#090D1A", textDecoration: "none", textAlign: "center", borderRadius: "0.75rem" }}>Partner with us</Link>
             )}
           </div>
         )}

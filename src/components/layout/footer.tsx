@@ -3,21 +3,21 @@ import { Zap } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer style={{ borderTop: "1px solid #27272a", background: "#09090b" }}>
+    <footer style={{ borderTop: "1px solid #1e2740", background: "#090D1A" }}>
       <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "3.5rem 1.5rem" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "2.5rem" }}>
           <div style={{ gridColumn: "span 2" }}>
             <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", textDecoration: "none", marginBottom: "1rem" }}>
               <div style={{ width: "1.75rem", height: "1.75rem", background: "#fafafa", borderRadius: "0.375rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Zap size={14} style={{ color: "#09090b", fill: "#09090b" }} />
+                <Zap size={14} style={{ color: "#090D1A", fill: "#090D1A" }} />
               </div>
-              <span style={{ fontWeight: 600, color: "#fafafa" }}>NexusPlay</span>
+              <span style={{ fontWeight: 600, color: "#fafafa" }}>KANI</span>
             </Link>
             <p style={{ fontSize: "0.875rem", color: "#52525b", lineHeight: 1.625, maxWidth: "18rem" }}>
               Premium crash and arcade game provider for licensed casino operators worldwide.
             </p>
             <p style={{ fontSize: "0.75rem", color: "#3f3f46", marginTop: "1rem" }}>
-              &copy; 2024 NexusPlay Ltd. All rights reserved.
+              &copy; 2024 KANI Ltd. All rights reserved.
             </p>
           </div>
 

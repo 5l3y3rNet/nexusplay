@@ -22,10 +22,10 @@ export default function LoginPage() {
     router.push("/partner/dashboard");
   }
 
-  const inp: React.CSSProperties = { width: "100%", background: "#111113", border: "1px solid #27272a", borderRadius: "0.625rem", color: "#fafafa", fontSize: "1rem", padding: "0.8125rem", outline: "none" };
+  const inp: React.CSSProperties = { width: "100%", background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.625rem", color: "#fafafa", fontSize: "1rem", padding: "0.8125rem", outline: "none" };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#09090b", padding: "1.25rem" }}>
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#090D1A", padding: "1.25rem" }}>
       <div style={{ width: "100%", maxWidth: "23rem" }}>
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <a href="/" style={{ textDecoration: "none" }}>
@@ -35,7 +35,7 @@ export default function LoginPage() {
           <p style={{ fontSize: "0.9375rem", color: "#71717a" }}>Use the credentials provided by KANI</p>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "1rem", padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+        <form onSubmit={handleSubmit} style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "1rem", padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1.25rem" }}>
           {error && <div style={{ background: "rgba(40,12,12,0.9)", border: "1px solid #4a1515", borderRadius: "0.625rem", padding: "0.8125rem", fontSize: "0.9375rem", color: "#f87171" }}>{error}</div>}
           <div>
             <label style={{ display: "block", fontSize: "0.8125rem", fontWeight: 500, color: "#a1a1aa", marginBottom: "0.5rem" }}>Email</label>
@@ -50,7 +50,7 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
-          <button type="submit" disabled={loading} style={{ background: loading ? "#d4881a" : "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "1rem", padding: "0.8125rem", borderRadius: "0.75rem", border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
+          <button type="submit" disabled={loading} style={{ background: loading ? "#d4881a" : "#f5a623", color: "#090D1A", fontWeight: 700, fontSize: "1rem", padding: "0.8125rem", borderRadius: "0.75rem", border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
             {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>

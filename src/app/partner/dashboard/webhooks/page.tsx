@@ -51,21 +51,21 @@ export default function WebhooksPage() {
     setHooks(prev => prev.filter(h => h.id !== id));
   }
 
-  const card: React.CSSProperties = { background: "#111113", border: "1px solid #27272a", borderRadius: "0.75rem", overflow: "hidden" };
+  const card: React.CSSProperties = { background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.75rem", overflow: "hidden" };
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#09090b", overflow: "hidden" }}>
+    <div style={{ display: "flex", height: "100vh", background: "#090D1A", overflow: "hidden" }}>
       <div className="hidden lg:block" style={{ width: "15rem", flexShrink: 0 }}><PartnerSidebar /></div>
       {mob && <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }}><div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.6)" }} onClick={() => setMob(false)} /><div style={{ position: "relative", width: "15rem", height: "100%" }}><PartnerSidebar onClose={() => setMob(false)} /></div></div>}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <header style={{ height: "4rem", borderBottom: "1px solid #27272a", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1.5rem", flexShrink: 0 }}>
+        <header style={{ height: "4rem", borderBottom: "1px solid #1e2740", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1.5rem", flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <button onClick={() => setMob(true)} className="lg:hidden" style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><Menu size={18} /></button>
             <h2 style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>Webhooks</h2>
           </div>
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <button onClick={loadHooks} style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><RefreshCw size={15} /></button>
-            <button onClick={() => { setShowNew(true); setNewSecret(""); }} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#f5a623", color: "#09090b", fontSize: "0.75rem", fontWeight: 600, padding: "0.375rem 0.75rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
+            <button onClick={() => { setShowNew(true); setNewSecret(""); }} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#f5a623", color: "#090D1A", fontSize: "0.75rem", fontWeight: 600, padding: "0.375rem 0.75rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
               <Plus size={13} /> Add endpoint
             </button>
           </div>
@@ -80,7 +80,7 @@ export default function WebhooksPage() {
           )}
 
           <div style={card}>
-            <div style={{ padding: "1rem 1.25rem", borderBottom: "1px solid #27272a" }}>
+            <div style={{ padding: "1rem 1.25rem", borderBottom: "1px solid #1e2740" }}>
               <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "#fafafa" }}>Endpoints</h3>
             </div>
             {loading ? (
@@ -88,14 +88,14 @@ export default function WebhooksPage() {
             ) : hooks.length === 0 ? (
               <div style={{ padding: "2rem", textAlign: "center", color: "#52525b", fontSize: "0.875rem" }}>No endpoints yet. Add one to receive real-time events.</div>
             ) : hooks.map(h => (
-              <div key={h.id} style={{ padding: "1.25rem", borderBottom: "1px solid #27272a" }}>
+              <div key={h.id} style={{ padding: "1.25rem", borderBottom: "1px solid #1e2740" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "1rem" }}>
                   <div style={{ display: "flex", gap: "0.625rem", minWidth: 0, flex: 1 }}>
                     <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: h.status === "active" ? "#34d399" : "#f87171", marginTop: "0.375rem", flexShrink: 0 }} />
                     <div style={{ minWidth: 0 }}>
                       <div style={{ fontSize: "0.875rem", fontFamily: "monospace", color: "#d4d4d8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", marginBottom: "0.5rem" }}>{h.url}</div>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem", marginBottom: "0.5rem" }}>
-                        {h.events.map(ev => <span key={ev} style={{ fontSize: "0.625rem", fontFamily: "monospace", background: "#18181b", border: "1px solid #27272a", color: "#71717a", padding: "0.125rem 0.375rem", borderRadius: "0.25rem" }}>{ev}</span>)}
+                        {h.events.map(ev => <span key={ev} style={{ fontSize: "0.625rem", fontFamily: "monospace", background: "#131a2e", border: "1px solid #1e2740", color: "#71717a", padding: "0.125rem 0.375rem", borderRadius: "0.25rem" }}>{ev}</span>)}
                       </div>
                       <div style={{ fontSize: "0.75rem", color: "#3f3f46", fontFamily: "monospace" }}>{h.delivery_count} deliveries {h.last_delivery_at ? `· Last: ${new Date(h.last_delivery_at).toLocaleDateString()}` : ""}</div>
                     </div>
@@ -110,11 +110,11 @@ export default function WebhooksPage() {
 
       {showNew && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, padding: "1rem" }}>
-          <div style={{ background: "#18181b", border: "1px solid #27272a", borderRadius: "0.75rem", padding: "1.5rem", width: "100%", maxWidth: "26rem" }}>
+          <div style={{ background: "#131a2e", border: "1px solid #1e2740", borderRadius: "0.75rem", padding: "1.5rem", width: "100%", maxWidth: "26rem" }}>
             <h3 style={{ fontWeight: 600, color: "#fafafa", marginBottom: "1rem" }}>Add webhook endpoint</h3>
             <label style={{ display: "block", fontSize: "0.75rem", color: "#a1a1aa", marginBottom: "0.5rem" }}>Endpoint URL</label>
             <input value={newUrl} onChange={e => setNewUrl(e.target.value)} placeholder="https://your-casino.com/webhooks"
-              style={{ width: "100%", background: "#09090b", border: "1px solid #27272a", borderRadius: "0.375rem", color: "#fafafa", fontSize: "0.875rem", padding: "0.5rem 0.75rem", outline: "none", marginBottom: "1rem" }} />
+              style={{ width: "100%", background: "#090D1A", border: "1px solid #1e2740", borderRadius: "0.375rem", color: "#fafafa", fontSize: "0.875rem", padding: "0.5rem 0.75rem", outline: "none", marginBottom: "1rem" }} />
             <label style={{ display: "block", fontSize: "0.75rem", color: "#a1a1aa", marginBottom: "0.625rem" }}>Events to subscribe</label>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", marginBottom: "1.25rem" }}>
               {ALL_EVENTS.map(ev => (
@@ -125,10 +125,10 @@ export default function WebhooksPage() {
               ))}
             </div>
             <div style={{ display: "flex", gap: "0.75rem" }}>
-              <button onClick={createHook} disabled={creating} style={{ flex: 1, background: "#f5a623", color: "#09090b", fontWeight: 600, fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
+              <button onClick={createHook} disabled={creating} style={{ flex: 1, background: "#f5a623", color: "#090D1A", fontWeight: 600, fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
                 {creating ? "Adding…" : "Add endpoint"}
               </button>
-              <button onClick={() => setShowNew(false)} style={{ flex: 1, background: "#27272a", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>
+              <button onClick={() => setShowNew(false)} style={{ flex: 1, background: "#1e2740", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>
             </div>
           </div>
         </div>

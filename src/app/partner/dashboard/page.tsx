@@ -41,22 +41,22 @@ export default function DashboardPage() {
     setDataLoading(false);
   }
 
-  const card: React.CSSProperties = { background: "#111113", border: "1px solid #27272a", borderRadius: "0.75rem" };
+  const card: React.CSSProperties = { background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.75rem" };
 
-  if (authLoading) return <div style={{ height: "100vh", background: "#09090b", display: "flex", alignItems: "center", justifyContent: "center", color: "#71717a" }}>Loading…</div>;
+  if (authLoading) return <div style={{ height: "100vh", background: "#090D1A", display: "flex", alignItems: "center", justifyContent: "center", color: "#71717a" }}>Loading…</div>;
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#09090b", overflow: "hidden" }}>
+    <div style={{ display: "flex", height: "100vh", background: "#090D1A", overflow: "hidden" }}>
       <div className="hidden lg:block" style={{ width: "15rem", flexShrink: 0 }}><PartnerSidebar /></div>
       {mob && <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }}><div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.6)" }} onClick={() => setMob(false)} /><div style={{ position: "relative", width: "15rem", height: "100%" }}><PartnerSidebar onClose={() => setMob(false)} /></div></div>}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <header style={{ height: "4rem", borderBottom: "1px solid #27272a", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1.5rem", flexShrink: 0 }}>
+        <header style={{ height: "4rem", borderBottom: "1px solid #1e2740", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1.5rem", flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <button onClick={() => setMob(true)} className="lg:hidden" style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><Menu size={18} /></button>
             <h2 style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>Overview</h2>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#18181b", border: "1px solid #27272a", borderRadius: "9999px", padding: "0.375rem 0.75rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#131a2e", border: "1px solid #1e2740", borderRadius: "9999px", padding: "0.375rem 0.75rem" }}>
               <span className="status-dot" /><span style={{ fontSize: "0.75rem", color: "#a1a1aa", fontFamily: "monospace" }}>API operational</span>
             </div>
             <button onClick={loadData} style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }} title="Refresh"><RefreshCw size={15} /></button>
@@ -88,7 +88,7 @@ export default function DashboardPage() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "1rem" }} className="lg:grid-cols-2">
             {/* Recent sessions */}
             <div style={card}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid #27272a" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid #1e2740" }}>
                 <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "#fafafa" }}>Recent Sessions</h3>
                 <Link href="/partner/dashboard/analytics" style={{ fontSize: "0.75rem", color: "#71717a", textDecoration: "none" }}>View all →</Link>
               </div>
@@ -102,7 +102,7 @@ export default function DashboardPage() {
               ) : sessions.slice(0, 6).map(s => {
                 const game = games.find(g => g.id === s.game_id);
                 return (
-                  <div key={s.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 1.25rem", borderBottom: "1px solid #27272a" }}>
+                  <div key={s.id} style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 1.25rem", borderBottom: "1px solid #1e2740" }}>
                     <div style={{ width: "6px", height: "6px", borderRadius: "50%", flexShrink: 0, background: s.status === "active" ? "#34d399" : s.status === "expired" ? "#f87171" : "#3f3f46" }} />
                     <div style={{ fontSize: "0.75rem", fontFamily: "monospace", color: "#52525b", width: "5rem", flexShrink: 0, overflow: "hidden", textOverflow: "ellipsis" }}>{s.id.slice(0, 8)}…</div>
                     <div style={{ fontSize: "0.875rem", color: "#d4d4d8", flex: 1 }}>{game?.title ?? s.game_id}</div>
@@ -117,7 +117,7 @@ export default function DashboardPage() {
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {/* API keys quick view */}
               <div style={card}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid #27272a" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid #1e2740" }}>
                   <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "#fafafa" }}>API Keys</h3>
                   <Link href="/partner/dashboard/api-keys" style={{ fontSize: "0.75rem", color: "#71717a", textDecoration: "none" }}>Manage →</Link>
                 </div>
@@ -146,7 +146,7 @@ export default function DashboardPage() {
                 <div style={{ padding: "1rem 1.25rem" }}>
                   <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "#fafafa", marginBottom: "0.75rem" }}>Quick links</h3>
                   {[["API Reference", "/docs/api"], ["Integration Guide", "/docs/getting-started"], ["Game Catalog", "/games"], ["Webhook Setup", "/partner/dashboard/webhooks"]].map(([l, h]) => (
-                    <Link key={l} href={h} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.5rem 0", fontSize: "0.875rem", color: "#a1a1aa", textDecoration: "none", borderBottom: "1px solid #27272a" }}>
+                    <Link key={l} href={h} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.5rem 0", fontSize: "0.875rem", color: "#a1a1aa", textDecoration: "none", borderBottom: "1px solid #1e2740" }}>
                       {l}<ChevronRight size={12} style={{ color: "#3f3f46" }} />
                     </Link>
                   ))}
@@ -162,7 +162,7 @@ export default function DashboardPage() {
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0.375rem", marginBottom: "0.75rem" }}>
                     {games.map(g => (
-                      <Link key={g.id} href={`/games/${g.slug}`} title={g.title} style={{ aspectRatio: "1", borderRadius: "0.25rem", overflow: "hidden", background: "#18181b", border: "1px solid #27272a", display: "block" }}>
+                      <Link key={g.id} href={`/games/${g.slug}`} title={g.title} style={{ aspectRatio: "1", borderRadius: "0.25rem", overflow: "hidden", background: "#131a2e", border: "1px solid #1e2740", display: "block" }}>
                         <img src={g.thumbnail} alt={g.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                       </Link>
                     ))}

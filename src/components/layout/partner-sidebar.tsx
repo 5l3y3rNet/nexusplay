@@ -16,11 +16,11 @@ const navItems = [
 export function PartnerSidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   return (
-    <aside style={{ display: "flex", flexDirection: "column", width: "15rem", borderRight: "1px solid #27272a", background: "#09090b", height: "100%" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "4rem", padding: "0 1.25rem", borderBottom: "1px solid #27272a", flexShrink: 0 }}>
+    <aside style={{ display: "flex", flexDirection: "column", width: "15rem", borderRight: "1px solid #1e2740", background: "#090D1A", height: "100%" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "4rem", padding: "0 1.25rem", borderBottom: "1px solid #1e2740", flexShrink: 0 }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem", textDecoration: "none" }}>
           <div style={{ width: "1.5rem", height: "1.5rem", background: "#fafafa", borderRadius: "0.25rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Zap size={11} style={{ color: "#09090b", fill: "#09090b" }} />
+            <Zap size={11} style={{ color: "#090D1A", fill: "#090D1A" }} />
           </div>
           <span style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>KANI</span>
         </Link>
@@ -49,9 +49,9 @@ export function PartnerSidebar({ onClose }: { onClose?: () => void }) {
         </nav>
       </div>
 
-      <div style={{ padding: "0.75rem", borderTop: "1px solid #27272a" }}>
+      <div style={{ padding: "0.75rem", borderTop: "1px solid #1e2740" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.625rem", padding: "0.5rem 0.75rem", marginBottom: "0.25rem" }}>
-          <div style={{ width: "1.75rem", height: "1.75rem", background: "#27272a", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <div style={{ width: "1.75rem", height: "1.75rem", background: "#1e2740", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <CircleUser size={13} style={{ color: "#a1a1aa" }} />
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>

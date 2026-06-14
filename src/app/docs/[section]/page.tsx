@@ -7,9 +7,9 @@ const sections: Record<string, { title: string; blocks: Array<{ type: string; co
     title: "Getting Started",
     blocks: [
       { type: "h1", content: "Getting Started" },
-      { type: "p", content: "NexusPlay provides a production-grade game provider API that allows licensed casino operators to integrate our crash and arcade games into their platform." },
+      { type: "p", content: "KANI provides a production-grade game provider API that allows licensed casino operators to integrate our crash and arcade games into their platform." },
       { type: "h2", content: "Prerequisites" },
-      { type: "p", content: "A valid casino operator license, an approved NexusPlay partner account, and an HTTPS-capable server for webhook delivery." },
+      { type: "p", content: "A valid casino operator license, an approved KANI partner account, and an HTTPS-capable server for webhook delivery." },
       { type: "h2", content: "Step 1: Create a Partner Account" },
       { type: "p", content: "Register at nexusplay.io/partner and submit your operator license documentation. Approval typically takes 1-2 business days." },
       { type: "h2", content: "Step 2: Generate API Credentials" },
@@ -45,7 +45,7 @@ nxp_live_sk_1234567890abcdef...` },
       { type: "h2", content: "Key Types" },
       { type: "table", content: "Type|Prefix|Use\nLive|nxp_live_sk_|Production\nTest|nxp_test_sk_|Sandbox" },
       { type: "h2", content: "HMAC Request Signing" },
-      { type: "p", content: "For webhook delivery and sensitive operations, NexusPlay signs requests with HMAC-SHA256." },
+      { type: "p", content: "For webhook delivery and sensitive operations, KANI signs requests with HMAC-SHA256." },
       { type: "code", content: `const crypto = require('crypto');
 
 function verifyWebhook(payload, signature, secret) {
@@ -151,9 +151,9 @@ function verifyWebhook(payload, signature, secret) {
       { type: "h1", content: "SDK Reference" },
       { type: "h2", content: "JavaScript / TypeScript" },
       { type: "code", content: `npm install @nexusplay/sdk` },
-      { type: "code", content: `import { NexusPlayClient } from '@nexusplay/sdk';
+      { type: "code", content: `import { KANIClient } from '@nexusplay/sdk';
 
-const client = new NexusPlayClient({
+const client = new KANIClient({
   apiKey: process.env.NEXUS_API_KEY,
   operatorId: 'op_abc123',
 });
@@ -168,7 +168,7 @@ const session = await client.games.launch({
 console.log(session.launchUrl);` },
       { type: "h2", content: "PHP" },
       { type: "code", content: `composer require nexusplay/sdk` },
-      { type: "code", content: `$client = new \\NexusPlay\\Client([
+      { type: "code", content: `$client = new \\KANI\\Client([
   'api_key' => getenv('NEXUS_API_KEY'),
   'operator_id' => 'op_abc123',
 ]);
@@ -195,8 +195,8 @@ session = client.games.launch(
     balance=1000,
 )` },
       { type: "h2", content: "C#" },
-      { type: "code", content: `dotnet add package NexusPlay.SDK` },
-      { type: "code", content: `var client = new NexusPlayClient(new ClientOptions {
+      { type: "code", content: `dotnet add package KANI.SDK` },
+      { type: "code", content: `var client = new KANIClient(new ClientOptions {
   ApiKey = Environment.GetEnvironmentVariable("NEXUS_API_KEY"),
   OperatorId = "op_abc123",
 });
@@ -230,7 +230,7 @@ export default async function DocSectionPage({ params }: { params: Promise<{ sec
   if (!section) notFound();
 
   return (
-    <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "#09090b" }}>
+    <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "#090D1A" }}>
       <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "2.5rem 1.5rem", display: "grid", gridTemplateColumns: "200px 1fr", gap: "3rem" }}>
 
         {/* Sidebar */}
@@ -241,7 +241,7 @@ export default async function DocSectionPage({ params }: { params: Promise<{ sec
               <Link key={item.key} href={`/docs/${item.key}`} style={{
                 display: "block", padding: "0.5rem 0.75rem", fontSize: "0.875rem",
                 borderRadius: "0.375rem", textDecoration: "none",
-                background: item.key === sectionKey ? "#27272a" : "transparent",
+                background: item.key === sectionKey ? "#1e2740" : "transparent",
                 color: item.key === sectionKey ? "#fafafa" : "#71717a",
               }}>
                 {item.label}
@@ -256,19 +256,19 @@ export default async function DocSectionPage({ params }: { params: Promise<{ sec
             <ArrowLeft size={14} /> All docs
           </Link>
 
-          <div style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "0.75rem", padding: "2.5rem" }}>
+          <div style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.75rem", padding: "2.5rem" }}>
             {section.blocks.map((block, i) => {
               if (block.type === "h1") return (
                 <h1 key={i} style={{ fontSize: "1.75rem", fontWeight: 700, color: "#fafafa", marginBottom: "1.5rem" }}>{block.content}</h1>
               );
               if (block.type === "h2") return (
-                <h2 key={i} style={{ fontSize: "1rem", fontWeight: 600, color: "#fafafa", marginTop: "2rem", marginBottom: "0.75rem", paddingTop: "1.5rem", borderTop: "1px solid #27272a" }}>{block.content}</h2>
+                <h2 key={i} style={{ fontSize: "1rem", fontWeight: 600, color: "#fafafa", marginTop: "2rem", marginBottom: "0.75rem", paddingTop: "1.5rem", borderTop: "1px solid #1e2740" }}>{block.content}</h2>
               );
               if (block.type === "p") return (
                 <p key={i} style={{ fontSize: "0.875rem", color: "#71717a", lineHeight: 1.75, marginBottom: "1rem" }}>{block.content}</p>
               );
               if (block.type === "code") return (
-                <pre key={i} style={{ background: "#18181b", border: "1px solid #27272a", borderRadius: "0.5rem", padding: "1rem", fontFamily: "monospace", fontSize: "0.75rem", color: "#a1a1aa", lineHeight: 1.75, overflow: "auto", marginBottom: "1rem" }}>
+                <pre key={i} style={{ background: "#131a2e", border: "1px solid #1e2740", borderRadius: "0.5rem", padding: "1rem", fontFamily: "monospace", fontSize: "0.75rem", color: "#a1a1aa", lineHeight: 1.75, overflow: "auto", marginBottom: "1rem" }}>
                   {block.content}
                 </pre>
               );
@@ -276,12 +276,12 @@ export default async function DocSectionPage({ params }: { params: Promise<{ sec
                 const rows = block.content.split("\n").map(r => r.split("|"));
                 const [header, ...body] = rows;
                 return (
-                  <div key={i} style={{ marginBottom: "1rem", border: "1px solid #27272a", borderRadius: "0.5rem", overflow: "hidden" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: `repeat(${header.length}, 1fr)`, background: "#18181b", borderBottom: "1px solid #27272a" }}>
+                  <div key={i} style={{ marginBottom: "1rem", border: "1px solid #1e2740", borderRadius: "0.5rem", overflow: "hidden" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: `repeat(${header.length}, 1fr)`, background: "#131a2e", borderBottom: "1px solid #1e2740" }}>
                       {header.map((h, j) => <div key={j} style={{ padding: "0.625rem 0.75rem", fontSize: "0.75rem", fontWeight: 600, color: "#a1a1aa" }}>{h}</div>)}
                     </div>
                     {body.map((row, ri) => (
-                      <div key={ri} style={{ display: "grid", gridTemplateColumns: `repeat(${header.length}, 1fr)`, borderBottom: ri < body.length - 1 ? "1px solid #27272a" : "none" }}>
+                      <div key={ri} style={{ display: "grid", gridTemplateColumns: `repeat(${header.length}, 1fr)`, borderBottom: ri < body.length - 1 ? "1px solid #1e2740" : "none" }}>
                         {row.map((cell, ci) => <div key={ci} style={{ padding: "0.625rem 0.75rem", fontSize: "0.875rem", color: "#71717a", fontFamily: ci === 0 ? "monospace" : "inherit" }}>{cell}</div>)}
                       </div>
                     ))}

@@ -4,11 +4,11 @@ import type { Game } from "@/lib/games";
 
 export function GameCard({ game }: { game: Game }) {
   return (
-    <div style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "0.75rem", overflow: "hidden", display: "flex", flexDirection: "column" }}
+    <div style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.75rem", overflow: "hidden", display: "flex", flexDirection: "column" }}
       onMouseEnter={e => ((e.currentTarget as HTMLDivElement).style.borderColor = "#52525b")}
-      onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.borderColor = "#27272a")}>
+      onMouseLeave={e => ((e.currentTarget as HTMLDivElement).style.borderColor = "#1e2740")}>
       <Link href={`/games/${game.slug}`} style={{ textDecoration: "none", display: "block" }}>
-        <div style={{ height: "11rem", overflow: "hidden", background: "#18181b", position: "relative" }}>
+        <div style={{ height: "11rem", overflow: "hidden", background: "#131a2e", position: "relative" }}>
           <img src={game.thumbnail} alt={game.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           <div style={{ position: "absolute", top: "0.75rem", left: "0.75rem", display: "flex", gap: "0.375rem" }}>
             {game.status === "new" && <span style={{ fontSize: "0.625rem", background: "rgba(2,44,34,0.9)", color: "#34d399", border: "1px solid #064e3b", padding: "0.125rem 0.5rem", borderRadius: "0.25rem", fontFamily: "monospace" }}>NEW</span>}

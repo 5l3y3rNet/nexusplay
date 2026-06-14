@@ -23,7 +23,7 @@ export default function GamesPage() {
   }, [search, cat, sort]);
 
   return (
-    <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "#09090b" }}>
+    <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "#090D1A" }}>
       <div style={{ maxWidth: "80rem", margin: "0 auto", padding: "2.5rem 1.25rem" }}>
         <div style={{ marginBottom: "2rem" }}>
           <p style={{ fontSize: "0.6875rem", fontFamily: "monospace", color: "#f5a623", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "0.5rem" }}>Game Catalog</p>
@@ -36,17 +36,17 @@ export default function GamesPage() {
           <div style={{ position: "relative", flex: "1 1 200px", minWidth: "200px", maxWidth: "360px" }}>
             <Search size={14} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "#52525b" }} />
             <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search games..."
-              style={{ width: "100%", background: "#18181b", border: "1px solid #27272a", borderRadius: "0.5rem", color: "#fafafa", fontSize: "0.9375rem", padding: "0.625rem 0.75rem 0.625rem 2.25rem", outline: "none" }} />
+              style={{ width: "100%", background: "#131a2e", border: "1px solid #1e2740", borderRadius: "0.5rem", color: "#fafafa", fontSize: "0.9375rem", padding: "0.625rem 0.75rem 0.625rem 2.25rem", outline: "none" }} />
           </div>
           {/* Category pills - scrollable on mobile */}
           <div style={{ display: "flex", gap: "0.375rem", overflowX: "auto", paddingBottom: "2px" }}>
             {cats.map(c => (
-              <button key={c} onClick={() => setCat(c)} style={{ padding: "0.5rem 0.875rem", fontSize: "0.8125rem", fontFamily: "monospace", borderRadius: "0.375rem", border: "1px solid", cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0, background: cat === c ? "#f5a623" : "transparent", color: cat === c ? "#09090b" : "#71717a", borderColor: cat === c ? "#f5a623" : "#27272a" }}>
+              <button key={c} onClick={() => setCat(c)} style={{ padding: "0.5rem 0.875rem", fontSize: "0.8125rem", fontFamily: "monospace", borderRadius: "0.375rem", border: "1px solid", cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0, background: cat === c ? "#f5a623" : "transparent", color: cat === c ? "#090D1A" : "#71717a", borderColor: cat === c ? "#f5a623" : "#1e2740" }}>
                 {c}
               </button>
             ))}
           </div>
-          <select value={sort} onChange={e => setSort(e.target.value)} style={{ background: "#18181b", border: "1px solid #27272a", borderRadius: "0.5rem", color: "#71717a", fontSize: "0.9375rem", padding: "0.625rem 0.75rem", outline: "none" }}>
+          <select value={sort} onChange={e => setSort(e.target.value)} style={{ background: "#131a2e", border: "1px solid #1e2740", borderRadius: "0.5rem", color: "#71717a", fontSize: "0.9375rem", padding: "0.625rem 0.75rem", outline: "none" }}>
             <option value="newest">Newest</option>
             <option value="rtp">Highest RTP</option>
             <option value="az">A → Z</option>

@@ -30,11 +30,11 @@ export default function UploadsPage() {
   }
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#09090b", overflow: "hidden" }}>
+    <div style={{ display: "flex", height: "100vh", background: "#090D1A", overflow: "hidden" }}>
       <div className="hidden lg:block" style={{ width: "14rem", flexShrink: 0 }}><AdminSidebar /></div>
       {mob && <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }}><div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.6)" }} onClick={() => setMob(false)} /><div style={{ position: "relative", width: "14rem", height: "100%" }}><AdminSidebar onClose={() => setMob(false)} /></div></div>}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <header style={{ height: "4rem", borderBottom: "1px solid #27272a", display: "flex", alignItems: "center", gap: "0.75rem", padding: "0 1.5rem", flexShrink: 0 }}>
+        <header style={{ height: "4rem", borderBottom: "1px solid #1e2740", display: "flex", alignItems: "center", gap: "0.75rem", padding: "0 1.5rem", flexShrink: 0 }}>
           <button onClick={() => setMob(true)} className="lg:hidden" style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><Menu size={18} /></button>
           <h2 style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>Upload Management</h2>
         </header>
@@ -44,7 +44,7 @@ export default function UploadsPage() {
             onDragLeave={() => setDrag(false)}
             onDrop={e => { e.preventDefault(); setDrag(false); handleFiles(e.dataTransfer.files); }}
             onClick={() => inputRef.current?.click()}
-            style={{ border: `2px dashed ${drag ? "#71717a" : "#27272a"}`, borderRadius: "0.75rem", padding: "3rem", textAlign: "center", cursor: "pointer", background: drag ? "#18181b" : "transparent", marginBottom: "1.5rem", transition: "all 0.15s" }}>
+            style={{ border: `2px dashed ${drag ? "#71717a" : "#1e2740"}`, borderRadius: "0.75rem", padding: "3rem", textAlign: "center", cursor: "pointer", background: drag ? "#131a2e" : "transparent", marginBottom: "1.5rem", transition: "all 0.15s" }}>
             <input ref={inputRef} type="file" accept=".html,.zip" multiple style={{ display: "none" }} onChange={e => handleFiles(e.target.files)} />
             <CloudUpload size={32} style={{ color: "#52525b", margin: "0 auto 0.75rem" }} />
             <div style={{ fontSize: "0.875rem", fontWeight: 500, color: "#d4d4d8", marginBottom: "0.375rem" }}>Drop game files here, or click to select</div>
@@ -52,12 +52,12 @@ export default function UploadsPage() {
           </div>
 
           {queue.length > 0 && (
-            <div style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "0.75rem", overflow: "hidden", marginBottom: "1rem" }}>
-              <div style={{ padding: "1rem 1.25rem", borderBottom: "1px solid #27272a" }}>
+            <div style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.75rem", overflow: "hidden", marginBottom: "1rem" }}>
+              <div style={{ padding: "1rem 1.25rem", borderBottom: "1px solid #1e2740" }}>
                 <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "#fafafa" }}>Upload Queue</h3>
               </div>
               {queue.map((f, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 1.25rem", borderBottom: "1px solid #27272a" }}>
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 1.25rem", borderBottom: "1px solid #1e2740" }}>
                   <File size={14} style={{ color: "#52525b", flexShrink: 0 }} />
                   <span style={{ fontSize: "0.875rem", color: "#d4d4d8", flex: 1 }}>{f.name}</span>
                   <span style={{ fontSize: "0.75rem", fontFamily: "monospace", color: "#71717a" }}>{f.size}</span>
@@ -69,13 +69,13 @@ export default function UploadsPage() {
             </div>
           )}
 
-          <div style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "0.75rem", overflow: "hidden" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid #27272a" }}>
+          <div style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.75rem", overflow: "hidden" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem", borderBottom: "1px solid #1e2740" }}>
               <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "#fafafa" }}>Ingested Games</h3>
               <span style={{ fontSize: "0.75rem", fontFamily: "monospace", color: "#52525b" }}>{existing.length} files</span>
             </div>
             {existing.map(g => (
-              <div key={g.file} style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 1.25rem", borderBottom: "1px solid #27272a" }}>
+              <div key={g.file} style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.75rem 1.25rem", borderBottom: "1px solid #1e2740" }}>
                 <CheckCircle2 size={13} style={{ color: "#34d399", flexShrink: 0 }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: "0.875rem", color: "#d4d4d8" }}>{g.name}</div>

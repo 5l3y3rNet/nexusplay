@@ -67,25 +67,25 @@ export default function AdminGamesPage() {
   }
 
   const filtered = list.filter(g => g.title.toLowerCase().includes(search.toLowerCase()) || g.category.toLowerCase().includes(search.toLowerCase()));
-  const inp: React.CSSProperties = { width: "100%", background: "#09090b", border: "1px solid #27272a", borderRadius: "0.375rem", color: "#fafafa", fontSize: "0.875rem", padding: "0.5rem 0.75rem", outline: "none" };
+  const inp: React.CSSProperties = { width: "100%", background: "#090D1A", border: "1px solid #1e2740", borderRadius: "0.375rem", color: "#fafafa", fontSize: "0.875rem", padding: "0.5rem 0.75rem", outline: "none" };
   const lbl: React.CSSProperties = { display: "block", fontSize: "0.75rem", color: "#a1a1aa", marginBottom: "0.375rem" };
 
-  if (authLoading || (user && user.role !== "admin")) return <div style={{ height: "100vh", background: "#09090b", display: "flex", alignItems: "center", justifyContent: "center", color: "#71717a" }}>Loading…</div>;
+  if (authLoading || (user && user.role !== "admin")) return <div style={{ height: "100vh", background: "#090D1A", display: "flex", alignItems: "center", justifyContent: "center", color: "#71717a" }}>Loading…</div>;
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#09090b", overflow: "hidden" }}>
+    <div style={{ display: "flex", height: "100vh", background: "#090D1A", overflow: "hidden" }}>
       <style>{`.admin-sb{display:none}@media(min-width:1024px){.admin-sb{display:flex}.admin-menu-btn{display:none!important}}`}</style>
       <div className="admin-sb" style={{ width: "14rem", flexShrink: 0 }}><AdminSidebar /></div>
       {mob && <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }}><div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.6)" }} onClick={() => setMob(false)} /><div style={{ position: "relative", width: "14rem", height: "100%" }}><AdminSidebar onClose={() => setMob(false)} /></div></div>}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <header style={{ height: "4rem", borderBottom: "1px solid #27272a", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1.5rem", flexShrink: 0 }}>
+        <header style={{ height: "4rem", borderBottom: "1px solid #1e2740", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1.5rem", flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <button onClick={() => setMob(true)} className="admin-menu-btn" style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a", display: "flex" }}><Menu size={18} /></button>
             <h2 style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>Game Management</h2>
           </div>
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <button onClick={load} style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><RefreshCw size={15} /></button>
-            <button onClick={() => setShowAdd(true)} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#f5a623", color: "#09090b", fontSize: "0.8125rem", fontWeight: 700, padding: "0.5rem 0.875rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
+            <button onClick={() => setShowAdd(true)} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#f5a623", color: "#090D1A", fontSize: "0.8125rem", fontWeight: 700, padding: "0.5rem 0.875rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
               <Plus size={14} /> Add Game
             </button>
           </div>
@@ -93,21 +93,21 @@ export default function AdminGamesPage() {
         <main style={{ flex: 1, overflowY: "auto", padding: "1.5rem" }}>
           <div style={{ position: "relative", maxWidth: "20rem", marginBottom: "1.25rem" }}>
             <Search size={14} style={{ position: "absolute", left: "0.75rem", top: "50%", transform: "translateY(-50%)", color: "#52525b" }} />
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search games..." style={{ ...inp, paddingLeft: "2.25rem", background: "#18181b" }} />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search games..." style={{ ...inp, paddingLeft: "2.25rem", background: "#131a2e" }} />
           </div>
 
-          <div style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "0.75rem", overflow: "hidden" }}>
+          <div style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.75rem", overflow: "hidden" }}>
             {loading ? <div style={{ padding: "3rem", textAlign: "center", color: "#52525b" }}>Loading…</div>
               : filtered.map(game => (
-              <div key={game.id} style={{ display: "flex", alignItems: "center", gap: "0.875rem", padding: "0.875rem 1.25rem", borderBottom: "1px solid #27272a" }}>
-                <div style={{ width: "2.75rem", height: "2.75rem", borderRadius: "0.375rem", overflow: "hidden", background: "#18181b", flexShrink: 0 }}>
+              <div key={game.id} style={{ display: "flex", alignItems: "center", gap: "0.875rem", padding: "0.875rem 1.25rem", borderBottom: "1px solid #1e2740" }}>
+                <div style={{ width: "2.75rem", height: "2.75rem", borderRadius: "0.375rem", overflow: "hidden", background: "#131a2e", flexShrink: 0 }}>
                   <img src={game.thumbnail} alt={game.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: "0.9375rem", fontWeight: 500, color: "#d4d4d8" }}>{game.title}</div>
                   <div style={{ fontSize: "0.75rem", fontFamily: "monospace", color: "#52525b" }}>{game.id} · {game.category} · {game.rtp}</div>
                 </div>
-                <span style={{ fontSize: "0.625rem", fontFamily: "monospace", padding: "0.125rem 0.5rem", borderRadius: "0.25rem", border: "1px solid", background: game.published ? "rgba(2,44,34,0.9)" : "#18181b", color: game.published ? "#34d399" : "#71717a", borderColor: game.published ? "#064e3b" : "#3f3f46", flexShrink: 0 }}>
+                <span style={{ fontSize: "0.625rem", fontFamily: "monospace", padding: "0.125rem 0.5rem", borderRadius: "0.25rem", border: "1px solid", background: game.published ? "rgba(2,44,34,0.9)" : "#131a2e", color: game.published ? "#34d399" : "#71717a", borderColor: game.published ? "#064e3b" : "#3f3f46", flexShrink: 0 }}>
                   {game.published ? "Published" : "Hidden"}
                 </span>
                 <div style={{ display: "flex", gap: "0.625rem", flexShrink: 0 }}>
@@ -124,7 +124,7 @@ export default function AdminGamesPage() {
       {/* Add modal */}
       {showAdd && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, padding: "1rem" }}>
-          <div style={{ background: "#18181b", border: "1px solid #27272a", borderRadius: "0.75rem", padding: "1.5rem", width: "100%", maxWidth: "32rem", maxHeight: "90vh", overflowY: "auto" }}>
+          <div style={{ background: "#131a2e", border: "1px solid #1e2740", borderRadius: "0.75rem", padding: "1.5rem", width: "100%", maxWidth: "32rem", maxHeight: "90vh", overflowY: "auto" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
               <h3 style={{ fontWeight: 600, color: "#fafafa", fontSize: "1.0625rem" }}>Add New Game</h3>
               <button onClick={() => setShowAdd(false)} style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><X size={18} /></button>
@@ -166,8 +166,8 @@ export default function AdminGamesPage() {
               </div>
               <div><label style={lbl}>Description</label><textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={2} placeholder="Short game description" style={{ ...inp, resize: "none" }} /></div>
               <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-                <button onClick={addGame} disabled={saving} style={{ flex: 1, background: "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>{saving ? "Adding…" : "Add Game"}</button>
-                <button onClick={() => setShowAdd(false)} style={{ flex: 1, background: "#27272a", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>
+                <button onClick={addGame} disabled={saving} style={{ flex: 1, background: "#f5a623", color: "#090D1A", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>{saving ? "Adding…" : "Add Game"}</button>
+                <button onClick={() => setShowAdd(false)} style={{ flex: 1, background: "#1e2740", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>
               </div>
             </div>
           </div>
@@ -177,7 +177,7 @@ export default function AdminGamesPage() {
       {/* Edit modal */}
       {editing && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, padding: "1rem" }}>
-          <div style={{ background: "#18181b", border: "1px solid #27272a", borderRadius: "0.75rem", padding: "1.5rem", width: "100%", maxWidth: "28rem" }}>
+          <div style={{ background: "#131a2e", border: "1px solid #1e2740", borderRadius: "0.75rem", padding: "1.5rem", width: "100%", maxWidth: "28rem" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
               <h3 style={{ fontWeight: 600, color: "#fafafa" }}>Edit — {editing.title}</h3>
               <button onClick={() => setEditing(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><X size={18} /></button>
@@ -190,8 +190,8 @@ export default function AdminGamesPage() {
               </div>
               <div><label style={lbl}>Description</label><textarea value={editing.description} onChange={e => setEditing({ ...editing, description: e.target.value })} rows={3} style={{ ...inp, resize: "none" }} /></div>
               <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-                <button onClick={saveEdit} disabled={saving} style={{ flex: 1, background: "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>{saving ? "Saving…" : "Save"}</button>
-                <button onClick={() => setEditing(null)} style={{ flex: 1, background: "#27272a", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>
+                <button onClick={saveEdit} disabled={saving} style={{ flex: 1, background: "#f5a623", color: "#090D1A", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>{saving ? "Saving…" : "Save"}</button>
+                <button onClick={() => setEditing(null)} style={{ flex: 1, background: "#1e2740", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>
               </div>
             </div>
           </div>

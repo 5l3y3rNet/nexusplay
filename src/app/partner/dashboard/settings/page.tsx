@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Menu } from "lucide-react";
 import { PartnerSidebar } from "@/components/layout/partner-sidebar";
 
-const inputStyle = { width: "100%", background: "#18181b", border: "1px solid #27272a", borderRadius: "0.375rem", color: "#fafafa", fontSize: "0.875rem", padding: "0.5rem 0.75rem", outline: "none" } as React.CSSProperties;
+const inputStyle = { width: "100%", background: "#131a2e", border: "1px solid #1e2740", borderRadius: "0.375rem", color: "#fafafa", fontSize: "0.875rem", padding: "0.5rem 0.75rem", outline: "none" } as React.CSSProperties;
 const labelStyle = { display: "block" as const, fontSize: "0.75rem", fontWeight: 500 as const, color: "#a1a1aa", marginBottom: "0.5rem" };
 
 export default function SettingsPage() {
@@ -12,14 +12,14 @@ export default function SettingsPage() {
   const [form, setForm] = useState({ company: "Ace Casino Ltd.", email: "partner@ace.com", website: "https://acecasino.com", ip: "203.0.113.10\n198.51.100.42", errNotify: true, usageNotify: false });
   const set = (f: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm(p => ({ ...p, [f]: e.target.value }));
   const toggle = (f: string) => () => setForm(p => ({ ...p, [f]: !(p as any)[f] }));
-  const card: React.CSSProperties = { background: "#111113", border: "1px solid #27272a", borderRadius: "0.75rem", padding: "1.5rem", marginBottom: "1rem" };
+  const card: React.CSSProperties = { background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.75rem", padding: "1.5rem", marginBottom: "1rem" };
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#09090b", overflow: "hidden" }}>
+    <div style={{ display: "flex", height: "100vh", background: "#090D1A", overflow: "hidden" }}>
       <div className="hidden lg:block" style={{ width: "15rem", flexShrink: 0 }}><PartnerSidebar /></div>
       {mob && <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }}><div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.6)" }} onClick={() => setMob(false)} /><div style={{ position: "relative", width: "15rem", height: "100%" }}><PartnerSidebar onClose={() => setMob(false)} /></div></div>}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <header style={{ height: "4rem", borderBottom: "1px solid #27272a", display: "flex", alignItems: "center", gap: "0.75rem", padding: "0 1.5rem", flexShrink: 0 }}>
+        <header style={{ height: "4rem", borderBottom: "1px solid #1e2740", display: "flex", alignItems: "center", gap: "0.75rem", padding: "0 1.5rem", flexShrink: 0 }}>
           <button onClick={() => setMob(true)} className="lg:hidden" style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><Menu size={18} /></button>
           <h2 style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>Account Settings</h2>
         </header>
@@ -57,7 +57,7 @@ export default function SettingsPage() {
             </div>
 
             <button onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}
-              style={{ background: "#f5a623", color: "#09090b", fontWeight: 600, fontSize: "0.875rem", padding: "0.625rem 1.25rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
+              style={{ background: "#f5a623", color: "#090D1A", fontWeight: 600, fontSize: "0.875rem", padding: "0.625rem 1.25rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
               {saved ? "Saved!" : "Save changes"}
             </button>
           </div>

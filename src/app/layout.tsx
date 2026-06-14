@@ -5,9 +5,10 @@ import { Navbar } from "@/components/layout/navbar";
 import { ConditionalFooter } from "@/components/layout/conditional-footer";
 
 export const metadata: Metadata = {
-  title: "NexusPlay — Premium Game Provider",
-  description: "Professional crash and arcade games for licensed casino operators.",
-  viewport: "width=device-width, initial-scale=1",
+  title: "KANI — iGaming Studio",
+  description: "Independent iGaming studio. Original crash and arcade games for casino operators. HTML5, provably fair, revenue share licensing.",
+  viewport: "width=device-width, initial-scale=1, viewport-fit=cover",
+  themeColor: "#090D1A",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

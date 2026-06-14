@@ -73,35 +73,35 @@ export default function AdminUsersPage() {
 
   function copy(key: string, val: string) { navigator.clipboard.writeText(val); setCopied(key); setTimeout(() => setCopied(""), 1500); }
 
-  const inp: React.CSSProperties = { width: "100%", background: "#0c0e16", border: "1px solid #1e2230", borderRadius: "0.5rem", color: "#fafafa", fontSize: "0.875rem", padding: "0.5rem 0.75rem", outline: "none" };
+  const inp: React.CSSProperties = { width: "100%", background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.5rem", color: "#fafafa", fontSize: "0.875rem", padding: "0.5rem 0.75rem", outline: "none" };
   const lbl: React.CSSProperties = { display: "block", fontSize: "0.75rem", color: "#9aa0ad", marginBottom: "0.375rem" };
 
-  if (authLoading || (user && user.role !== "admin")) return <div style={{ height: "100vh", background: "#080a0f", display: "flex", alignItems: "center", justifyContent: "center", color: "#71757f" }}>Loading…</div>;
+  if (authLoading || (user && user.role !== "admin")) return <div style={{ height: "100vh", background: "#070a14", display: "flex", alignItems: "center", justifyContent: "center", color: "#71757f" }}>Loading…</div>;
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#080a0f", overflow: "hidden" }}>
+    <div style={{ display: "flex", height: "100vh", background: "#070a14", overflow: "hidden" }}>
       <style>{`.admin-sb{display:none}@media(min-width:1024px){.admin-sb{display:flex}.admin-menu-btn{display:none!important}}`}</style>
       <div className="admin-sb" style={{ width: "14rem", flexShrink: 0 }}><AdminSidebar /></div>
       {mob && <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }}><div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.6)" }} onClick={() => setMob(false)} /><div style={{ position: "relative", width: "14rem", height: "100%" }}><AdminSidebar onClose={() => setMob(false)} /></div></div>}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <header style={{ height: "4rem", borderBottom: "1px solid #1c1f2b", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1.5rem", flexShrink: 0 }}>
+        <header style={{ height: "4rem", borderBottom: "1px solid #1e2740", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1.5rem", flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <button onClick={() => setMob(true)} className="admin-menu-btn" style={{ background: "none", border: "none", cursor: "pointer", color: "#71757f", display: "flex" }}><Menu size={18} /></button>
             <h2 style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>Users</h2>
           </div>
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <button onClick={load} style={{ background: "none", border: "none", cursor: "pointer", color: "#71757f" }}><RefreshCw size={15} /></button>
-            <button onClick={() => { setForm({ name: "", email: "", company: "", password: genPassword(), games: [] }); setShowAdd(true); }} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#f5a623", color: "#09090b", fontSize: "0.8125rem", fontWeight: 700, padding: "0.5rem 0.875rem", borderRadius: "0.5rem", border: "none", cursor: "pointer" }}>
+            <button onClick={() => { setForm({ name: "", email: "", company: "", password: genPassword(), games: [] }); setShowAdd(true); }} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#f5a623", color: "#090D1A", fontSize: "0.8125rem", fontWeight: 700, padding: "0.5rem 0.875rem", borderRadius: "0.5rem", border: "none", cursor: "pointer" }}>
               <Plus size={14} /> Create User
             </button>
           </div>
         </header>
         <main style={{ flex: 1, overflowY: "auto", padding: "1.5rem" }}>
-          <div style={{ background: "#0c0e16", border: "1px solid #161a26", borderRadius: "0.75rem", overflow: "hidden" }}>
+          <div style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.75rem", overflow: "hidden" }}>
             {loading ? <div style={{ padding: "3rem", textAlign: "center", color: "#5a5e6b" }}>Loading…</div>
               : users.length === 0 ? <div style={{ padding: "3rem", textAlign: "center", color: "#5a5e6b", fontSize: "0.875rem" }}>No users yet. Create one to give an operator access.</div>
               : users.map(u => (
-              <div key={u.id} style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "1rem 1.25rem", borderBottom: "1px solid #161a26", flexWrap: "wrap" }}>
+              <div key={u.id} style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "1rem 1.25rem", borderBottom: "1px solid #1e2740", flexWrap: "wrap" }}>
                 <div style={{ flex: "1 1 200px", minWidth: 0 }}>
                   <div style={{ fontSize: "0.9375rem", fontWeight: 500, color: "#e4e6ea" }}>{u.company}</div>
                   <div style={{ fontSize: "0.75rem", color: "#5a5e6b" }}>{u.email} · {u.name}</div>
@@ -110,7 +110,7 @@ export default function AdminUsersPage() {
                   <Gamepad2 size={13} style={{ color: "#fafafa" }} /> {u.games.length} game{u.games.length !== 1 ? "s" : ""} assigned
                 </div>
                 <div style={{ display: "flex", gap: "0.5rem" }}>
-                  <button onClick={() => setAssignFor(u)} style={{ fontSize: "0.75rem", background: "#161a26", color: "#c4c7cf", border: "1px solid #1e2230", padding: "0.375rem 0.75rem", borderRadius: "0.375rem", cursor: "pointer" }}>Assign games</button>
+                  <button onClick={() => setAssignFor(u)} style={{ fontSize: "0.75rem", background: "#1e2740", color: "#c4c7cf", border: "1px solid #1e2740", padding: "0.375rem 0.75rem", borderRadius: "0.375rem", cursor: "pointer" }}>Assign games</button>
                   <button onClick={() => deleteUser(u.id)} style={{ background: "none", border: "none", cursor: "pointer", color: "#5a5e6b" }}><Trash2 size={15} /></button>
                 </div>
               </div>
@@ -122,7 +122,7 @@ export default function AdminUsersPage() {
       {/* Create user modal */}
       {showAdd && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, padding: "1rem" }}>
-          <div style={{ background: "#0c0e16", border: "1px solid #1e2230", borderRadius: "0.875rem", padding: "1.5rem", width: "100%", maxWidth: "32rem", maxHeight: "90vh", overflowY: "auto" }}>
+          <div style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.875rem", padding: "1.5rem", width: "100%", maxWidth: "32rem", maxHeight: "90vh", overflowY: "auto" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
               <h3 style={{ fontWeight: 700, color: "#fafafa", fontSize: "1.0625rem" }}>Create Operator Account</h3>
               <button onClick={() => setShowAdd(false)} style={{ background: "none", border: "none", cursor: "pointer", color: "#71757f" }}><X size={18} /></button>
@@ -138,7 +138,7 @@ export default function AdminUsersPage() {
                 <label style={lbl}>Password * (share this with the operator)</label>
                 <div style={{ display: "flex", gap: "0.5rem" }}>
                   <input value={form.password} onChange={e => setForm(f => ({ ...f, password: e.target.value }))} style={{ ...inp, fontFamily: "monospace" }} />
-                  <button onClick={() => setForm(f => ({ ...f, password: genPassword() }))} style={{ flexShrink: 0, background: "#161a26", border: "1px solid #1e2230", borderRadius: "0.5rem", color: "#c4c7cf", padding: "0 0.75rem", cursor: "pointer", fontSize: "0.75rem" }}>Regenerate</button>
+                  <button onClick={() => setForm(f => ({ ...f, password: genPassword() }))} style={{ flexShrink: 0, background: "#1e2740", border: "1px solid #1e2740", borderRadius: "0.5rem", color: "#c4c7cf", padding: "0 0.75rem", cursor: "pointer", fontSize: "0.75rem" }}>Regenerate</button>
                 </div>
               </div>
               <div>
@@ -148,7 +148,7 @@ export default function AdminUsersPage() {
                     const on = form.games.includes(g.id);
                     return (
                       <button key={g.id} type="button" onClick={() => setForm(f => ({ ...f, games: on ? f.games.filter(x => x !== g.id) : [...f.games, g.id] }))}
-                        style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", fontSize: "0.75rem", padding: "0.375rem 0.625rem", borderRadius: "0.375rem", cursor: "pointer", border: "1px solid", background: on ? "rgba(255,255,255,0.08)" : "#0c0e16", color: on ? "#fafafa" : "#9aa0ad", borderColor: on ? "rgba(255,255,255,0.25)" : "#1e2230" }}>
+                        style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", fontSize: "0.75rem", padding: "0.375rem 0.625rem", borderRadius: "0.375rem", cursor: "pointer", border: "1px solid", background: on ? "rgba(255,255,255,0.08)" : "#0f1424", color: on ? "#fafafa" : "#9aa0ad", borderColor: on ? "rgba(255,255,255,0.25)" : "#1e2740" }}>
                         {on && <Check size={11} />} {g.title}
                       </button>
                     );
@@ -156,8 +156,8 @@ export default function AdminUsersPage() {
                 </div>
               </div>
               <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
-                <button onClick={createUser} disabled={saving} style={{ flex: 1, background: "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.5rem", border: "none", cursor: "pointer" }}>{saving ? "Creating…" : "Create account"}</button>
-                <button onClick={() => setShowAdd(false)} style={{ flex: 1, background: "#161a26", color: "#c4c7cf", fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.5rem", border: "none", cursor: "pointer" }}>Cancel</button>
+                <button onClick={createUser} disabled={saving} style={{ flex: 1, background: "#f5a623", color: "#090D1A", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.5rem", border: "none", cursor: "pointer" }}>{saving ? "Creating…" : "Create account"}</button>
+                <button onClick={() => setShowAdd(false)} style={{ flex: 1, background: "#1e2740", color: "#c4c7cf", fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.5rem", border: "none", cursor: "pointer" }}>Cancel</button>
               </div>
             </div>
           </div>
@@ -167,7 +167,7 @@ export default function AdminUsersPage() {
       {/* Credentials reveal modal */}
       {created && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 60, padding: "1rem" }}>
-          <div style={{ background: "#0c0e16", border: "1px solid #1e2230", borderRadius: "0.875rem", padding: "1.75rem", width: "100%", maxWidth: "30rem" }}>
+          <div style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.875rem", padding: "1.75rem", width: "100%", maxWidth: "30rem" }}>
             <div style={{ width: "2.75rem", height: "2.75rem", borderRadius: "0.75rem", background: "rgba(34,197,94,0.12)", border: "1px solid rgba(34,197,94,0.3)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "1rem" }}>
               <KeyRound size={20} style={{ color: "#22c55e" }} />
             </div>
@@ -181,13 +181,13 @@ export default function AdminUsersPage() {
             ].map(row => (
               <div key={row.k} style={{ marginBottom: "0.75rem" }}>
                 <div style={{ fontSize: "0.6875rem", color: "#5a5e6b", marginBottom: "0.25rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>{row.k}</div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#080a0f", border: "1px solid #1e2230", borderRadius: "0.5rem", padding: "0.5rem 0.75rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#070a14", border: "1px solid #1e2740", borderRadius: "0.5rem", padding: "0.5rem 0.75rem" }}>
                   <span style={{ flex: 1, fontSize: "0.8125rem", fontFamily: "monospace", color: "#e4e6ea", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{row.v}</span>
                   <button onClick={() => copy(row.k, row.v)} style={{ background: "none", border: "none", cursor: "pointer", color: copied === row.k ? "#22c55e" : "#71757f", flexShrink: 0 }}>{copied === row.k ? <Check size={14} /> : <Copy size={14} />}</button>
                 </div>
               </div>
             ))}
-            <button onClick={() => setCreated(null)} style={{ width: "100%", background: "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "0.875rem", padding: "0.75rem", borderRadius: "0.625rem", border: "none", cursor: "pointer", marginTop: "0.75rem" }}>Done</button>
+            <button onClick={() => setCreated(null)} style={{ width: "100%", background: "#f5a623", color: "#090D1A", fontWeight: 700, fontSize: "0.875rem", padding: "0.75rem", borderRadius: "0.625rem", border: "none", cursor: "pointer", marginTop: "0.75rem" }}>Done</button>
           </div>
         </div>
       )}
@@ -195,7 +195,7 @@ export default function AdminUsersPage() {
       {/* Assign games modal */}
       {assignFor && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, padding: "1rem" }}>
-          <div style={{ background: "#0c0e16", border: "1px solid #1e2230", borderRadius: "0.875rem", padding: "1.5rem", width: "100%", maxWidth: "30rem", maxHeight: "90vh", overflowY: "auto" }}>
+          <div style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.875rem", padding: "1.5rem", width: "100%", maxWidth: "30rem", maxHeight: "90vh", overflowY: "auto" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
               <h3 style={{ fontWeight: 700, color: "#fafafa" }}>Games for {assignFor.company}</h3>
               <button onClick={() => setAssignFor(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "#71757f" }}><X size={18} /></button>
@@ -205,15 +205,15 @@ export default function AdminUsersPage() {
                 const on = assignFor.games.includes(g.id);
                 return (
                   <button key={g.id} type="button" onClick={() => setAssignFor({ ...assignFor, games: on ? assignFor.games.filter(x => x !== g.id) : [...assignFor.games, g.id] })}
-                    style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", fontSize: "0.8125rem", padding: "0.5rem 0.75rem", borderRadius: "0.5rem", cursor: "pointer", border: "1px solid", background: on ? "rgba(255,255,255,0.08)" : "#080a0f", color: on ? "#fafafa" : "#9aa0ad", borderColor: on ? "rgba(255,255,255,0.25)" : "#1e2230" }}>
+                    style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", fontSize: "0.8125rem", padding: "0.5rem 0.75rem", borderRadius: "0.5rem", cursor: "pointer", border: "1px solid", background: on ? "rgba(255,255,255,0.08)" : "#070a14", color: on ? "#fafafa" : "#9aa0ad", borderColor: on ? "rgba(255,255,255,0.25)" : "#1e2740" }}>
                     {on && <Check size={12} />} {g.title}
                   </button>
                 );
               })}
             </div>
             <div style={{ display: "flex", gap: "0.75rem" }}>
-              <button onClick={saveAssignments} disabled={saving} style={{ flex: 1, background: "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.5rem", border: "none", cursor: "pointer" }}>{saving ? "Saving…" : "Save assignments"}</button>
-              <button onClick={() => setAssignFor(null)} style={{ flex: 1, background: "#161a26", color: "#c4c7cf", fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.5rem", border: "none", cursor: "pointer" }}>Cancel</button>
+              <button onClick={saveAssignments} disabled={saving} style={{ flex: 1, background: "#f5a623", color: "#090D1A", fontWeight: 700, fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.5rem", border: "none", cursor: "pointer" }}>{saving ? "Saving…" : "Save assignments"}</button>
+              <button onClick={() => setAssignFor(null)} style={{ flex: 1, background: "#1e2740", color: "#c4c7cf", fontSize: "0.875rem", padding: "0.625rem", borderRadius: "0.5rem", border: "none", cursor: "pointer" }}>Cancel</button>
             </div>
           </div>
         </div>

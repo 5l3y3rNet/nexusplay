@@ -43,7 +43,7 @@ export default function PartnerPage() {
   }
 
   const inp: React.CSSProperties = {
-    width: "100%", background: "#111113", border: "1px solid #27272a",
+    width: "100%", background: "#0f1424", border: "1px solid #1e2740",
     borderRadius: "0.625rem", color: "#fafafa", fontSize: "0.9375rem",
     padding: "0.75rem 0.875rem", outline: "none",
   };
@@ -52,7 +52,7 @@ export default function PartnerPage() {
 
   if (sent) {
     return (
-      <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "#09090b", display: "flex", alignItems: "center", justifyContent: "center", padding: "5rem 1.25rem" }}>
+      <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "#090D1A", display: "flex", alignItems: "center", justifyContent: "center", padding: "5rem 1.25rem" }}>
         <div style={{ textAlign: "center", maxWidth: "30rem" }}>
           <div style={{ width: "3.5rem", height: "3.5rem", borderRadius: "1rem", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1.5rem" }}>
             <CheckCircle2 size={26} style={{ color: "#fafafa" }} />
@@ -67,7 +67,7 @@ export default function PartnerPage() {
   }
 
   return (
-    <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "#09090b" }}>
+    <div style={{ paddingTop: "4rem", minHeight: "100vh", background: "#090D1A" }}>
       <style>{`
         .partner-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
         @media (min-width: 980px) {
@@ -109,7 +109,7 @@ export default function PartnerPage() {
           </div>
 
           {/* RIGHT — form */}
-          <div className="partner-form-card" style={{ background: "#111113", border: "1px solid #27272a", borderRadius: "1.25rem" }}>
+          <div className="partner-form-card" style={{ background: "#0f1424", border: "1px solid #1e2740", borderRadius: "1.25rem" }}>
             {error && (
               <div style={{ background: "rgba(40,12,12,0.9)", border: "1px solid #4a1515", borderRadius: "0.625rem", padding: "0.75rem 0.875rem", fontSize: "0.875rem", color: "#f87171", marginBottom: "1.25rem" }}>{error}</div>
             )}
@@ -146,13 +146,13 @@ export default function PartnerPage() {
                   const active = selectedGames.includes(g.id);
                   return (
                     <button key={g.id} onClick={() => toggleGame(g.id)} type="button"
-                      style={{ fontSize: "0.75rem", fontWeight: 600, fontFamily: "monospace", letterSpacing: "0.03em", padding: "0.5rem 0.875rem", borderRadius: "9999px", cursor: "pointer", textTransform: "uppercase", border: "1px solid", background: active ? "rgba(245,166,35,0.15)" : "#111113", color: active ? "#f5a623" : "#a1a1aa", borderColor: active ? "rgba(245,166,35,0.4)" : "#27272a" }}>
+                      style={{ fontSize: "0.75rem", fontWeight: 600, fontFamily: "monospace", letterSpacing: "0.03em", padding: "0.5rem 0.875rem", borderRadius: "9999px", cursor: "pointer", textTransform: "uppercase", border: "1px solid", background: active ? "rgba(245,166,35,0.15)" : "#0f1424", color: active ? "#f5a623" : "#a1a1aa", borderColor: active ? "rgba(245,166,35,0.4)" : "#1e2740" }}>
                       {g.title}
                     </button>
                   );
                 })}
                 <button onClick={() => setSelectedGames(selectedGames.length === featured.length ? [] : featured.map(g => g.id))} type="button"
-                  style={{ fontSize: "0.75rem", fontWeight: 600, fontFamily: "monospace", padding: "0.5rem 0.875rem", borderRadius: "9999px", cursor: "pointer", border: "1px solid #27272a", background: "#111113", color: "#a1a1aa" }}>
+                  style={{ fontSize: "0.75rem", fontWeight: 600, fontFamily: "monospace", padding: "0.5rem 0.875rem", borderRadius: "9999px", cursor: "pointer", border: "1px solid #1e2740", background: "#0f1424", color: "#a1a1aa" }}>
                   Whole portfolio
                 </button>
               </div>
@@ -164,7 +164,7 @@ export default function PartnerPage() {
             </div>
 
             <button onClick={submit} disabled={loading}
-              style={{ width: "100%", background: loading ? "#d4881a" : "#f5a623", color: "#09090b", fontWeight: 700, fontSize: "1rem", padding: "0.9375rem", borderRadius: "0.75rem", border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
+              style={{ width: "100%", background: loading ? "#d4881a" : "#f5a623", color: "#090D1A", fontWeight: 700, fontSize: "1rem", padding: "0.9375rem", borderRadius: "0.75rem", border: "none", cursor: loading ? "not-allowed" : "pointer" }}>
               {loading ? "Sending…" : "Send — we reply within 24h"}
             </button>
             <p style={{ textAlign: "center", fontSize: "0.8125rem", color: "#52525b", marginTop: "1rem" }}>

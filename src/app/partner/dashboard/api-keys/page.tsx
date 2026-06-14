@@ -54,32 +54,32 @@ export default function ApiKeysPage() {
     setCopied(id); setTimeout(() => setCopied(""), 2000);
   }
 
-  const card: React.CSSProperties = { background: "#111113", border: "1px solid #27272a", borderRadius: "0.75rem" };
+  const card: React.CSSProperties = { background: "#0f1424", border: "1px solid #1e2740", borderRadius: "0.75rem" };
 
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#09090b", overflow: "hidden" }}>
+    <div style={{ display: "flex", height: "100vh", background: "#090D1A", overflow: "hidden" }}>
       <div className="hidden lg:block" style={{ width: "15rem", flexShrink: 0 }}><PartnerSidebar /></div>
       {mob && <div style={{ position: "fixed", inset: 0, zIndex: 50, display: "flex" }}><div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.6)" }} onClick={() => setMob(false)} /><div style={{ position: "relative", width: "15rem", height: "100%" }}><PartnerSidebar onClose={() => setMob(false)} /></div></div>}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <header style={{ height: "4rem", borderBottom: "1px solid #27272a", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1.5rem", flexShrink: 0 }}>
+        <header style={{ height: "4rem", borderBottom: "1px solid #1e2740", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 1.5rem", flexShrink: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
             <button onClick={() => setMob(true)} className="lg:hidden" style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><Menu size={18} /></button>
             <h2 style={{ fontWeight: 600, color: "#fafafa", fontSize: "0.875rem" }}>API Keys</h2>
           </div>
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <button onClick={loadKeys} style={{ background: "none", border: "none", cursor: "pointer", color: "#71717a" }}><RefreshCw size={15} /></button>
-            <button onClick={() => setShowNew(true)} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#f5a623", color: "#09090b", fontSize: "0.75rem", fontWeight: 600, padding: "0.375rem 0.75rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
+            <button onClick={() => setShowNew(true)} style={{ display: "inline-flex", alignItems: "center", gap: "0.375rem", background: "#f5a623", color: "#090D1A", fontSize: "0.75rem", fontWeight: 600, padding: "0.375rem 0.75rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
               <Plus size={13} /> New key
             </button>
           </div>
         </header>
         <main style={{ flex: 1, overflowY: "auto", padding: "1.5rem" }}>
-          <div style={{ background: "#18181b", border: "1px solid #27272a", borderRadius: "0.75rem", padding: "1rem", marginBottom: "1.5rem", display: "flex", gap: "0.75rem" }}>
+          <div style={{ background: "#131a2e", border: "1px solid #1e2740", borderRadius: "0.75rem", padding: "1rem", marginBottom: "1.5rem", display: "flex", gap: "0.75rem" }}>
             <Key size={14} style={{ color: "#71717a", flexShrink: 0, marginTop: "0.125rem" }} />
             <p style={{ fontSize: "0.875rem", color: "#71717a" }}>API keys are shown once. Store them securely in environment variables — never in client-side code.</p>
           </div>
           <div style={card}>
-            <div style={{ padding: "1rem 1.25rem", borderBottom: "1px solid #27272a" }}>
+            <div style={{ padding: "1rem 1.25rem", borderBottom: "1px solid #1e2740" }}>
               <h3 style={{ fontSize: "0.875rem", fontWeight: 600, color: "#fafafa" }}>Your API keys</h3>
             </div>
             {loading ? (
@@ -87,7 +87,7 @@ export default function ApiKeysPage() {
             ) : keys.length === 0 ? (
               <div style={{ padding: "2rem", textAlign: "center", color: "#52525b", fontSize: "0.875rem" }}>No keys yet. Create one to start integrating.</div>
             ) : keys.map(k => (
-              <div key={k.id} style={{ padding: "1.25rem", borderBottom: "1px solid #27272a" }}>
+              <div key={k.id} style={{ padding: "1.25rem", borderBottom: "1px solid #1e2740" }}>
                 {k.newKey && (
                   <div style={{ background: "rgba(2,44,34,0.9)", border: "1px solid #064e3b", borderRadius: "0.375rem", padding: "0.75rem", marginBottom: "0.75rem", fontSize: "0.75rem", color: "#34d399", fontFamily: "monospace", wordBreak: "break-all" }}>
                     Save this key — it will not be shown again: {k.newKey}
@@ -103,7 +103,7 @@ export default function ApiKeysPage() {
                   </div>
                   <button onClick={() => deleteKey(k.id)} style={{ background: "none", border: "none", cursor: "pointer", color: "#3f3f46" }}><Trash2 size={14} /></button>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#18181b", border: "1px solid #27272a", borderRadius: "0.375rem", padding: "0.5rem 0.75rem", marginBottom: "0.75rem" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#131a2e", border: "1px solid #1e2740", borderRadius: "0.375rem", padding: "0.5rem 0.75rem", marginBottom: "0.75rem" }}>
                   <span style={{ fontSize: "0.75rem", fontFamily: "monospace", color: "#71717a", flex: 1 }}>{k.key_prefix}{"•".repeat(20)}</span>
                   <button onClick={() => copy(k.id, k.key_prefix)} style={{ background: "none", border: "none", cursor: "pointer", color: "#52525b" }}><Copy size={12} /></button>
                 </div>
@@ -119,25 +119,25 @@ export default function ApiKeysPage() {
 
       {showNew && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 50, padding: "1rem" }}>
-          <div style={{ background: "#18181b", border: "1px solid #27272a", borderRadius: "0.75rem", padding: "1.5rem", width: "100%", maxWidth: "24rem" }}>
+          <div style={{ background: "#131a2e", border: "1px solid #1e2740", borderRadius: "0.75rem", padding: "1.5rem", width: "100%", maxWidth: "24rem" }}>
             <h3 style={{ fontWeight: 600, color: "#fafafa", marginBottom: "1rem" }}>Create new API key</h3>
             <label style={{ display: "block", fontSize: "0.75rem", color: "#a1a1aa", marginBottom: "0.5rem" }}>Key name</label>
             <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="e.g. Production" autoFocus
               onKeyDown={e => e.key === "Enter" && createKey()}
-              style={{ width: "100%", background: "#09090b", border: "1px solid #27272a", borderRadius: "0.375rem", color: "#fafafa", fontSize: "0.875rem", padding: "0.5rem 0.75rem", outline: "none", marginBottom: "1rem" }} />
+              style={{ width: "100%", background: "#090D1A", border: "1px solid #1e2740", borderRadius: "0.375rem", color: "#fafafa", fontSize: "0.875rem", padding: "0.5rem 0.75rem", outline: "none", marginBottom: "1rem" }} />
             <label style={{ display: "block", fontSize: "0.75rem", color: "#a1a1aa", marginBottom: "0.5rem" }}>Environment</label>
             <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.25rem" }}>
               {["test", "live"].map(env => (
-                <button key={env} onClick={() => setNewEnv(env)} style={{ flex: 1, padding: "0.5rem", borderRadius: "0.375rem", border: "1px solid", cursor: "pointer", background: newEnv === env ? "#fafafa" : "transparent", color: newEnv === env ? "#09090b" : "#71717a", borderColor: newEnv === env ? "#fafafa" : "#27272a", fontSize: "0.875rem", fontWeight: newEnv === env ? 600 : 400 }}>
+                <button key={env} onClick={() => setNewEnv(env)} style={{ flex: 1, padding: "0.5rem", borderRadius: "0.375rem", border: "1px solid", cursor: "pointer", background: newEnv === env ? "#fafafa" : "transparent", color: newEnv === env ? "#090D1A" : "#71717a", borderColor: newEnv === env ? "#fafafa" : "#1e2740", fontSize: "0.875rem", fontWeight: newEnv === env ? 600 : 400 }}>
                   {env === "test" ? "Test (sandbox)" : "Live (production)"}
                 </button>
               ))}
             </div>
             <div style={{ display: "flex", gap: "0.75rem" }}>
-              <button onClick={createKey} disabled={creating} style={{ flex: 1, background: "#f5a623", color: "#09090b", fontWeight: 600, fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
+              <button onClick={createKey} disabled={creating} style={{ flex: 1, background: "#f5a623", color: "#090D1A", fontWeight: 600, fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>
                 {creating ? "Creating…" : "Create"}
               </button>
-              <button onClick={() => setShowNew(false)} style={{ flex: 1, background: "#27272a", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>
+              <button onClick={() => setShowNew(false)} style={{ flex: 1, background: "#1e2740", color: "#d4d4d8", fontSize: "0.875rem", padding: "0.5rem", borderRadius: "0.375rem", border: "none", cursor: "pointer" }}>Cancel</button>
             </div>
           </div>
         </div>

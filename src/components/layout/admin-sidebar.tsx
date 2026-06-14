@@ -15,8 +15,8 @@ export function AdminSidebar({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
   const { logout } = useAuth();
   return (
-    <aside style={{ display: "flex", flexDirection: "column", width: "14rem", borderRight: "1px solid #1c1f2b", background: "#0a0b10", height: "100%" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "4rem", padding: "0 1.25rem", borderBottom: "1px solid #1c1f2b", flexShrink: 0 }}>
+    <aside style={{ display: "flex", flexDirection: "column", width: "14rem", borderRight: "1px solid #1e2740", background: "#090D1A", height: "100%" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "4rem", padding: "0 1.25rem", borderBottom: "1px solid #1e2740", flexShrink: 0 }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem", textDecoration: "none" }}>
           <span style={{ fontWeight: 800, color: "#fafafa", fontSize: "1.0625rem", letterSpacing: "0.05em" }}>KAN<span style={{ color: "#f5a623" }}>I</span></span>
         </Link>
@@ -35,7 +35,7 @@ export function AdminSidebar({ onClose }: { onClose?: () => void }) {
         })}
       </nav>
 
-      <div style={{ padding: "0.75rem", borderTop: "1px solid #1c1f2b" }}>
+      <div style={{ padding: "0.75rem", borderTop: "1px solid #1e2740" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 0.75rem", marginBottom: "0.25rem" }}>
           <div style={{ width: "1.5rem", height: "1.5rem", background: "rgba(248,113,113,0.12)", border: "1px solid rgba(248,113,113,0.3)", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <Shield size={10} style={{ color: "#f87171" }} />
