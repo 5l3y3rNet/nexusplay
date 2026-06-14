@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, ChevronRight, Zap, Shield, Globe, BarChart3, Code2, CheckCircle2, ExternalLink } from "lucide-react";
+import { ArrowRight, ChevronRight, Zap, Shield, Globe, BarChart3, Code2, CheckCircle2, ExternalLink, Wallet, Layers } from "lucide-react";
 import { games } from "@/lib/games";
 import { GameCard } from "@/components/games/game-card";
 
@@ -17,6 +17,8 @@ const features = [
   { icon: <BarChart3 size={18} />, title: "Real-Time Analytics", desc: "Session metrics, player activity, revenue reporting, and API usage in your dashboard." },
   { icon: <Code2 size={18} />, title: "Full API Coverage", desc: "REST API with webhooks, game launch flow, session management, and rollback support." },
   { icon: <CheckCircle2 size={18} />, title: "White-Label Ready", desc: "Games integrate into any operator UI. Custom currency, locale, and theme support." },
+  { icon: <Wallet size={18} />, title: "Flexible Wallet API", desc: "Seamless balance callbacks, bet, win, and rollback flows that plug into your existing wallet." },
+  { icon: <Layers size={18} />, title: "Multi-Currency & Locale", desc: "Fiat and crypto support out of the box, with localized UI across every market you operate in." },
 ];
 
 const steps = [

@@ -75,14 +75,14 @@ export async function initDb() {
   `);
 
   // Seed admin
-  const existing = await db.execute("SELECT id FROM users WHERE email = 'admin@nexusplay.io'");
+  const existing = await db.execute("SELECT id FROM users WHERE email = 'admin@kani.studio'");
   if (existing.rows.length === 0) {
     const bcrypt = await import("bcryptjs");
     const { v4: uuidv4 } = await import("uuid");
     const hash = await bcrypt.hash("Admin1234!", 10);
     await db.execute({
       sql: `INSERT INTO users (id, email, password_hash, name, company, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      args: [uuidv4(), "admin@nexusplay.io", hash, "Platform Admin", "NexusPlay", "admin", "active"],
+      args: [uuidv4(), "admin@kani.studio", hash, "Platform Admin", "KANI", "admin", "active"],
     });
   }
 
